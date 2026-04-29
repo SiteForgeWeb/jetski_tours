@@ -1,0 +1,1287 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>JST SALOU — Espace Interne</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070f1c;
+    --bg2: #0c1829;
+    --bg3: #112033;
+    --card: #0f1e30;
+    --card2: #142540;
+    --border: #1e3a5a;
+    --blue: #1e90ff;
+    --blue-light: #4db8ff;
+    --blue-dark: #1060cc;
+    --cyan: #00d4ff;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f59e0b;
+    --text: #e8f4ff;
+    --text2: #7ba8cc;
+    --text3: #4a7090;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); font-family:'Barlow',sans-serif; color:var(--text); }
+
+  /* ── LOGIN ── */
+  #loginScreen {
+    position:fixed; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    background: radial-gradient(ellipse at 50% 40%, #0a1f3c 0%, #070f1c 70%);
+    z-index:100;
+  }
+  .login-title {
+    font-family:'Barlow Condensed',sans-serif; font-weight:800;
+    font-size:clamp(2.5rem,10vw,3.8rem); text-align:center; line-height:1.1;
+    color:var(--blue-light); letter-spacing:2px;
+    text-shadow:0 0 40px rgba(30,144,255,0.5);
+    margin-bottom:0.4rem;
+  }
+  .login-sub {
+    font-family:'Barlow Condensed',sans-serif; font-size:0.85rem;
+    letter-spacing:4px; color:var(--text3); margin-bottom:2.5rem;
+  }
+  .login-divider {
+    width:160px; height:2px; margin:0 auto 2.5rem;
+    background: linear-gradient(90deg,transparent,var(--blue),transparent);
+  }
+  .login-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:16px; padding:2rem; width:min(360px,90vw);
+  }
+  .login-label {
+    font-family:'Barlow Condensed',sans-serif; font-size:0.8rem;
+    letter-spacing:3px; color:var(--blue-light); margin-bottom:0.6rem; display:block;
+  }
+  .login-input {
+    width:100%; background:#1a2f47; border:1px solid var(--border);
+    border-radius:10px; padding:1rem 1.2rem; font-size:1.1rem; color:var(--text);
+    margin-bottom:1rem; outline:none;
+    transition: border-color .2s;
+  }
+  .login-input:focus { border-color:var(--blue); }
+  .login-btn {
+    width:100%; background: linear-gradient(135deg,var(--blue),var(--blue-dark));
+    border:none; border-radius:10px; padding:1rem;
+    font-family:'Barlow Condensed',sans-serif; font-size:1rem; letter-spacing:3px;
+    font-weight:700; color:#fff; cursor:pointer;
+    transition: opacity .2s, transform .1s;
+  }
+  .login-btn:active { transform:scale(.98); opacity:.9; }
+  .login-error { color:var(--red); font-size:.85rem; text-align:center; margin-top:.5rem; display:none; }
+
+  /* ── PROFILE SELECT (step 2 login) ── */
+  #profileSelectScreen {
+    position:fixed; inset:0; display:none; flex-direction:column;
+    align-items:center; justify-content:center;
+    background: radial-gradient(ellipse at 50% 40%, #0a1f3c 0%, #070f1c 70%);
+    z-index:99; overflow-y:auto; padding:2rem 1rem;
+  }
+  .profile-select-title {
+    font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.4rem;
+    color:var(--blue-light); letter-spacing:3px; text-align:center; margin-bottom:0.3rem;
+  }
+  .profile-select-sub { font-size:0.8rem; color:var(--text3); letter-spacing:2px; text-align:center; margin-bottom:1.5rem; }
+  .profile-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; width:min(360px,90vw); }
+  .profile-btn {
+    background:var(--card); border:1.5px solid var(--border); border-radius:14px;
+    padding:1rem 0.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+    cursor:pointer; transition: all .2s; position:relative;
+  }
+  .profile-btn:hover, .profile-btn:active { border-color:var(--blue); background:var(--card2); }
+  .profile-btn .pb-avatar {
+    width:48px; height:48px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Barlow Condensed',sans-serif; font-size:1.3rem; font-weight:800;
+    color:var(--blue-light);
+  }
+  .profile-btn .pb-name { font-weight:700; font-size:1rem; }
+  .profile-btn .pb-role { font-size:0.72rem; color:var(--text3); }
+  .profile-btn .pb-chef-badge {
+    position:absolute; top:0.4rem; right:0.5rem; font-size:0.8rem;
+  }
+  .locked-banner {
+    background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3);
+    border-radius:10px; padding:0.6rem 1rem; color:var(--red);
+    font-size:0.8rem; text-align:center; margin-top:0.8rem; width:min(360px,90vw);
+    display:none;
+  }
+  /* Chip utilisateur dans topbar */
+  .topbar-user {
+    display:flex; align-items:center; gap:0.4rem;
+    background:var(--bg3); border:1px solid var(--border); border-radius:20px;
+    padding:0.3rem 0.7rem; font-size:0.78rem; font-weight:600; cursor:default;
+  }
+  .topbar-user-dot { width:8px; height:8px; border-radius:50%; background:var(--green); flex-shrink:0; }
+
+  /* ── APP ── */
+  #app { display:none; flex-direction:column; height:100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.7rem 1rem; background:var(--bg2);
+    border-bottom:1px solid var(--border); flex-shrink:0;
+  }
+  .topbar-logo {
+    font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.25rem;
+    color:var(--blue-light); letter-spacing:2px;
+  }
+  .lang-btns { display:flex; gap:0.4rem; }
+  .lang-btn {
+    width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border);
+    background:transparent; font-family:'Barlow Condensed',sans-serif;
+    font-size:0.75rem; letter-spacing:1px; font-weight:700; color:var(--text2);
+    cursor:pointer; transition: all .2s;
+  }
+  .lang-btn.active {
+    background:var(--blue); border-color:var(--blue); color:#fff;
+  }
+  .topbar-date { text-align:right; }
+  .topbar-day { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1rem; color:var(--blue-light); }
+  .topbar-date-str { font-size:0.75rem; color:var(--text2); }
+
+  /* TABS */
+  .tabs-wrap { overflow-x:auto; background:var(--bg2); border-bottom:1px solid var(--border); flex-shrink:0; }
+  .tabs-wrap::-webkit-scrollbar { display:none; }
+  .tabs { display:flex; padding:0.4rem 0.5rem; gap:0.3rem; min-width:max-content; }
+  .tab {
+    display:flex; align-items:center; gap:0.4rem;
+    padding:0.5rem 0.85rem; border-radius:10px;
+    font-size:0.85rem; font-weight:500; color:var(--text2);
+    cursor:pointer; white-space:nowrap; border:none; background:transparent;
+    transition: all .2s;
+  }
+  .tab.active { background:var(--bg3); color:var(--text); border:1px solid var(--border); }
+  .tab-icon { font-size:1rem; }
+
+  /* CONTENT */
+  .content { flex:1; overflow-y:auto; padding:1rem; }
+  .content::-webkit-scrollbar { display:none; }
+
+  .page { display:none; }
+  .page.active { display:block; }
+
+  /* PAGE TITLE */
+  .page-title {
+    display:flex; align-items:center; gap:0.6rem;
+    font-family:'Barlow Condensed',sans-serif; font-weight:800;
+    font-size:1.5rem; letter-spacing:2px; margin-bottom:1rem;
+    padding-bottom:0.8rem; border-bottom:1px solid var(--border);
+  }
+  .page-title-icon { font-size:1.6rem; }
+
+  /* CARDS */
+  .card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:14px; padding:1rem; margin-bottom:1rem;
+  }
+  .card-label {
+    font-family:'Barlow Condensed',sans-serif; font-size:0.72rem;
+    letter-spacing:3px; color:var(--text2); margin-bottom:0.8rem;
+  }
+
+  /* ── MÉTÉO ── */
+  .meteo-loc { display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; letter-spacing:2px; color:var(--text2); margin-bottom:0.8rem; font-family:'Barlow Condensed',sans-serif; }
+  .meteo-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.6rem; margin-bottom:0.8rem; }
+  .meteo-box { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:0.8rem; text-align:center; }
+  .meteo-val { font-family:'Barlow Condensed',sans-serif; font-size:1.5rem; font-weight:700; color:var(--blue-light); }
+  .meteo-unit { font-size:0.7rem; color:var(--blue-light); margin-bottom:0.2rem; }
+  .meteo-key { font-size:0.65rem; letter-spacing:2px; color:var(--text3); font-family:'Barlow Condensed',sans-serif; }
+  .meteo-status { border-radius:10px; padding:0.8rem 1rem; text-align:center; font-weight:600; font-size:0.95rem; margin-bottom:0.6rem; }
+  .meteo-status.good { background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3); color:var(--green); }
+  .meteo-status.bad { background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:var(--red); }
+  .meteo-status.warn { background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.3); color:var(--orange); }
+  .meteo-warn-msg { text-align:center; font-size:0.8rem; color:var(--orange); margin-bottom:0.6rem; }
+  .meteo-refresh {
+    width:100%; background:var(--card2); border:1px solid var(--border); border-radius:10px;
+    padding:0.8rem; font-size:0.9rem; color:var(--blue-light); cursor:pointer; font-family:'Barlow',sans-serif;
+  }
+  .temp-big { font-family:'Barlow Condensed',sans-serif; font-size:3rem; font-weight:800; color:var(--orange); text-align:center; padding:1rem 0; }
+
+  /* ── EQUIPE ── */
+  .monitor-card {
+    background:var(--card2); border:1px solid var(--border); border-radius:12px;
+    padding:0.8rem 1rem; margin-bottom:0.6rem;
+    display:flex; align-items:center; gap:0.8rem;
+  }
+  .avatar {
+    width:44px; height:44px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Barlow Condensed',sans-serif; font-size:1.2rem; font-weight:800;
+  }
+  .monitor-info { flex:1; }
+  .monitor-name { font-weight:700; font-size:1rem; }
+  .monitor-role { font-size:0.8rem; color:var(--text2); }
+  .monitor-badge {
+    display:inline-block; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.4);
+    color:var(--green); font-size:0.7rem; padding:0.2rem 0.6rem; border-radius:20px; margin-top:0.3rem;
+  }
+  .monitor-badge.off { background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.3); color:var(--red); }
+  .monitor-hours { text-align:right; }
+  .monitor-hours-val { font-family:'Barlow Condensed',sans-serif; font-size:1.3rem; font-weight:700; color:var(--blue-light); }
+  .monitor-hours-lbl { font-size:0.65rem; color:var(--text3); }
+  .monitor-del { color:var(--text3); font-size:1.1rem; margin-left:0.3rem; cursor:pointer; opacity:.6; }
+
+  /* ── HORAS ── */
+  .select-row { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:0.8rem; }
+  .styled-select {
+    background:var(--card2); border:1.5px solid var(--blue); border-radius:10px;
+    padding:0.8rem 1rem; color:var(--text); font-size:1rem; font-family:'Barlow',sans-serif;
+    appearance:none; cursor:pointer; outline:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234db8ff' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 0.6rem center; background-size:1.2rem;
+  }
+  .btn-primary {
+    width:100%; background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+    border:none; border-radius:10px; padding:0.9rem;
+    font-family:'Barlow Condensed',sans-serif; font-size:0.9rem; letter-spacing:3px;
+    font-weight:700; color:#fff; cursor:pointer; transition:.2s;
+  }
+  .btn-primary:active { opacity:.85; transform:scale(.99); }
+  .session-item {
+    background:var(--card2); border:1px solid var(--border); border-radius:10px;
+    padding:0.7rem 1rem; display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:0.5rem;
+  }
+  .session-name { font-weight:700; font-size:0.95rem; }
+  .session-meta { font-size:0.75rem; color:var(--text3); }
+  .session-dur { font-family:'Barlow Condensed',sans-serif; font-size:1.2rem; font-weight:700; color:var(--blue-light); }
+  .session-del { color:var(--text3); cursor:pointer; margin-left:0.5rem; font-size:0.9rem; }
+
+  /* ── TAREAS ── */
+  .task-card {
+    background:var(--card2); border:1px solid var(--border); border-radius:12px;
+    padding:0.8rem 1rem; display:flex; align-items:flex-start; gap:0.8rem;
+    margin-bottom:0.6rem;
+  }
+  .task-icon { font-size:1.4rem; margin-top:0.1rem; }
+  .task-info { flex:1; }
+  .task-name { font-size:0.95rem; font-weight:600; }
+  .task-sub { font-size:0.75rem; color:var(--text3); margin-top:0.2rem; }
+  .task-right { text-align:right; }
+  .task-assigned { font-size:0.75rem; color:var(--blue-light); margin-bottom:0.4rem; }
+  .task-btn {
+    border-radius:20px; padding:0.35rem 0.8rem; font-size:0.75rem; font-weight:600;
+    border:1.5px solid; cursor:pointer; white-space:nowrap;
+    font-family:'Barlow',sans-serif; transition:.2s;
+  }
+  .task-btn.done { background:rgba(34,197,94,0.15); border-color:var(--green); color:var(--green); }
+  .task-btn.todo { background:transparent; border-color:var(--border); color:var(--text3); }
+  .task-btn.todo:hover { border-color:var(--blue); color:var(--blue-light); }
+  .btn-secondary {
+    width:100%; background:var(--card2); border:1px solid var(--border);
+    border-radius:10px; padding:0.85rem;
+    font-family:'Barlow Condensed',sans-serif; font-size:0.9rem; letter-spacing:2px;
+    color:var(--blue-light); cursor:pointer; transition:.2s;
+  }
+
+  /* ── RESERVAS ── */
+  .camera-zone {
+    border:2px dashed var(--border); border-radius:12px; padding:3rem 1rem;
+    text-align:center; cursor:pointer; position:relative; overflow:hidden; margin-bottom:0.8rem;
+    transition:.2s;
+  }
+  .camera-zone:hover { border-color:var(--blue); }
+  .camera-zone img { max-width:100%; border-radius:8px; display:none; }
+  .camera-zone .camera-placeholder { font-size:3rem; margin-bottom:0.5rem; }
+  .camera-zone .camera-txt { color:var(--text3); font-size:0.9rem; }
+  .camera-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+
+  /* ── DESCANSO ── */
+  .rest-card {
+    background:var(--card2); border:1px solid var(--border); border-radius:12px;
+    padding:0.8rem 1rem; margin-bottom:0.6rem;
+    display:flex; align-items:center; gap:0.8rem;
+  }
+  .rest-name { font-weight:700; font-size:1rem; min-width:60px; }
+  .rest-day-lbl { font-size:0.7rem; color:var(--text3); }
+  .days-row { display:flex; gap:0.3rem; flex-wrap:nowrap; }
+  .day-pill {
+    width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border);
+    background:transparent; font-size:0.65rem; font-weight:700;
+    color:var(--text3); cursor:pointer; transition:.2s;
+    font-family:'Barlow Condensed',sans-serif; letter-spacing:.5px;
+  }
+  .day-pill.selected { background:rgba(239,68,68,0.2); border-color:var(--red); color:var(--red); }
+
+  /* ── CHAT ── */
+  .chat-input {
+    width:100%; background:var(--card2); border:1.5px solid var(--border);
+    border-radius:10px; padding:0.8rem 1rem; color:var(--text); font-size:0.95rem;
+    font-family:'Barlow',sans-serif; outline:none; margin-bottom:0.6rem; transition:.2s;
+  }
+  .chat-input:focus { border-color:var(--blue); }
+  .chat-msg {
+    background:var(--card2); border:1px solid var(--border); border-radius:12px;
+    padding:0.8rem 1rem; margin-bottom:0.6rem; position:relative;
+  }
+  .chat-msg-header { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem; }
+  .chat-avatar { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:800; font-family:'Barlow Condensed',sans-serif; }
+  .chat-sender { font-weight:700; font-size:0.9rem; }
+  .chat-time { font-size:0.75rem; color:var(--text3); }
+  .chat-text { font-size:0.9rem; color:var(--text2); padding-left:2.2rem; }
+  .chat-del { position:absolute; top:0.6rem; right:0.7rem; color:var(--text3); cursor:pointer; font-size:0.85rem; opacity:.6; }
+
+  /* ── PERFIL ── */
+  .profile-hero { text-align:center; padding:1.5rem 0 1rem; border-bottom:1px solid var(--border); margin-bottom:1rem; }
+  .profile-avatar { width:72px; height:72px; border-radius:50%; border:2px solid var(--blue); display:inline-flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-size:2rem; font-weight:800; margin-bottom:0.6rem; }
+  .profile-name { font-family:'Barlow Condensed',sans-serif; font-size:2rem; font-weight:800; letter-spacing:2px; }
+  .profile-role { font-size:0.9rem; color:var(--text2); margin-bottom:0.6rem; }
+  .pin-warn { background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); color:var(--orange); font-size:0.78rem; padding:0.4rem 0.8rem; border-radius:20px; display:inline-block; }
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:0.6rem; }
+  .stat-box { background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:1rem; text-align:center; }
+  .stat-val { font-family:'Barlow Condensed',sans-serif; font-size:2.2rem; font-weight:800; }
+  .stat-lbl { font-size:0.65rem; letter-spacing:2px; color:var(--text3); font-family:'Barlow Condensed',sans-serif; margin-top:0.2rem; }
+  .stat-box.blue .stat-val { color:var(--blue-light); }
+  .stat-box.orange .stat-val { color:var(--orange); }
+  .stat-box.green .stat-val { color:var(--green); }
+  .counter-row { display:flex; align-items:center; justify-content:center; gap:1.5rem; margin:1rem 0; }
+  .counter-btn { width:52px; height:52px; border-radius:50%; border:none; font-size:1.5rem; font-weight:700; cursor:pointer; }
+  .counter-btn.minus { background:#7f1d1d; color:var(--red); }
+  .counter-btn.plus { background:#14532d; color:var(--green); }
+  .counter-val { font-family:'Barlow Condensed',sans-serif; font-size:2.5rem; font-weight:800; color:var(--blue-light); }
+  .progress-dots { display:flex; gap:0.4rem; justify-content:center; margin:0.5rem 0; }
+  .dot { width:14px; height:14px; border-radius:50%; background:var(--border); }
+  .dot.active { background:var(--orange); }
+  .progress-lbl { text-align:center; font-size:0.75rem; color:var(--text3); margin-bottom:1rem; }
+  .quote-box { background:var(--card2); border:1px solid var(--border); border-left:3px solid var(--blue); border-radius:12px; padding:1rem; margin-bottom:0.8rem; font-size:0.95rem; font-style:italic; line-height:1.5; }
+  .quote-attr { font-size:0.75rem; color:var(--blue-light); margin-top:0.5rem; font-style:normal; }
+  .pin-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:0.6rem; margin-top:0.8rem; }
+  .pin-key { background:var(--card2); border:1px solid var(--border); border-radius:50%; aspect-ratio:1; font-size:1.2rem; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.15s; }
+  .pin-key:active { background:var(--blue); border-color:var(--blue); }
+  .pin-dots { display:flex; gap:1rem; justify-content:center; margin:.6rem 0; }
+  .pin-dot { width:16px; height:16px; border-radius:50%; border:2px solid var(--border); }
+  .pin-dot.filled { border-color:var(--blue); background:var(--blue); }
+  .pin-section-lbl { font-family:'Barlow Condensed',sans-serif; font-size:0.75rem; letter-spacing:3px; color:var(--blue-light); margin-bottom:0.6rem; display:flex; align-items:center; gap:0.4rem; }
+
+  /* ── ADMIN ── */
+  .admin-tag { display:inline-block; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:var(--red); font-size:0.7rem; letter-spacing:2px; padding:0.2rem 0.6rem; border-radius:4px; margin-bottom:0.8rem; font-family:'Barlow Condensed',sans-serif; }
+  .admin-section-title { font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; letter-spacing:3px; color:var(--text3); margin-bottom:0.6rem; }
+  .admin-monitor-row { display:flex; align-items:center; gap:0.6rem; padding:.6rem 0; border-bottom:1px solid var(--border); }
+  .admin-monitor-row:last-child { border-bottom:none; }
+  .admin-monitor-name { flex:1; font-weight:600; }
+  .admin-monitor-total { font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; font-weight:700; color:var(--orange); }
+  .add-monitor-row { display:flex; gap:.5rem; margin-top:.6rem; }
+  .text-input { flex:1; background:var(--card2); border:1.5px solid var(--border); border-radius:8px; padding:.7rem .9rem; color:var(--text); font-family:'Barlow',sans-serif; font-size:.9rem; outline:none; }
+  .text-input:focus { border-color:var(--blue); }
+  .btn-sm { background:var(--blue); border:none; border-radius:8px; padding:.7rem 1rem; color:#fff; font-family:'Barlow Condensed',sans-serif; font-size:.8rem; letter-spacing:2px; font-weight:700; cursor:pointer; }
+
+  .toast {
+    position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
+    background:var(--green); color:#fff; padding:.6rem 1.4rem; border-radius:20px;
+    font-weight:600; font-size:.85rem; z-index:999; opacity:0; transition:.3s;
+    pointer-events:none;
+  }
+  .toast.show { opacity:1; }
+
+  @media(min-width:480px){
+    .content { max-width:440px; margin:0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-title" id="loginTitle">JET SKI TOUR<br>SALOU</div>
+  <div class="login-sub" id="loginSub">ESPACE INTERNE MONITEURS</div>
+  <div class="login-divider"></div>
+  <div class="login-card">
+    <label class="login-label" id="loginLabel">MOT DE PASSE</label>
+    <input class="login-input" type="password" id="loginInput" placeholder="••••••••" />
+    <button class="login-btn" id="loginBtn">ENTRER</button>
+    <div class="login-error" id="loginError">Mot de passe incorrect</div>
+  </div>
+</div>
+
+<!-- PROFILE SELECT -->
+<div id="profileSelectScreen">
+  <div class="profile-select-title">QUI ES-TU ?</div>
+  <div class="profile-select-sub">SÉLECTIONNE TON PROFIL</div>
+  <div class="profile-grid" id="profileGrid"></div>
+  <div class="locked-banner" id="lockedBanner">🔒 Ce profil est déjà pris sur un autre appareil</div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:0.6rem">
+      <div class="topbar-logo">JST SALOU</div>
+      <div class="topbar-user" id="topbarUser">
+        <div class="topbar-user-dot"></div>
+        <span id="topbarUserName">—</span>
+      </div>
+    </div>
+    <div class="lang-btns">
+      <button class="lang-btn" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn active" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" onclick="setLang('ca')">CA</button>
+    </div>
+    <div class="topbar-date">
+      <div class="topbar-day" id="topDay"></div>
+      <div class="topbar-date-str" id="topDate"></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-wrap">
+    <div class="tabs" id="tabsBar">
+      <button class="tab active" onclick="showTab('tiempo')"><span class="tab-icon">🌊</span><span data-i="nav_tiempo">Tiempo</span></button>
+      <button class="tab" onclick="showTab('equipo')"><span class="tab-icon">👥</span><span data-i="nav_equipo">Equipo</span></button>
+      <button class="tab" onclick="showTab('horas')"><span class="tab-icon">⏱️</span><span data-i="nav_horas">Horas</span></button>
+      <button class="tab" onclick="showTab('tareas')"><span class="tab-icon">✅</span><span data-i="nav_tareas">Tareas</span></button>
+      <button class="tab" onclick="showTab('reservas')"><span class="tab-icon">📸</span><span data-i="nav_reservas">Reservas</span></button>
+      <button class="tab" onclick="showTab('descanso')"><span class="tab-icon">🏖️</span><span data-i="nav_descanso">Descanso</span></button>
+      <button class="tab" onclick="showTab('chat')"><span class="tab-icon">💬</span><span data-i="nav_chat">Chat</span></button>
+      <button class="tab" onclick="showTab('perfil')"><span class="tab-icon">🏄</span><span data-i="nav_perfil">Perfil</span></button>
+      <button class="tab" onclick="showTab('admin')" id="adminTab" style="display:none"><span class="tab-icon">🔧</span><span data-i="nav_admin">Admin</span></button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- TIEMPO -->
+    <div class="page active" id="page-tiempo">
+      <div class="page-title"><span class="page-title-icon">🌊</span><span data-i="nav_tiempo">Tiempo</span></div>
+      <div class="card">
+        <div class="meteo-loc">📍 SALOU, TARRAGONE</div>
+        <div class="meteo-grid">
+          <div class="meteo-box">
+            <div class="meteo-val" id="metWind">--</div>
+            <div class="meteo-unit">km/h</div>
+            <div class="meteo-key" data-i="met_viento">VIENTO</div>
+          </div>
+          <div class="meteo-box">
+            <div class="meteo-val" id="metWave">--</div>
+            <div class="meteo-unit">m</div>
+            <div class="meteo-key" data-i="met_olas">OLAS</div>
+          </div>
+          <div class="meteo-box">
+            <div class="meteo-val" id="metFeel">--</div>
+            <div class="meteo-unit">°C</div>
+            <div class="meteo-key" data-i="met_sensacion">SENSACIÓN</div>
+          </div>
+        </div>
+        <div class="meteo-status good" id="metStatus">🟢 <span data-i="met_good">Conditions favorables</span></div>
+        <div class="meteo-warn-msg" id="metWarn" style="display:none">⚠️ <span data-i="met_connwarn">Vérifiez votre connexion</span></div>
+        <button class="meteo-refresh" onclick="fetchMeteo()">🔄 <span data-i="met_refresh">Actualizar</span></button>
+      </div>
+      <div class="card">
+        <div class="card-label" data-i="met_tempair">TEMPERATURA AIRE</div>
+        <div class="temp-big" id="metTemp">-- °C</div>
+      </div>
+    </div>
+
+    <!-- EQUIPO -->
+    <div class="page" id="page-equipo">
+      <div class="page-title"><span class="page-title-icon">👥</span><span data-i="eq_title">EQUIPO DEL DÍA</span></div>
+      <div class="card">
+        <div class="card-label" data-i="eq_monitores">MONITORES</div>
+        <div id="monitorList"></div>
+      </div>
+    </div>
+
+    <!-- HORAS -->
+    <div class="page" id="page-horas">
+      <div class="page-title"><span class="page-title-icon">⏱️</span><span data-i="hor_title">HORAS EN EL AGUA</span></div>
+      <div class="card">
+        <div class="card-label" data-i="hor_sesion">SESIÓN</div>
+        <div class="select-row">
+          <select class="styled-select" id="selMonitor"></select>
+          <select class="styled-select" id="selDuration">
+            <option value="10">10 min</option>
+            <option value="20" selected>20 min</option>
+            <option value="30">30 min</option>
+            <option value="45">45 min</option>
+            <option value="60">60 min</option>
+            <option value="90">90 min</option>
+            <option value="120">2h</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="addSession()">+ <span data-i="hor_validar">VALIDAR</span></button>
+      </div>
+      <div class="card">
+        <div class="card-label" data-i="hor_sessions">SESIONES DEL DÍA</div>
+        <div id="sessionList"></div>
+      </div>
+    </div>
+
+    <!-- TAREAS -->
+    <div class="page" id="page-tareas">
+      <div class="page-title"><span class="page-title-icon">✅</span><span data-i="tar_title">TAREAS DEL DÍA</span></div>
+      <div class="card">
+        <div class="card-label" data-i="tar_rotation">ROTACIÓN AUTOMÁTICA</div>
+        <div id="taskList"></div>
+        <button class="btn-secondary" onclick="redistributeTasks()">🔄 <span data-i="tar_redistribuir">Redistribuir</span></button>
+      </div>
+    </div>
+
+    <!-- RESERVAS -->
+    <div class="page" id="page-reservas">
+      <div class="page-title"><span class="page-title-icon">📸</span><span data-i="nav_reservas">RESERVAS</span></div>
+      <div class="card">
+        <div class="card-label">📷 <span data-i="res_foto">FOTO DEL CUADERNO</span></div>
+        <div class="camera-zone" id="cameraZone">
+          <div class="camera-placeholder">📓</div>
+          <div class="camera-txt" data-i="res_abre">Abre la cámara</div>
+          <img id="reservaImg" src="" alt="">
+          <input type="file" accept="image/*" capture="environment" onchange="handlePhoto(this)">
+        </div>
+        <button class="btn-primary" onclick="document.querySelector('#cameraZone input').click()">📷 <span data-i="res_camara">CÁMARA</span></button>
+      </div>
+    </div>
+
+    <!-- DESCANSO -->
+    <div class="page" id="page-descanso">
+      <div class="page-title"><span class="page-title-icon">🏖️</span><span data-i="des_title">DÍAS DE DESCANSO</span></div>
+      <div class="card">
+        <div class="card-label" data-i="des_por">DESCANSO POR MONITOR</div>
+        <div id="restList"></div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div class="page" id="page-chat">
+      <div class="page-title"><span class="page-title-icon">💬</span><span data-i="chat_title">CHAT DEL EQUIPO</span></div>
+      <div class="card">
+        <div class="card-label" data-i="chat_new">NUEVO MENSAJE</div>
+        <select class="styled-select" id="chatSender" style="width:100%;margin-bottom:.6rem;"></select>
+        <textarea class="chat-input" id="chatMsg" rows="3" placeholder="Message..."></textarea>
+        <button class="btn-primary" onclick="sendChat()">💬 <span data-i="chat_enviar">ENVIAR</span></button>
+      </div>
+      <div class="card">
+        <div class="card-label" data-i="chat_msgs">MENSAJES</div>
+        <div id="chatList"></div>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div class="page" id="page-perfil">
+      <div class="profile-hero">
+        <div class="profile-avatar" id="profAvatar" style="background:#1e3a5a;color:var(--blue-light)">T</div>
+        <div class="profile-name" id="profName">TIM</div>
+        <div class="profile-role" id="profRole">👑 CHEF</div>
+        <div class="pin-warn" id="pinWarn">⚠️ PIN par défaut — pensez à le changer</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box blue"><div class="stat-val" id="profSessions">0</div><div class="stat-lbl" data-i="prof_excursiones">EXCURSIONES TOTALES</div></div>
+        <div class="stat-box orange"><div class="stat-val" id="profHoras">0H00</div><div class="stat-lbl" data-i="prof_horas">HORAS EN EL AGUA</div></div>
+      </div>
+      <div class="card">
+        <div class="stat-box green" style="border:none;padding:.5rem 0"><div class="stat-val" id="profCuevas">0</div><div class="stat-lbl" data-i="prof_cuevas">CUEVAS HECHAS</div></div>
+      </div>
+      <div class="card">
+        <div class="card-label">HOY</div>
+        <div class="counter-row">
+          <button class="counter-btn minus" onclick="changeExcursion(-1)">−</button>
+          <span class="counter-val" id="todayCount">0</span>
+          <button class="counter-btn plus" onclick="changeExcursion(1)">+</button>
+        </div>
+        <div class="progress-dots" id="progressDots"></div>
+        <div class="progress-lbl" data-i="prof_objetivo">Objetivo: 10 excursiones</div>
+      </div>
+      <div class="quote-box" id="quoteBox">
+        <div id="quoteText"></div>
+        <div class="quote-attr">— L'ÉQUIPE JST</div>
+      </div>
+      <button class="btn-secondary" onclick="newQuote()" style="margin-bottom:1rem">✨ <span data-i="prof_nueva_cita">Nueva cita</span></button>
+      <!-- PIN CHANGE -->
+      <div class="card">
+        <div class="pin-section-lbl">🔒 <span data-i="prof_cambiar_pin">CHANGER MON CODE PIN</span></div>
+        <div style="text-align:center;font-size:.8rem;color:var(--text3);margin-bottom:.3rem" id="pinLabel">Entrez votre PIN actuel</div>
+        <div class="pin-dots" id="pinDots">
+          <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+          <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+        </div>
+        <div class="pin-pad">
+          <button class="pin-key" onclick="pinKey(1)">1</button><button class="pin-key" onclick="pinKey(2)">2</button><button class="pin-key" onclick="pinKey(3)">3</button>
+          <button class="pin-key" onclick="pinKey(4)">4</button><button class="pin-key" onclick="pinKey(5)">5</button><button class="pin-key" onclick="pinKey(6)">6</button>
+          <button class="pin-key" onclick="pinKey(7)">7</button><button class="pin-key" onclick="pinKey(8)">8</button><button class="pin-key" onclick="pinKey(9)">9</button>
+          <button class="pin-key" onclick="pinKey('del')">⌫</button><button class="pin-key" onclick="pinKey(0)">0</button><button class="pin-key" onclick="pinKey('ok')">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <div class="page" id="page-admin">
+      <div class="page-title"><span class="page-title-icon">🔧</span>ADMIN</div>
+      <div class="admin-tag">ACCÈS RESTREINT — TIM & NACHO</div>
+      <div class="card">
+        <div class="admin-section-title" data-i="adm_moniteurs">MONITEURS</div>
+        <div id="adminMonitorList"></div>
+        <div class="add-monitor-row">
+          <input class="text-input" id="newMonName" placeholder="Nom..." />
+          <select class="styled-select" id="newMonRole" style="width:auto;padding:.7rem .6rem">
+            <option value="chef">👑 Chef</option>
+            <option value="monitor">🤿 Monitor</option>
+          </select>
+          <button class="btn-sm" onclick="addMonitor()">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="admin-section-title" data-i="adm_total_horas">TOTAL HORAS SAISON</div>
+        <div id="adminHoursTotal"></div>
+      </div>
+      <div class="card">
+        <div class="admin-section-title">MOT DE PASSE</div>
+        <div class="add-monitor-row">
+          <input class="text-input" id="newPass" type="password" placeholder="Nouveau MDP..." />
+          <button class="btn-sm" onclick="changePass()">OK</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="admin-section-title">CHANGER DE PROFIL</div>
+        <button class="btn-secondary" onclick="changeProfile()" style="margin-top:.3rem">🔄 <span>Se connecter en tant que...</span></button>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════
+// STATE
+// ══════════════════════════════════
+const PASS = 'jst2026';
+let lang = 'es';
+let pinStep = 'current'; // 'current' | 'new' | 'confirm'
+let pinBuffer = '';
+let newPinBuffer = '';
+let monitors = [
+  {name:'Tim',   role:'chef',    color:'#1e3a5a', rest:'Mié'},
+  {name:'Nacho', role:'chef',    color:'#7c3d00', rest:'Lun'},
+  {name:'Llorens',role:'monitor',color:'#1a3d20', rest:'Vie'},
+  {name:'Munir', role:'monitor', color:'#4a1a4a', rest:'Jue'},
+  {name:'Miha',  role:'monitor', color:'#1a2a5a', rest:'Mar'},
+  {name:'Kevin', role:'monitor', color:'#1e3a5a', rest:''},
+  {name:'Lucas', role:'monitor', color:'#3a2a0f', rest:''},
+  {name:'Ottin', role:'monitor', color:'#1a1a2e', rest:''},
+];
+let sessions = []; // {monitor, duration, time}
+let tasks = [
+  {icon:'🗑️', key:'task_basura', sub:'', done:true},
+  {icon:'🔴', key:'task_chalecos', sub:'', done:false},
+  {icon:'⛽', key:'task_gasolina', sub:'', done:true},
+  {icon:'🏁', key:'task_circuitos', sub:'task_circuitos_sub', done:false},
+];
+let taskAssign = {};
+let chatMessages = [];
+let todayExcursions = 0;
+let userPIN = '1234'; // default
+
+const days = {fr:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'], es:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'], ca:['Dg','Dl','Dm','Dc','Dj','Dv','Ds']};
+
+const quotes = [
+  "Ce que tu fais chaque matin sur l'eau, peu de gens osent même en rêver.",
+  "La mer ne ment jamais. Ni toi non plus.",
+  "Chaque vague est une chance. Chaque jour au port, une victoire.",
+  "L'équipe qui rit ensemble, gagne ensemble.",
+  "Salou ne dort pas. Et vous non plus.",
+];
+
+const i18n = {
+  fr: {
+    nav_tiempo:'Météo', nav_equipo:'Équipe', nav_horas:'Heures', nav_tareas:'Tâches',
+    nav_reservas:'Réservations', nav_descanso:'Repos', nav_chat:'Chat', nav_perfil:'Profil', nav_admin:'Admin',
+    met_viento:'VENT', met_olas:'VAGUES', met_sensacion:'RESSENTI', met_good:'Conditions favorables',
+    met_bad:'Conditions défavorables', met_warn_sea:'Mer agitée', met_connwarn:'Vérifiez votre connexion',
+    met_refresh:'Actualiser', met_tempair:'TEMPÉRATURE AIR',
+    eq_title:'ÉQUIPE DU JOUR', eq_monitores:'MONITEURS',
+    hor_title:'HEURES EN MER', hor_sesion:'SESSION', hor_validar:'VALIDER', hor_sessions:"SESSIONS DU JOUR",
+    tar_title:'TÂCHES DU JOUR', tar_rotation:'ROTATION AUTOMATIQUE', tar_redistribuir:'Redistribuer',
+    tar_ok:'OK', tar_todo:'À faire',
+    task_basura:'Vider les poubelles', task_chalecos:'Ranger la plateforme & gilets',
+    task_gasolina:'Vérifier l\'essence & amarres', task_circuitos:'Circuits (dédié)',
+    task_circuitos_sub:'⚡ 1 moniteur dédié aux circuits',
+    res_foto:'PHOTO DU CAHIER', res_abre:'Ouvrir la caméra', res_camara:'CAMÉRA',
+    des_title:'JOURS DE REPOS', des_por:'REPOS PAR MONITEUR',
+    chat_title:'CHAT ÉQUIPE', chat_new:'NOUVEAU MESSAGE', chat_enviar:'ENVOYER', chat_msgs:'MESSAGES',
+    prof_excursiones:'EXCURSIONS TOTALES', prof_horas:'HEURES EN MER', prof_cuevas:'CUEVAS FAITES',
+    prof_objetivo:'Objectif: 10 excursions', prof_nueva_cita:'Nouvelle citation',
+    prof_cambiar_pin:'CHANGER MON CODE PIN',
+    adm_moniteurs:'MONITEURS', adm_total_horas:'TOTAL HEURES SAISON',
+    day_sun:'Dim', day_mon:'Lun', day_tue:'Mar', day_wed:'Mer', day_thu:'Jeu', day_fri:'Ven', day_sat:'Sam',
+    days_short:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+    login_title:'JET SKI TOUR\nSALOU', login_sub:'ESPACE INTERNE MONITEURS', login_label:'MOT DE PASSE', login_btn:'ENTRER',
+  },
+  es: {
+    nav_tiempo:'Tiempo', nav_equipo:'Equipo', nav_horas:'Horas', nav_tareas:'Tareas',
+    nav_reservas:'Reservas', nav_descanso:'Descanso', nav_chat:'Chat', nav_perfil:'Perfil', nav_admin:'Admin',
+    met_viento:'VIENTO', met_olas:'OLAS', met_sensacion:'SENSACIÓN', met_good:'Conditions favorables',
+    met_bad:'Condiciones desfavorables', met_warn_sea:'Mar agitado', met_connwarn:'Vérifiez votre connexion',
+    met_refresh:'Actualizar', met_tempair:'TEMPERATURA AIRE',
+    eq_title:'EQUIPO DEL DÍA', eq_monitores:'MONITORES',
+    hor_title:'HORAS EN EL AGUA', hor_sesion:'SESIÓN', hor_validar:'VALIDAR', hor_sessions:'SESIONES DEL DÍA',
+    tar_title:'TAREAS DEL DÍA', tar_rotation:'ROTACIÓN AUTOMÁTICA', tar_redistribuir:'Redistribuir',
+    tar_ok:'OK', tar_todo:'Por hacer',
+    task_basura:'Vaciar la basura', task_chalecos:'Ordenar plataforma & chalecos',
+    task_gasolina:'Verificar gasolina & amarres', task_circuitos:'Circuitos (dedicado)',
+    task_circuitos_sub:'⚡ 1 monitor dedicado a los circuitos',
+    res_foto:'FOTO DEL CUADERNO', res_abre:'Abre la cámara', res_camara:'CÁMARA',
+    des_title:'DÍAS DE DESCANSO', des_por:'DESCANSO POR MONITOR',
+    chat_title:'CHAT DEL EQUIPO', chat_new:'NUEVO MENSAJE', chat_enviar:'ENVIAR', chat_msgs:'MENSAJES',
+    prof_excursiones:'EXCURSIONES TOTALES', prof_horas:'HORAS EN EL AGUA', prof_cuevas:'CUEVAS HECHAS',
+    prof_objetivo:'Objetivo: 10 excursiones', prof_nueva_cita:'Nueva cita',
+    prof_cambiar_pin:'CHANGER MON CODE PIN',
+    adm_moniteurs:'MONITORES', adm_total_horas:'TOTAL HORAS TEMPORADA',
+    days_short:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+    login_title:'JET SKI TOUR\nSALOU', login_sub:'ESPACE INTERNE MONITEURS', login_label:'MOT DE PASSE', login_btn:'ENTRER',
+  },
+  ca: {
+    nav_tiempo:'Temps', nav_equipo:'Equip', nav_horas:'Hores', nav_tareas:'Tasques',
+    nav_reservas:'Reserves', nav_descanso:'Descans', nav_chat:'Xat', nav_perfil:'Perfil', nav_admin:'Admin',
+    met_viento:'VENT', met_olas:'ONES', met_sensacion:'SENSACIÓ', met_good:'Condicions favorables',
+    met_bad:'Condicions desfavorables', met_warn_sea:'Mar agitada', met_connwarn:'Verifiqueu la connexió',
+    met_refresh:'Actualitzar', met_tempair:'TEMPERATURA AIRE',
+    eq_title:"EQUIP DEL DIA", eq_monitores:'MONITORS',
+    hor_title:"HORES A L'AIGUA", hor_sesion:'SESSIÓ', hor_validar:'VALIDAR', hor_sessions:'SESSIONS DEL DIA',
+    tar_title:'TASQUES DEL DIA', tar_rotation:'ROTACIÓ AUTOMÀTICA', tar_redistribuir:'Redistribuir',
+    tar_ok:'OK', tar_todo:'Per fer',
+    task_basura:'Buidar les escombraries', task_chalecos:"Ordenar plataforma & armilles",
+    task_gasolina:'Verificar gasolina & amarraments', task_circuitos:'Circuits (dedicat)',
+    task_circuitos_sub:'⚡ 1 monitor dedicat als circuits',
+    res_foto:'FOTO DEL QUADERN', res_abre:'Obre la càmera', res_camara:'CÀMERA',
+    des_title:'DIES DE DESCANS', des_por:'DESCANS PER MONITOR',
+    chat_title:"XAT DE L'EQUIP", chat_new:'NOU MISSATGE', chat_enviar:'ENVIAR', chat_msgs:'MISSATGES',
+    prof_excursiones:'EXCURSIONS TOTALS', prof_horas:"HORES A L'AIGUA", prof_cuevas:'COVES FETES',
+    prof_objetivo:'Objectiu: 10 excursions', prof_nueva_cita:'Nova cita',
+    prof_cambiar_pin:'CANVIAR EL MEU CODI PIN',
+    adm_moniteurs:'MONITORS', adm_total_horas:'TOTAL HORES TEMPORADA',
+    days_short:['Dg','Dl','Dm','Dc','Dj','Dv','Ds'],
+    login_title:'JET SKI TOUR\nSALOU', login_sub:'ESPAI INTERN MONITORS', login_label:'CONTRASENYA', login_btn:'ENTRAR',
+  }
+};
+
+// ══════════════════════════════════
+// INIT
+// ══════════════════════════════════
+function t(key){ return (i18n[lang]||i18n.es)[key] || key; }
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active', b.textContent.trim().toLowerCase()===l);
+  });
+  applyLang();
+  renderAll();
+}
+
+function applyLang() {
+  document.querySelectorAll('[data-i]').forEach(el=>{
+    el.textContent = t(el.dataset.i);
+  });
+  updateDate();
+}
+
+function updateDate() {
+  const now = new Date();
+  const dayNames = {fr:['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+                    es:['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+                    ca:['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte']};
+  const months = {fr:['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
+                  es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+                  ca:['Gen','Feb','Mar','Abr','Mai','Jun','Jul','Ago','Set','Oct','Nov','Des']};
+  document.getElementById('topDay').textContent = (dayNames[lang]||dayNames.es)[now.getDay()];
+  document.getElementById('topDate').textContent = `${now.getDate()} ${(months[lang]||months.es)[now.getMonth()]} ${now.getFullYear()}`;
+}
+
+// ══════════════════════════════════
+// CURRENT USER
+// ══════════════════════════════════
+let currentUser = null; // nom du moniteur connecté
+
+const ADMINS = ['Tim','Nacho']; // seuls eux voient Admin et peuvent changer de sélecteur
+function isAdmin() { return ADMINS.includes(currentUser); }
+
+// ══════════════════════════════════
+// LOGIN — ÉTAPE 1 : MOT DE PASSE
+// ══════════════════════════════════
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('loginInput').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+
+function doLogin() {
+  const val = document.getElementById('loginInput').value;
+  if(val === PASS) {
+    document.getElementById('loginScreen').style.display='none';
+    const saved = localStorage.getItem('jst_user');
+    if(saved && monitors.find(m=>m.name===saved)) {
+      selectProfile(saved);
+    } else {
+      showProfileSelect();
+    }
+  } else {
+    document.getElementById('loginError').style.display='block';
+    setTimeout(()=>document.getElementById('loginError').style.display='none', 2000);
+  }
+}
+
+// ══════════════════════════════════
+// LOGIN — ÉTAPE 2 : CHOIX DU PROFIL
+// ══════════════════════════════════
+function showProfileSelect() {
+  const screen = document.getElementById('profileSelectScreen');
+  screen.style.display='flex';
+  buildProfileGrid();
+}
+
+function buildProfileGrid() {
+  const grid = document.getElementById('profileGrid');
+  const colors = ['#1e3a5a','#7c3d00','#1a3d20','#4a1a4a','#1a2a5a','#2a1e3a','#3a2a0f','#1a1a2e'];
+  grid.innerHTML = monitors.map((m,i)=>`
+    <button class="profile-btn" onclick="selectProfile('${m.name}')">
+      ${m.role==='chef'?'<span class="pb-chef-badge">👑</span>':''}
+      <div class="pb-avatar" style="background:${colors[i%colors.length]}">${m.name[0]}</div>
+      <div class="pb-name">${m.name}</div>
+      <div class="pb-role">${m.role==='chef'?'Chef':'Moniteur'}</div>
+    </button>`).join('');
+}
+
+function selectProfile(name) {
+  currentUser = name;
+  localStorage.setItem('jst_user', name);
+  document.getElementById('profileSelectScreen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('topbarUserName').textContent = name;
+  initApp();
+}
+
+// Bloquer le sélecteur de moniteur dans Horas pour les non-admins
+function lockMonitorSelect() {
+  const sel = document.getElementById('selMonitor');
+  if(!isAdmin()) {
+    // Forcer la valeur sur le moniteur connecté et désactiver
+    sel.value = currentUser;
+    // Désactiver toutes les options sauf la sienne
+    Array.from(sel.options).forEach(opt=>{
+      opt.disabled = opt.value !== currentUser;
+    });
+    sel.style.opacity='0.6'; sel.style.cursor='not-allowed';
+  } else {
+    Array.from(sel.options).forEach(opt=>{ opt.disabled=false; });
+    sel.style.opacity='1'; sel.style.cursor='pointer';
+  }
+  // Pareil pour le chat sender
+  const chatSel = document.getElementById('chatSender');
+  if(!isAdmin()) {
+    chatSel.value = currentUser;
+    Array.from(chatSel.options).forEach(opt=>{ opt.disabled = opt.value !== currentUser; });
+    chatSel.style.opacity='0.6'; chatSel.style.cursor='not-allowed';
+  } else {
+    Array.from(chatSel.options).forEach(opt=>{ opt.disabled=false; });
+    chatSel.style.opacity='1'; chatSel.style.cursor='pointer';
+  }
+}
+
+// ══════════════════════════════════
+// APP INIT
+// ══════════════════════════════════
+function initApp() {
+  updateDate();
+  assignTasks();
+  renderAll();
+  fetchMeteo();
+  newQuote();
+  buildProgressDots();
+  lockMonitorSelect();
+  // Onglet Admin : visible seulement pour Tim & Nacho
+  document.getElementById('adminTab').style.display = isAdmin() ? 'flex' : 'none';
+}
+
+function renderAll() {
+  renderMonitors();
+  renderMonitorSelects();
+  renderSessions();
+  renderTasks();
+  renderRest();
+  renderChat();
+  renderPerfil();
+  renderAdmin();
+}
+
+// ══════════════════════════════════
+// TABS
+// ══════════════════════════════════
+function showTab(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id)?.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>{
+    if(t.getAttribute('onclick')?.includes("'"+id+"'")) t.classList.add('active');
+  });
+  if(id==='perfil') renderPerfil();
+}
+
+// ══════════════════════════════════
+// MÉTÉO
+// ══════════════════════════════════
+async function fetchMeteo() {
+  try {
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=41.07&longitude=1.13&current=temperature_2m,apparent_temperature,wind_speed_10m,wave_height&wind_speed_unit=kmh');
+    const data = await r.json();
+    const c = data.current;
+    const wind = Math.round(c.wind_speed_10m);
+    const wave = (c.wave_height||0).toFixed(1);
+    const feel = Math.round(c.apparent_temperature);
+    const temp = Math.round(c.temperature_2m);
+    document.getElementById('metWind').textContent = wind;
+    document.getElementById('metWave').textContent = wave;
+    document.getElementById('metFeel').textContent = feel;
+    document.getElementById('metTemp').textContent = temp + ' °C';
+    document.getElementById('metWarn').style.display = 'none';
+    const status = document.getElementById('metStatus');
+    if(wind < 20 && wave < 0.5) {
+      status.className='meteo-status good'; status.innerHTML='🟢 '+t('met_good');
+    } else if(wind > 35 || wave > 1.2) {
+      status.className='meteo-status bad'; status.innerHTML='🔴 '+t('met_bad');
+    } else {
+      status.className='meteo-status warn'; status.innerHTML='🟡 '+t('met_warn_sea');
+    }
+  } catch(e) {
+    document.getElementById('metWarn').style.display='block';
+  }
+}
+
+// ══════════════════════════════════
+// ÉQUIPE
+// ══════════════════════════════════
+const avatarColors = ['#1e3a5a','#7c3d00','#1a3d20','#4a1a4a','#1a2a5a','#2a1e3a','#3a2a0f','#1a1a2e'];
+
+function renderMonitors() {
+  const list = document.getElementById('monitorList');
+  const totals = getSessionTotals();
+  list.innerHTML = monitors.map((m,i)=>{
+    const mins = totals[m.name]||0;
+    const hStr = `${Math.floor(mins/60)}H${String(mins%60).padStart(2,'0')}`;
+    const restDay = m.rest || (lang==='fr'?'Aucun':lang==='ca'?'Cap':'Ninguno');
+    const isOff = isRestToday(m);
+    return `<div class="monitor-card">
+      <div class="avatar" style="background:${avatarColors[i%avatarColors.length]};color:var(--blue-light)">${m.name[0]}</div>
+      <div class="monitor-info">
+        <div class="monitor-name">${m.name}</div>
+        <div class="monitor-role">${m.role==='chef'?'👑':'🤿'} ${m.role==='chef'?'Chef':'Moniteur'}</div>
+        <span class="monitor-badge ${isOff?'off':''}">${isOff?(lang==='fr'?'Repos':lang==='ca'?'Descans':'Descanso'):(lang==='fr'?'En service':lang==='ca'?'En servei':'En servicio')}</span>
+      </div>
+      <div class="monitor-hours">
+        <div class="monitor-hours-val">${hStr}</div>
+        <div class="monitor-hours-lbl">${lang==='fr'?"Aujourd'hui":lang==='ca'?'Avui':'Hoy'}</div>
+        <div class="monitor-del" onclick="deleteMonitor(${i})">🗑️</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function isRestToday(m) {
+  const d = new Date().getDay();
+  const dShort = (i18n[lang]||i18n.es).days_short[d];
+  return m.rest && m.rest === dShort;
+}
+
+function deleteMonitor(i) {
+  if(!isAdmin()) { showToast('🔒 Accès refusé'); return; }
+  if(monitors[i].name==='Tim'||monitors[i].name==='Nacho') return;
+  monitors.splice(i,1);
+  renderAll();
+}
+
+function getSessionTotals() {
+  const t={};
+  sessions.forEach(s=>{ t[s.monitor]=(t[s.monitor]||0)+s.duration; });
+  return t;
+}
+
+// ══════════════════════════════════
+// HORAS
+// ══════════════════════════════════
+function renderMonitorSelects() {
+  const opts = monitors.map(m=>`<option value="${m.name}">${m.name}</option>`).join('');
+  document.getElementById('selMonitor').innerHTML = opts;
+  document.getElementById('chatSender').innerHTML = opts;
+  if(currentUser) lockMonitorSelect();
+}
+
+function addSession() {
+  const mon = isAdmin() ? document.getElementById('selMonitor').value : currentUser;
+  const dur = parseInt(document.getElementById('selDuration').value);
+  const now = new Date();
+  const hStr = `${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`;
+  sessions.push({monitor:mon, duration:dur, time:hStr});
+  renderSessions();
+  renderMonitors();
+  renderPerfil();
+  showToast('✅ Session ajoutée');
+}
+
+function renderSessions() {
+  const list = document.getElementById('sessionList');
+  if(!sessions.length){ list.innerHTML=`<div style="color:var(--text3);text-align:center;padding:1rem;font-size:.85rem">${lang==='fr'?'Aucune session':'Sin sesiones'}</div>`; return; }
+  list.innerHTML = sessions.map((s,i)=>{
+    const label = s.duration>=60?`${Math.floor(s.duration/60)}H${String(s.duration%60).padStart(2,'0')||'00'}MIN`:`${s.duration}MIN`;
+    return `<div class="session-item">
+      <div><div class="session-name">${s.monitor}</div><div class="session-meta">${s.duration}min · ${s.time}</div></div>
+      <div style="display:flex;align-items:center">
+        <span class="session-dur">${label}</span>
+        <span class="session-del" onclick="delSession(${i})">✕</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function delSession(i){
+  if(!isAdmin() && sessions[i].monitor !== currentUser){ showToast('🔒 Accès refusé'); return; }
+  sessions.splice(i,1); renderSessions(); renderMonitors(); renderPerfil();
+}
+
+// ══════════════════════════════════
+// TAREAS
+// ══════════════════════════════════
+function assignTasks() {
+  tasks.forEach((task,i)=>{ if(!taskAssign[i]) taskAssign[i]=monitors[i%monitors.length]?.name||'Tim'; });
+}
+
+function renderTasks() {
+  const list = document.getElementById('taskList');
+  list.innerHTML = tasks.map((task,i)=>{
+    const name = t(task.key);
+    const sub = task.sub ? t(task.sub) : '';
+    return `<div class="task-card">
+      <span class="task-icon">${task.icon}</span>
+      <div class="task-info">
+        <div class="task-name">${name}</div>
+        ${sub?`<div class="task-sub">${sub}</div>`:''}
+      </div>
+      <div class="task-right">
+        <div class="task-assigned">👤 ${taskAssign[i]||'?'}</div>
+        <button class="task-btn ${task.done?'done':'todo'}" onclick="toggleTask(${i})">
+          ${task.done?'✅ '+t('tar_ok'):'○ '+t('tar_todo')}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleTask(i){ tasks[i].done=!tasks[i].done; renderTasks(); }
+
+function redistributeTasks() {
+  const shuffled=[...monitors].sort(()=>Math.random()-.5);
+  tasks.forEach((t,i)=>{ taskAssign[i]=shuffled[i%shuffled.length]?.name||'Tim'; t.done=false; });
+  renderTasks(); showToast('🔄 Redistribution OK');
+}
+
+// ══════════════════════════════════
+// RESERVAS
+// ══════════════════════════════════
+function handlePhoto(input) {
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const img = document.getElementById('reservaImg');
+    const ph = document.querySelector('.camera-placeholder');
+    const txt = document.querySelector('.camera-txt');
+    img.src=e.target.result; img.style.display='block';
+    if(ph) ph.style.display='none'; if(txt) txt.style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ══════════════════════════════════
+// DESCANSO
+// ══════════════════════════════════
+function renderRest() {
+  const daysArr = (i18n[lang]||i18n.es).days_short;
+  const list = document.getElementById('restList');
+  list.innerHTML = monitors.map((m,mi)=>`
+    <div class="rest-card">
+      <div style="min-width:64px">
+        <div class="rest-name">${m.name}</div>
+        <div class="rest-day-lbl">${m.rest||'—'}</div>
+      </div>
+      <div class="days-row">
+        ${daysArr.map(d=>`<button class="day-pill ${m.rest===d?'selected':''}" onclick="setRest(${mi},'${d}')">${d}</button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function setRest(mi, day) {
+  // Non-admins ne peuvent modifier que leur propre repos
+  if(!isAdmin() && monitors[mi].name !== currentUser) {
+    showToast('🔒 Accès refusé'); return;
+  }
+  monitors[mi].rest = monitors[mi].rest===day?'':day;
+  renderRest(); renderMonitors();
+}
+
+// ══════════════════════════════════
+// CHAT
+// ══════════════════════════════════
+function sendChat() {
+  const sender = isAdmin() ? document.getElementById('chatSender').value : currentUser;
+  const msg = document.getElementById('chatMsg').value.trim();
+  if(!msg) return;
+  const now=new Date();
+  chatMessages.push({sender,msg,time:`${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`});
+  document.getElementById('chatMsg').value='';
+  renderChat();
+}
+
+function renderChat() {
+  const list = document.getElementById('chatList');
+  if(!chatMessages.length){ list.innerHTML=`<div style="color:var(--text3);text-align:center;padding:1rem;font-size:.85rem">...</div>`; return; }
+  list.innerHTML = chatMessages.map((c,i)=>`
+    <div class="chat-msg">
+      <div class="chat-msg-header">
+        <div class="chat-avatar" style="background:#1e3a5a;color:var(--blue-light)">${c.sender[0]}</div>
+        <span class="chat-sender">${c.sender}</span>
+        <span class="chat-time">${c.time}</span>
+      </div>
+      <div class="chat-text">${c.msg}</div>
+      <span class="chat-del" onclick="delChat(${i})">✕</span>
+    </div>`).join('');
+}
+
+function delChat(i){
+  if(!isAdmin() && chatMessages[i].sender !== currentUser){ showToast('🔒 Accès refusé'); return; }
+  chatMessages.splice(i,1); renderChat();
+}
+
+// ══════════════════════════════════
+// PERFIL
+// ══════════════════════════════════
+function renderPerfil() {
+  const totals = getSessionTotals();
+  const user = currentUser || 'Tim';
+  const userMins = totals[user]||0;
+  const sessions_count = sessions.filter(s=>s.monitor===user).length;
+  const h = Math.floor(userMins/60), m = userMins%60;
+  document.getElementById('profSessions').textContent = sessions_count;
+  document.getElementById('profHoras').textContent = `${h}H${String(m).padStart(2,'0')}`;
+  document.getElementById('profCuevas').textContent = Math.max(0, todayExcursions-1);
+  document.getElementById('todayCount').textContent = todayExcursions;
+  // Nom & rôle
+  const mon = monitors.find(m=>m.name===user)||monitors[0];
+  document.getElementById('profName').textContent = user.toUpperCase();
+  document.getElementById('profRole').textContent = mon?.role==='chef'?'👑 CHEF':'🤿 MONITEUR';
+  const colors=['#1e3a5a','#7c3d00','#1a3d20','#4a1a4a','#1a2a5a','#2a1e3a','#3a2a0f','#1a1a2e'];
+  const idx = monitors.findIndex(m=>m.name===user);
+  document.getElementById('profAvatar').style.background = colors[idx%colors.length]||'#1e3a5a';
+  document.getElementById('profAvatar').textContent = user[0];
+  buildProgressDots();
+  document.getElementById('pinWarn').style.display = userPIN==='1234'?'inline-block':'none';
+}
+
+function buildProgressDots() {
+  const wrap = document.getElementById('progressDots');
+  wrap.innerHTML = Array.from({length:10},(_,i)=>`<div class="dot ${i<todayExcursions?'active':''}"></div>`).join('');
+}
+
+function changeExcursion(delta) {
+  todayExcursions = Math.max(0, Math.min(10, todayExcursions+delta));
+  renderPerfil();
+}
+
+const quotesArr = quotes;
+let quoteIdx=0;
+function newQuote() {
+  quoteIdx = (quoteIdx+1)%quotesArr.length;
+  document.getElementById('quoteText').textContent = '"'+quotesArr[quoteIdx]+'"';
+}
+
+// PIN
+let pinState='current', pinBuf='', newPinBuf='';
+function pinKey(k) {
+  if(k==='del'){ pinBuf=pinBuf.slice(0,-1); updatePinDots(); return; }
+  if(k==='ok') { processPIN(); return; }
+  if(pinBuf.length<4) { pinBuf+=k; updatePinDots(); }
+  if(pinBuf.length===4) setTimeout(processPIN,200);
+}
+function updatePinDots(){
+  for(let i=0;i<4;i++) document.getElementById('pd'+i)?.classList.toggle('filled',i<pinBuf.length);
+}
+function processPIN(){
+  if(pinState==='current'){
+    if(pinBuf===userPIN){ pinState='new'; document.getElementById('pinLabel').textContent='Entrez le nouveau PIN'; pinBuf=''; updatePinDots(); }
+    else { document.getElementById('pinLabel').textContent='❌ PIN incorrect'; pinBuf=''; updatePinDots(); setTimeout(()=>document.getElementById('pinLabel').textContent='Entrez votre PIN actuel',1500); }
+  } else if(pinState==='new'){
+    newPinBuf=pinBuf; pinState='confirm'; document.getElementById('pinLabel').textContent='Confirmez le nouveau PIN'; pinBuf=''; updatePinDots();
+  } else if(pinState==='confirm'){
+    if(pinBuf===newPinBuf){ userPIN=pinBuf; pinState='current'; pinBuf=''; newPinBuf=''; updatePinDots(); document.getElementById('pinLabel').textContent='Entrez votre PIN actuel'; showToast('✅ PIN changé !'); renderPerfil(); }
+    else { document.getElementById('pinLabel').textContent='❌ PINs différents'; pinBuf=''; newPinBuf=''; pinState='current'; updatePinDots(); }
+  }
+}
+
+// ══════════════════════════════════
+// ADMIN (Tim & Nacho seulement)
+// ══════════════════════════════════
+function renderAdmin() {
+  // Monitor list
+  const totals = getSessionTotals();
+  document.getElementById('adminMonitorList').innerHTML = monitors.map((m,i)=>`
+    <div class="admin-monitor-row">
+      <div class="admin-monitor-name">${m.name}</div>
+      <span style="font-size:.75rem;color:var(--text3);">${m.role==='chef'?'👑':''} </span>
+      <div class="admin-monitor-total">${totals[m.name]||0} min</div>
+    </div>`).join('');
+  // Total season (mock)
+  const total = Object.values(totals).reduce((a,b)=>a+b,0);
+  document.getElementById('adminHoursTotal').innerHTML = `<div style="font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;color:var(--orange);text-align:center">${Math.floor(total/60)}H${String(total%60).padStart(2,'0')}</div>`;
+}
+
+function addMonitor() {
+  const name = document.getElementById('newMonName').value.trim();
+  if(!name) return;
+  monitors.push({name, role:document.getElementById('newMonRole').value, color:'#1e3a5a', rest:''});
+  document.getElementById('newMonName').value='';
+  renderAll(); showToast('👤 '+name+' ajouté');
+}
+
+function changePass() {
+  const np = document.getElementById('newPass').value;
+  if(np.length<4) return;
+  // Note: in production would persist this
+  showToast('🔒 Mot de passe mis à jour');
+  document.getElementById('newPass').value='';
+}
+
+function changeProfile() {
+  localStorage.removeItem('jst_user');
+  currentUser = null;
+  document.getElementById('app').style.display='none';
+  showProfileSelect();
+}
+
+// ══════════════════════════════════
+// AUTO-LOGIN AU CHARGEMENT
+// ══════════════════════════════════
+window.addEventListener('DOMContentLoaded', ()=>{
+  const saved = localStorage.getItem('jst_user');
+  if(saved && monitors.find(m=>m.name===saved)) {
+    // Profil connu → skip login + sélection directement
+    document.getElementById('loginScreen').style.display='none';
+    selectProfile(saved);
+  }
+});
+
+// ══════════════════════════════════
+// TOAST
+// ══════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// START
+updateDate();
+setInterval(updateDate, 60000);
+</script>
+</body>
+</html>
