@@ -4,1284 +4,1289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>JST SALOU — Espace Interne</title>
+<title>JST SALOU</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #070f1c;
-    --bg2: #0c1829;
-    --bg3: #112033;
-    --card: #0f1e30;
-    --card2: #142540;
-    --border: #1e3a5a;
-    --blue: #1e90ff;
-    --blue-light: #4db8ff;
-    --blue-dark: #1060cc;
-    --cyan: #00d4ff;
-    --green: #22c55e;
-    --red: #ef4444;
-    --orange: #f59e0b;
-    --text: #e8f4ff;
-    --text2: #7ba8cc;
-    --text3: #4a7090;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); font-family:'Barlow',sans-serif; color:var(--text); }
-
-  /* ── LOGIN ── */
-  #loginScreen {
-    position:fixed; inset:0; display:flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    background: radial-gradient(ellipse at 50% 40%, #0a1f3c 0%, #070f1c 70%);
-    z-index:100;
-  }
-  .login-title {
-    font-family:'Barlow Condensed',sans-serif; font-weight:800;
-    font-size:clamp(2.5rem,10vw,3.8rem); text-align:center; line-height:1.1;
-    color:var(--blue-light); letter-spacing:2px;
-    text-shadow:0 0 40px rgba(30,144,255,0.5);
-    margin-bottom:0.4rem;
-  }
-  .login-sub {
-    font-family:'Barlow Condensed',sans-serif; font-size:0.85rem;
-    letter-spacing:4px; color:var(--text3); margin-bottom:2.5rem;
-  }
-  .login-divider {
-    width:160px; height:2px; margin:0 auto 2.5rem;
-    background: linear-gradient(90deg,transparent,var(--blue),transparent);
-  }
-  .login-card {
-    background:var(--card); border:1px solid var(--border);
-    border-radius:16px; padding:2rem; width:min(360px,90vw);
-  }
-  .login-label {
-    font-family:'Barlow Condensed',sans-serif; font-size:0.8rem;
-    letter-spacing:3px; color:var(--blue-light); margin-bottom:0.6rem; display:block;
-  }
-  .login-input {
-    width:100%; background:#1a2f47; border:1px solid var(--border);
-    border-radius:10px; padding:1rem 1.2rem; font-size:1.1rem; color:var(--text);
-    margin-bottom:1rem; outline:none;
-    transition: border-color .2s;
-  }
-  .login-input:focus { border-color:var(--blue); }
-  .login-btn {
-    width:100%; background: linear-gradient(135deg,var(--blue),var(--blue-dark));
-    border:none; border-radius:10px; padding:1rem;
-    font-family:'Barlow Condensed',sans-serif; font-size:1rem; letter-spacing:3px;
-    font-weight:700; color:#fff; cursor:pointer;
-    transition: opacity .2s, transform .1s;
-  }
-  .login-btn:active { transform:scale(.98); opacity:.9; }
-  .login-error { color:var(--red); font-size:.85rem; text-align:center; margin-top:.5rem; display:none; }
-
-  /* ── PROFILE SELECT (step 2 login) ── */
-  #profileSelectScreen {
-    position:fixed; inset:0; display:none; flex-direction:column;
-    align-items:center; justify-content:center;
-    background: radial-gradient(ellipse at 50% 40%, #0a1f3c 0%, #070f1c 70%);
-    z-index:99; overflow-y:auto; padding:2rem 1rem;
-  }
-  .profile-select-title {
-    font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.4rem;
-    color:var(--blue-light); letter-spacing:3px; text-align:center; margin-bottom:0.3rem;
-  }
-  .profile-select-sub { font-size:0.8rem; color:var(--text3); letter-spacing:2px; text-align:center; margin-bottom:1.5rem; }
-  .profile-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; width:min(360px,90vw); }
-  .profile-btn {
-    background:var(--card); border:1.5px solid var(--border); border-radius:14px;
-    padding:1rem 0.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;
-    cursor:pointer; transition: all .2s; position:relative;
-  }
-  .profile-btn:hover, .profile-btn:active { border-color:var(--blue); background:var(--card2); }
-  .profile-btn .pb-avatar {
-    width:48px; height:48px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Barlow Condensed',sans-serif; font-size:1.3rem; font-weight:800;
-    color:var(--blue-light);
-  }
-  .profile-btn .pb-name { font-weight:700; font-size:1rem; }
-  .profile-btn .pb-role { font-size:0.72rem; color:var(--text3); }
-  .profile-btn .pb-chef-badge {
-    position:absolute; top:0.4rem; right:0.5rem; font-size:0.8rem;
-  }
-  .locked-banner {
-    background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3);
-    border-radius:10px; padding:0.6rem 1rem; color:var(--red);
-    font-size:0.8rem; text-align:center; margin-top:0.8rem; width:min(360px,90vw);
-    display:none;
-  }
-  /* Chip utilisateur dans topbar */
-  .topbar-user {
-    display:flex; align-items:center; gap:0.4rem;
-    background:var(--bg3); border:1px solid var(--border); border-radius:20px;
-    padding:0.3rem 0.7rem; font-size:0.78rem; font-weight:600; cursor:default;
-  }
-  .topbar-user-dot { width:8px; height:8px; border-radius:50%; background:var(--green); flex-shrink:0; }
-
-  /* ── APP ── */
-  #app { display:none; flex-direction:column; height:100vh; }
-
-  /* TOPBAR */
-  .topbar {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:0.7rem 1rem; background:var(--bg2);
-    border-bottom:1px solid var(--border); flex-shrink:0;
-  }
-  .topbar-logo {
-    font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.25rem;
-    color:var(--blue-light); letter-spacing:2px;
-  }
-  .lang-btns { display:flex; gap:0.4rem; }
-  .lang-btn {
-    width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border);
-    background:transparent; font-family:'Barlow Condensed',sans-serif;
-    font-size:0.75rem; letter-spacing:1px; font-weight:700; color:var(--text2);
-    cursor:pointer; transition: all .2s;
-  }
-  .lang-btn.active {
-    background:var(--blue); border-color:var(--blue); color:#fff;
-  }
-  .topbar-date { text-align:right; }
-  .topbar-day { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1rem; color:var(--blue-light); }
-  .topbar-date-str { font-size:0.75rem; color:var(--text2); }
-
-  /* TABS */
-  .tabs-wrap { overflow-x:auto; background:var(--bg2); border-bottom:1px solid var(--border); flex-shrink:0; }
-  .tabs-wrap::-webkit-scrollbar { display:none; }
-  .tabs { display:flex; padding:0.4rem 0.5rem; gap:0.3rem; min-width:max-content; }
-  .tab {
-    display:flex; align-items:center; gap:0.4rem;
-    padding:0.5rem 0.85rem; border-radius:10px;
-    font-size:0.85rem; font-weight:500; color:var(--text2);
-    cursor:pointer; white-space:nowrap; border:none; background:transparent;
-    transition: all .2s;
-  }
-  .tab.active { background:var(--bg3); color:var(--text); border:1px solid var(--border); }
-  .tab-icon { font-size:1rem; }
-
-  /* CONTENT */
-  .content { flex:1; overflow-y:auto; padding:1rem; }
-  .content::-webkit-scrollbar { display:none; }
-
-  .page { display:none; }
-  .page.active { display:block; }
-
-  /* PAGE TITLE */
-  .page-title {
-    display:flex; align-items:center; gap:0.6rem;
-    font-family:'Barlow Condensed',sans-serif; font-weight:800;
-    font-size:1.5rem; letter-spacing:2px; margin-bottom:1rem;
-    padding-bottom:0.8rem; border-bottom:1px solid var(--border);
-  }
-  .page-title-icon { font-size:1.6rem; }
-
-  /* CARDS */
-  .card {
-    background:var(--card); border:1px solid var(--border);
-    border-radius:14px; padding:1rem; margin-bottom:1rem;
-  }
-  .card-label {
-    font-family:'Barlow Condensed',sans-serif; font-size:0.72rem;
-    letter-spacing:3px; color:var(--text2); margin-bottom:0.8rem;
-  }
-
-  /* ── MÉTÉO ── */
-  .meteo-loc { display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; letter-spacing:2px; color:var(--text2); margin-bottom:0.8rem; font-family:'Barlow Condensed',sans-serif; }
-  .meteo-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.6rem; margin-bottom:0.8rem; }
-  .meteo-box { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:0.8rem; text-align:center; }
-  .meteo-val { font-family:'Barlow Condensed',sans-serif; font-size:1.5rem; font-weight:700; color:var(--blue-light); }
-  .meteo-unit { font-size:0.7rem; color:var(--blue-light); margin-bottom:0.2rem; }
-  .meteo-key { font-size:0.65rem; letter-spacing:2px; color:var(--text3); font-family:'Barlow Condensed',sans-serif; }
-  .meteo-status { border-radius:10px; padding:0.8rem 1rem; text-align:center; font-weight:600; font-size:0.95rem; margin-bottom:0.6rem; }
-  .meteo-status.good { background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3); color:var(--green); }
-  .meteo-status.bad { background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:var(--red); }
-  .meteo-status.warn { background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.3); color:var(--orange); }
-  .meteo-warn-msg { text-align:center; font-size:0.8rem; color:var(--orange); margin-bottom:0.6rem; }
-  .meteo-refresh {
-    width:100%; background:var(--card2); border:1px solid var(--border); border-radius:10px;
-    padding:0.8rem; font-size:0.9rem; color:var(--blue-light); cursor:pointer; font-family:'Barlow',sans-serif;
-  }
-  .temp-big { font-family:'Barlow Condensed',sans-serif; font-size:3rem; font-weight:800; color:var(--orange); text-align:center; padding:1rem 0; }
-
-  /* ── EQUIPE ── */
-  .monitor-card {
-    background:var(--card2); border:1px solid var(--border); border-radius:12px;
-    padding:0.8rem 1rem; margin-bottom:0.6rem;
-    display:flex; align-items:center; gap:0.8rem;
-  }
-  .avatar {
-    width:44px; height:44px; border-radius:50%; flex-shrink:0;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Barlow Condensed',sans-serif; font-size:1.2rem; font-weight:800;
-  }
-  .monitor-info { flex:1; }
-  .monitor-name { font-weight:700; font-size:1rem; }
-  .monitor-role { font-size:0.8rem; color:var(--text2); }
-  .monitor-badge {
-    display:inline-block; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.4);
-    color:var(--green); font-size:0.7rem; padding:0.2rem 0.6rem; border-radius:20px; margin-top:0.3rem;
-  }
-  .monitor-badge.off { background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.3); color:var(--red); }
-  .monitor-hours { text-align:right; }
-  .monitor-hours-val { font-family:'Barlow Condensed',sans-serif; font-size:1.3rem; font-weight:700; color:var(--blue-light); }
-  .monitor-hours-lbl { font-size:0.65rem; color:var(--text3); }
-  .monitor-del { color:var(--text3); font-size:1.1rem; margin-left:0.3rem; cursor:pointer; opacity:.6; }
-
-  /* ── HORAS ── */
-  .select-row { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:0.8rem; }
-  .styled-select {
-    background:var(--card2); border:1.5px solid var(--blue); border-radius:10px;
-    padding:0.8rem 1rem; color:var(--text); font-size:1rem; font-family:'Barlow',sans-serif;
-    appearance:none; cursor:pointer; outline:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234db8ff' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 0.6rem center; background-size:1.2rem;
-  }
-  .btn-primary {
-    width:100%; background:linear-gradient(135deg,var(--blue),var(--blue-dark));
-    border:none; border-radius:10px; padding:0.9rem;
-    font-family:'Barlow Condensed',sans-serif; font-size:0.9rem; letter-spacing:3px;
-    font-weight:700; color:#fff; cursor:pointer; transition:.2s;
-  }
-  .btn-primary:active { opacity:.85; transform:scale(.99); }
-  .session-item {
-    background:var(--card2); border:1px solid var(--border); border-radius:10px;
-    padding:0.7rem 1rem; display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:0.5rem;
-  }
-  .session-name { font-weight:700; font-size:0.95rem; }
-  .session-meta { font-size:0.75rem; color:var(--text3); }
-  .session-dur { font-family:'Barlow Condensed',sans-serif; font-size:1.2rem; font-weight:700; color:var(--blue-light); }
-  .session-del { color:var(--text3); cursor:pointer; margin-left:0.5rem; font-size:0.9rem; }
-
-  /* ── TAREAS ── */
-  .task-card {
-    background:var(--card2); border:1px solid var(--border); border-radius:12px;
-    padding:0.8rem 1rem; display:flex; align-items:flex-start; gap:0.8rem;
-    margin-bottom:0.6rem;
-  }
-  .task-icon { font-size:1.4rem; margin-top:0.1rem; }
-  .task-info { flex:1; }
-  .task-name { font-size:0.95rem; font-weight:600; }
-  .task-sub { font-size:0.75rem; color:var(--text3); margin-top:0.2rem; }
-  .task-right { text-align:right; }
-  .task-assigned { font-size:0.75rem; color:var(--blue-light); margin-bottom:0.4rem; }
-  .task-btn {
-    border-radius:20px; padding:0.35rem 0.8rem; font-size:0.75rem; font-weight:600;
-    border:1.5px solid; cursor:pointer; white-space:nowrap;
-    font-family:'Barlow',sans-serif; transition:.2s;
-  }
-  .task-btn.done { background:rgba(34,197,94,0.15); border-color:var(--green); color:var(--green); }
-  .task-btn.todo { background:transparent; border-color:var(--border); color:var(--text3); }
-  .task-btn.todo:hover { border-color:var(--blue); color:var(--blue-light); }
-  .btn-secondary {
-    width:100%; background:var(--card2); border:1px solid var(--border);
-    border-radius:10px; padding:0.85rem;
-    font-family:'Barlow Condensed',sans-serif; font-size:0.9rem; letter-spacing:2px;
-    color:var(--blue-light); cursor:pointer; transition:.2s;
-  }
-
-  /* ── RESERVAS ── */
-  .camera-zone {
-    border:2px dashed var(--border); border-radius:12px; padding:3rem 1rem;
-    text-align:center; cursor:pointer; position:relative; overflow:hidden; margin-bottom:0.8rem;
-    transition:.2s;
-  }
-  .camera-zone:hover { border-color:var(--blue); }
-  .camera-zone img { max-width:100%; border-radius:8px; display:none; }
-  .camera-zone .camera-placeholder { font-size:3rem; margin-bottom:0.5rem; }
-  .camera-zone .camera-txt { color:var(--text3); font-size:0.9rem; }
-  .camera-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
-
-  /* ── DESCANSO ── */
-  .rest-card {
-    background:var(--card2); border:1px solid var(--border); border-radius:12px;
-    padding:0.8rem 1rem; margin-bottom:0.6rem;
-    display:flex; align-items:center; gap:0.8rem;
-  }
-  .rest-name { font-weight:700; font-size:1rem; min-width:60px; }
-  .rest-day-lbl { font-size:0.7rem; color:var(--text3); }
-  .days-row { display:flex; gap:0.3rem; flex-wrap:nowrap; }
-  .day-pill {
-    width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border);
-    background:transparent; font-size:0.65rem; font-weight:700;
-    color:var(--text3); cursor:pointer; transition:.2s;
-    font-family:'Barlow Condensed',sans-serif; letter-spacing:.5px;
-  }
-  .day-pill.selected { background:rgba(239,68,68,0.2); border-color:var(--red); color:var(--red); }
-
-  /* ── CHAT ── */
-  .chat-input {
-    width:100%; background:var(--card2); border:1.5px solid var(--border);
-    border-radius:10px; padding:0.8rem 1rem; color:var(--text); font-size:0.95rem;
-    font-family:'Barlow',sans-serif; outline:none; margin-bottom:0.6rem; transition:.2s;
-  }
-  .chat-input:focus { border-color:var(--blue); }
-  .chat-msg {
-    background:var(--card2); border:1px solid var(--border); border-radius:12px;
-    padding:0.8rem 1rem; margin-bottom:0.6rem; position:relative;
-  }
-  .chat-msg-header { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem; }
-  .chat-avatar { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:800; font-family:'Barlow Condensed',sans-serif; }
-  .chat-sender { font-weight:700; font-size:0.9rem; }
-  .chat-time { font-size:0.75rem; color:var(--text3); }
-  .chat-text { font-size:0.9rem; color:var(--text2); padding-left:2.2rem; }
-  .chat-del { position:absolute; top:0.6rem; right:0.7rem; color:var(--text3); cursor:pointer; font-size:0.85rem; opacity:.6; }
-
-  /* ── PERFIL ── */
-  .profile-hero { text-align:center; padding:1.5rem 0 1rem; border-bottom:1px solid var(--border); margin-bottom:1rem; }
-  .profile-avatar { width:72px; height:72px; border-radius:50%; border:2px solid var(--blue); display:inline-flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-size:2rem; font-weight:800; margin-bottom:0.6rem; }
-  .profile-name { font-family:'Barlow Condensed',sans-serif; font-size:2rem; font-weight:800; letter-spacing:2px; }
-  .profile-role { font-size:0.9rem; color:var(--text2); margin-bottom:0.6rem; }
-  .pin-warn { background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); color:var(--orange); font-size:0.78rem; padding:0.4rem 0.8rem; border-radius:20px; display:inline-block; }
-  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:0.6rem; }
-  .stat-box { background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:1rem; text-align:center; }
-  .stat-val { font-family:'Barlow Condensed',sans-serif; font-size:2.2rem; font-weight:800; }
-  .stat-lbl { font-size:0.65rem; letter-spacing:2px; color:var(--text3); font-family:'Barlow Condensed',sans-serif; margin-top:0.2rem; }
-  .stat-box.blue .stat-val { color:var(--blue-light); }
-  .stat-box.orange .stat-val { color:var(--orange); }
-  .stat-box.green .stat-val { color:var(--green); }
-  .counter-row { display:flex; align-items:center; justify-content:center; gap:1.5rem; margin:1rem 0; }
-  .counter-btn { width:52px; height:52px; border-radius:50%; border:none; font-size:1.5rem; font-weight:700; cursor:pointer; }
-  .counter-btn.minus { background:#7f1d1d; color:var(--red); }
-  .counter-btn.plus { background:#14532d; color:var(--green); }
-  .counter-val { font-family:'Barlow Condensed',sans-serif; font-size:2.5rem; font-weight:800; color:var(--blue-light); }
-  .progress-dots { display:flex; gap:0.4rem; justify-content:center; margin:0.5rem 0; }
-  .dot { width:14px; height:14px; border-radius:50%; background:var(--border); }
-  .dot.active { background:var(--orange); }
-  .progress-lbl { text-align:center; font-size:0.75rem; color:var(--text3); margin-bottom:1rem; }
-  .quote-box { background:var(--card2); border:1px solid var(--border); border-left:3px solid var(--blue); border-radius:12px; padding:1rem; margin-bottom:0.8rem; font-size:0.95rem; font-style:italic; line-height:1.5; }
-  .quote-attr { font-size:0.75rem; color:var(--blue-light); margin-top:0.5rem; font-style:normal; }
-  .pin-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:0.6rem; margin-top:0.8rem; }
-  .pin-key { background:var(--card2); border:1px solid var(--border); border-radius:50%; aspect-ratio:1; font-size:1.2rem; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.15s; }
-  .pin-key:active { background:var(--blue); border-color:var(--blue); }
-  .pin-dots { display:flex; gap:1rem; justify-content:center; margin:.6rem 0; }
-  .pin-dot { width:16px; height:16px; border-radius:50%; border:2px solid var(--border); }
-  .pin-dot.filled { border-color:var(--blue); background:var(--blue); }
-  .pin-section-lbl { font-family:'Barlow Condensed',sans-serif; font-size:0.75rem; letter-spacing:3px; color:var(--blue-light); margin-bottom:0.6rem; display:flex; align-items:center; gap:0.4rem; }
-
-  /* ── ADMIN ── */
-  .admin-tag { display:inline-block; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:var(--red); font-size:0.7rem; letter-spacing:2px; padding:0.2rem 0.6rem; border-radius:4px; margin-bottom:0.8rem; font-family:'Barlow Condensed',sans-serif; }
-  .admin-section-title { font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; letter-spacing:3px; color:var(--text3); margin-bottom:0.6rem; }
-  .admin-monitor-row { display:flex; align-items:center; gap:0.6rem; padding:.6rem 0; border-bottom:1px solid var(--border); }
-  .admin-monitor-row:last-child { border-bottom:none; }
-  .admin-monitor-name { flex:1; font-weight:600; }
-  .admin-monitor-total { font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; font-weight:700; color:var(--orange); }
-  .add-monitor-row { display:flex; gap:.5rem; margin-top:.6rem; }
-  .text-input { flex:1; background:var(--card2); border:1.5px solid var(--border); border-radius:8px; padding:.7rem .9rem; color:var(--text); font-family:'Barlow',sans-serif; font-size:.9rem; outline:none; }
-  .text-input:focus { border-color:var(--blue); }
-  .btn-sm { background:var(--blue); border:none; border-radius:8px; padding:.7rem 1rem; color:#fff; font-family:'Barlow Condensed',sans-serif; font-size:.8rem; letter-spacing:2px; font-weight:700; cursor:pointer; }
-
-  .toast {
-    position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
-    background:var(--green); color:#fff; padding:.6rem 1.4rem; border-radius:20px;
-    font-weight:600; font-size:.85rem; z-index:999; opacity:0; transition:.3s;
-    pointer-events:none;
-  }
-  .toast.show { opacity:1; }
-
-  @media(min-width:480px){
-    .content { max-width:440px; margin:0 auto; }
-  }
+:root{--bg:#070f1c;--bg2:#0c1829;--bg3:#112033;--card:#0f1e30;--card2:#142540;--border:#1e3a5a;--blue:#1e90ff;--blue-light:#4db8ff;--blue-dark:#1060cc;--cyan:#00d4ff;--green:#22c55e;--red:#ef4444;--orange:#f59e0b;--gold:#fbbf24;--text:#e8f4ff;--text2:#7ba8cc;--text3:#4a7090;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:'Barlow',sans-serif;color:var(--text);}
+.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#0a1f3c 0%,#070f1c 70%);z-index:50;}
+#loginScreen{z-index:100;display:flex;}
+#profileScreen{z-index:99;overflow-y:auto;justify-content:flex-start;padding:2rem 1rem 3rem;}
+#pinScreen{z-index:98;}
+#accueilScreen{z-index:97;padding:1.5rem;}
+#app{display:none;flex-direction:column;height:100vh;}
+/* TYPOGRAPHY */
+.bc{font-family:'Barlow Condensed',sans-serif;}
+/* LOGIN */
+.login-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(2.2rem,9vw,3.5rem);text-align:center;line-height:1.1;color:var(--blue-light);letter-spacing:2px;text-shadow:0 0 40px rgba(30,144,255,.5);margin-bottom:.4rem;}
+.login-sub{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:4px;color:var(--text3);margin-bottom:2rem;}
+.login-divider{width:140px;height:2px;margin:0 auto 1.5rem;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.login-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;width:min(340px,90vw);}
+.form-label{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:3px;color:var(--blue-light);margin-bottom:.5rem;display:block;}
+.form-input{width:100%;background:#1a2f47;border:1px solid var(--border);border-radius:10px;padding:.9rem 1.1rem;font-size:1rem;color:var(--text);margin-bottom:.9rem;outline:none;transition:border-color .2s;font-family:'Barlow',sans-serif;}
+.form-input:focus{border-color:var(--blue);}
+.btn-primary{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue-dark));border:none;border-radius:10px;padding:.9rem;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;letter-spacing:3px;font-weight:700;color:#fff;cursor:pointer;transition:.2s;}
+.btn-primary:active{opacity:.85;transform:scale(.99);}
+.btn-secondary{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:.85rem;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;color:var(--blue-light);cursor:pointer;}
+.err-msg{color:var(--red);font-size:.82rem;text-align:center;margin-top:.4rem;display:none;}
+.lang-row{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.2rem;}
+.lang-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:transparent;font-family:'Barlow Condensed',sans-serif;font-size:.76rem;font-weight:700;color:var(--text2);cursor:pointer;transition:.2s;}
+.lang-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+/* PROFILE */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;width:min(380px,92vw);margin-top:.5rem;}
+.profile-section-label{grid-column:1/-1;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:3px;color:var(--text3);padding-bottom:.3rem;border-bottom:1px solid var(--border);margin-top:.8rem;}
+.profile-btn{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;cursor:pointer;transition:.2s;position:relative;}
+.profile-btn:active{border-color:var(--blue);background:var(--card2);}
+.pb-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;}
+.pb-badge{position:absolute;top:.4rem;right:.5rem;font-size:.8rem;}
+.pb-name{font-weight:700;font-size:.95rem;}
+.pb-role{font-size:.7rem;color:var(--text3);}
+.ps-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.4rem;color:var(--blue-light);letter-spacing:3px;text-align:center;margin-top:1.5rem;}
+.ps-sub{font-size:.78rem;color:var(--text3);letter-spacing:2px;text-align:center;margin:.3rem 0 .5rem;}
+/* PIN */
+.pin-avatar{width:70px;height:70px;border-radius:50%;border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;margin-bottom:.5rem;}
+.pin-name{font-family:'Barlow Condensed',sans-serif;font-size:1.7rem;font-weight:800;letter-spacing:2px;}
+.pin-role{font-size:.82rem;color:var(--text2);margin:.2rem 0 1.2rem;}
+.pin-label{font-size:.82rem;color:var(--text3);margin-bottom:.4rem;text-align:center;}
+.pin-dots{display:flex;gap:.9rem;justify-content:center;margin:.5rem 0 1.1rem;}
+.pin-dot{width:17px;height:17px;border-radius:50%;border:2px solid var(--border);}
+.pin-dot.on{border-color:var(--blue);background:var(--blue);}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;width:min(255px,78vw);}
+.pin-key{background:var(--card2);border:1px solid var(--border);border-radius:50%;aspect-ratio:1;font-size:1.15rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;color:var(--text);}
+.pin-key:active{background:var(--blue);border-color:var(--blue);}
+.pin-skip{margin-top:.9rem;background:transparent;border:1px solid var(--border);border-radius:10px;padding:.45rem 1.1rem;color:var(--text3);font-size:.78rem;cursor:pointer;font-family:'Barlow',sans-serif;display:none;}
+/* ACCUEIL */
+.ac-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;color:var(--blue-light);letter-spacing:3px;text-align:center;margin-bottom:.3rem;}
+.ac-sub{font-size:.78rem;color:var(--text3);letter-spacing:2px;text-align:center;margin-bottom:1.3rem;}
+.ac-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;width:min(370px,92vw);}
+.ac-label{font-family:'Barlow Condensed',sans-serif;font-size:.73rem;letter-spacing:3px;color:var(--blue-light);margin-bottom:.5rem;display:block;}
+.ac-select{width:100%;background:#1a2f47;border:1.5px solid var(--border);border-radius:10px;padding:.85rem 1rem;font-size:.95rem;color:var(--text);margin-bottom:.9rem;outline:none;font-family:'Barlow',sans-serif;appearance:none;}
+.ac-btn{width:100%;background:linear-gradient(135deg,var(--green),#16a34a);border:none;border-radius:10px;padding:.95rem;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;letter-spacing:3px;font-weight:700;color:#fff;cursor:pointer;margin-bottom:.5rem;}
+.ac-sessions{max-height:160px;overflow-y:auto;margin-top:.4rem;}
+.ac-session-row{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.45rem .8rem;margin-bottom:.3rem;display:flex;justify-content:space-between;font-size:.82rem;}
+.ac-logout{margin-top:1.1rem;background:transparent;border:1px solid var(--border);border-radius:10px;padding:.55rem 1.3rem;color:var(--text3);font-size:.8rem;cursor:pointer;font-family:'Barlow',sans-serif;}
+/* APP */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:.65rem .9rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
+.topbar-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.2rem;color:var(--blue-light);letter-spacing:2px;}
+.topbar-user{display:flex;align-items:center;gap:.35rem;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:.28rem .65rem;font-size:.75rem;font-weight:600;}
+.topbar-dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+.topbar-date{text-align:right;}
+.topbar-day{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;color:var(--blue-light);}
+.topbar-date-str{font-size:.7rem;color:var(--text2);}
+.tabs-wrap{overflow-x:auto;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
+.tabs-wrap::-webkit-scrollbar{display:none;}
+.tabs{display:flex;padding:.35rem .45rem;gap:.25rem;min-width:max-content;}
+.tab{display:flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--text2);cursor:pointer;white-space:nowrap;border:none;background:transparent;transition:.2s;}
+.tab.active{background:var(--bg3);color:var(--text);border:1px solid var(--border);}
+.content{flex:1;overflow-y:auto;padding:.9rem;}
+.content::-webkit-scrollbar{display:none;}
+.page{display:none;}.page.active{display:block;}
+.page-title{display:flex;align-items:center;gap:.55rem;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.45rem;letter-spacing:2px;margin-bottom:.9rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:.9rem;margin-bottom:.9rem;}
+.card-label{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;color:var(--text2);margin-bottom:.75rem;}
+/* MÉTÉO */
+.meteo-loc{font-size:.72rem;letter-spacing:2px;color:var(--text2);margin-bottom:.75rem;font-family:'Barlow Condensed',sans-serif;}
+.meteo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:.75rem;}
+.meteo-box{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:.75rem;text-align:center;}
+.meteo-val{font-family:'Barlow Condensed',sans-serif;font-size:1.45rem;font-weight:700;color:var(--blue-light);}
+.meteo-unit{font-size:.66rem;color:var(--blue-light);margin-bottom:.15rem;}
+.meteo-key{font-size:.6rem;letter-spacing:2px;color:var(--text3);font-family:'Barlow Condensed',sans-serif;}
+.meteo-status{border-radius:9px;padding:.75rem 1rem;text-align:center;font-weight:600;font-size:.88rem;margin-bottom:.55rem;}
+.meteo-status.good{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:var(--green);}
+.meteo-status.bad{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--red);}
+.meteo-status.warn{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--orange);}
+.meteo-extra-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:.55rem;}
+.meteo-extra-box{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:.65rem;text-align:center;}
+.meteo-extra-val{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--cyan);}
+.meteo-extra-key{font-size:.6rem;letter-spacing:2px;color:var(--text3);font-family:'Barlow Condensed',sans-serif;margin-top:.15rem;}
+.temp-big{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:800;color:var(--orange);text-align:center;padding:.9rem 0;}
+/* ÉQUIPE */
+.member-card{border-radius:11px;padding:.75rem .9rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.75rem;}
+.member-card.mon{background:var(--card2);border:1px solid var(--border);}
+.member-card.pat{background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(30,144,255,.05));border:1px solid rgba(251,191,36,.3);}
+.avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:800;}
+.member-info{flex:1;}
+.member-name{font-weight:700;font-size:.95rem;}
+.member-role{font-size:.76rem;color:var(--text2);}
+.badge{display:inline-block;font-size:.67rem;padding:.18rem .55rem;border-radius:20px;margin-top:.25rem;}
+.badge.on{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:var(--green);}
+.badge.off{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red);}
+.badge.gold{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.4);color:var(--gold);}
+.member-stats{text-align:right;}
+.member-time{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--blue-light);}
+.member-excursions{font-size:.6rem;color:var(--text3);}
+/* HORAS */
+.sel-row{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.75rem;}
+.styled-select{background:var(--card2);border:1.5px solid var(--blue);border-radius:9px;padding:.75rem .9rem;color:var(--text);font-size:.95rem;font-family:'Barlow',sans-serif;appearance:none;cursor:pointer;outline:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234db8ff' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;background-size:1.1rem;}
+.timer-card{background:var(--card2);border:1px solid var(--blue);border-radius:13px;padding:1.1rem;text-align:center;margin-bottom:.9rem;}
+.timer-display{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:800;color:var(--cyan);letter-spacing:4px;}
+.timer-sub{font-size:.72rem;color:var(--text3);margin-bottom:.9rem;}
+.timer-btns{display:flex;gap:.55rem;}
+.timer-btn{flex:1;border:none;border-radius:9px;padding:.75rem;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:2px;font-weight:700;cursor:pointer;}
+.timer-btn.start{background:linear-gradient(135deg,var(--green),#16a34a);color:#fff;}
+.timer-btn.stop{background:linear-gradient(135deg,var(--red),#b91c1c);color:#fff;}
+.timer-btn.reset{background:var(--bg3);border:1px solid var(--border);color:var(--text2);}
+.session-row{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:.65rem .9rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem;}
+.session-name{font-weight:700;font-size:.9rem;}
+.session-meta{font-size:.7rem;color:var(--text3);}
+.session-dur{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--blue-light);}
+.session-del{color:var(--text3);cursor:pointer;margin-left:.4rem;font-size:.85rem;}
+/* TÂCHES */
+.task-card{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:.75rem .9rem;display:flex;align-items:flex-start;gap:.75rem;margin-bottom:.55rem;}
+.task-icon{font-size:1.35rem;margin-top:.08rem;}
+.task-info{flex:1;}
+.task-name{font-size:.9rem;font-weight:600;}
+.task-sub{font-size:.7rem;color:var(--text3);margin-top:.15rem;}
+.task-right{text-align:right;}
+.task-assigned{font-size:.7rem;color:var(--blue-light);margin-bottom:.35rem;}
+.task-btn{border-radius:20px;padding:.3rem .75rem;font-size:.72rem;font-weight:600;border:1.5px solid;cursor:pointer;font-family:'Barlow',sans-serif;}
+.task-btn.done{background:rgba(34,197,94,.15);border-color:var(--green);color:var(--green);}
+.task-btn.todo{background:transparent;border-color:var(--border);color:var(--text3);}
+.date-badge{display:inline-block;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--cyan);font-size:.68rem;padding:.18rem .55rem;border-radius:20px;margin-bottom:.75rem;}
+/* RÉSERVATIONS */
+.media-btns{display:flex;gap:.55rem;margin-bottom:.75rem;}
+.media-btn{flex:1;border:none;border-radius:9px;padding:.8rem;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:2px;font-weight:700;cursor:pointer;}
+.media-btn.photo{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;}
+.media-btn.video{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;}
+.media-gallery{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;}
+.media-thumb{border-radius:9px;overflow:hidden;position:relative;aspect-ratio:4/3;background:var(--card2);border:1px solid var(--border);}
+.media-thumb img,.media-thumb video{width:100%;height:100%;object-fit:cover;}
+.media-badge{position:absolute;bottom:.25rem;left:.25rem;background:rgba(0,0,0,.65);border-radius:4px;padding:.08rem .35rem;font-size:.58rem;color:#fff;}
+.media-del{position:absolute;top:.25rem;right:.25rem;background:rgba(0,0,0,.65);border:none;border-radius:50%;width:21px;height:21px;color:#fff;font-size:.62rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.media-empty{color:var(--text3);text-align:center;padding:1.8rem;font-size:.82rem;}
+/* REPOS */
+.rest-card{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:.75rem .9rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.75rem;}
+.rest-name{font-weight:700;font-size:.95rem;min-width:66px;}
+.rest-day{font-size:.68rem;color:var(--text3);}
+.days-row{display:flex;gap:.28rem;flex-wrap:nowrap;}
+.day-pill{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:transparent;font-size:.58rem;font-weight:700;color:var(--text3);cursor:pointer;font-family:'Barlow Condensed',sans-serif;}
+.day-pill.on{background:rgba(239,68,68,.2);border-color:var(--red);color:var(--red);}
+/* CHAT */
+.chat-input{width:100%;background:var(--card2);border:1.5px solid var(--border);border-radius:9px;padding:.75rem .9rem;color:var(--text);font-size:.9rem;font-family:'Barlow',sans-serif;outline:none;margin-bottom:.55rem;transition:.2s;resize:none;}
+.chat-input:focus{border-color:var(--blue);}
+.chat-msg{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:.75rem .9rem;margin-bottom:.55rem;position:relative;}
+.chat-header{display:flex;align-items:center;gap:.45rem;margin-bottom:.35rem;}
+.chat-av{width:26px;height:26px;border-radius:50%;background:#1e3a5a;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;font-family:'Barlow Condensed',sans-serif;color:var(--blue-light);}
+.chat-sender{font-weight:700;font-size:.87rem;}
+.chat-time{font-size:.7rem;color:var(--text3);}
+.chat-text{font-size:.87rem;color:var(--text2);padding-left:2.1rem;}
+.chat-del{position:absolute;top:.55rem;right:.65rem;color:var(--text3);cursor:pointer;font-size:.82rem;opacity:.6;}
+/* PROFIL */
+.prof-hero{text-align:center;padding:1.3rem 0 .9rem;border-bottom:1px solid var(--border);margin-bottom:.9rem;}
+.prof-avatar{width:68px;height:68px;border-radius:50%;border:2px solid var(--blue);display:inline-flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:800;margin-bottom:.55rem;}
+.prof-name{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:800;letter-spacing:2px;}
+.prof-role{font-size:.87rem;color:var(--text2);margin-bottom:.55rem;}
+.pin-warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--orange);font-size:.75rem;padding:.35rem .75rem;border-radius:20px;display:inline-block;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.55rem;}
+.stat-box{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:.9rem;text-align:center;}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:2.1rem;font-weight:800;}
+.stat-lbl{font-size:.62rem;letter-spacing:2px;color:var(--text3);font-family:'Barlow Condensed',sans-serif;margin-top:.18rem;}
+.stat-box.blue .stat-val{color:var(--blue-light);}
+.stat-box.orange .stat-val{color:var(--orange);}
+.cumul-section{background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);border-radius:11px;padding:.9rem;margin-bottom:.9rem;}
+.cumul-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;color:var(--cyan);margin-bottom:.55rem;}
+.cumul-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.45rem;}
+.cumul-box{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.65rem;text-align:center;}
+.cumul-val{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:800;color:var(--cyan);}
+.cumul-lbl{font-size:.58rem;letter-spacing:1.5px;color:var(--text3);margin-top:.18rem;}
+.excursion-display{text-align:center;padding:.55rem 0 .15rem;}
+.excursion-count{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;color:var(--blue-light);}
+.excursion-sub{font-size:.67rem;color:var(--text3);margin-top:.15rem;letter-spacing:1.5px;}
+.progress-dots{display:flex;gap:.35rem;justify-content:center;margin:.45rem 0;}
+.dot{width:13px;height:13px;border-radius:50%;background:var(--border);}
+.dot.on{background:var(--orange);}
+.progress-lbl{text-align:center;font-size:.7rem;color:var(--text3);margin-bottom:.9rem;}
+.quote-box{background:var(--card2);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:11px;padding:.9rem;margin-bottom:.75rem;font-size:.9rem;font-style:italic;line-height:1.5;}
+.quote-attr{font-size:.7rem;color:var(--blue-light);margin-top:.45rem;font-style:normal;}
+.pin-change-section .pin-dots{display:flex;gap:.9rem;justify-content:center;margin:.55rem 0;}
+.pin-change-section .pin-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--border);}
+.pin-change-section .pin-dot.on{border-color:var(--blue);background:var(--blue);}
+.pin-change-section .pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-top:.75rem;}
+.pin-change-section .pin-key{background:var(--card2);border:1px solid var(--border);border-radius:50%;aspect-ratio:1;font-size:1.15rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);}
+.pin-change-section .pin-key:active{background:var(--blue);border-color:var(--blue);}
+/* ADMIN */
+.admin-tag{display:inline-block;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--red);font-size:.68rem;letter-spacing:2px;padding:.18rem .55rem;border-radius:4px;margin-bottom:.75rem;font-family:'Barlow Condensed',sans-serif;}
+.adm-row{display:flex;align-items:center;gap:.55rem;padding:.55rem 0;border-bottom:1px solid var(--border);}
+.adm-row:last-child{border-bottom:none;}
+.adm-name{flex:1;font-weight:600;}
+.adm-total{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;color:var(--orange);}
+.add-row{display:flex;gap:.45rem;margin-top:.55rem;}
+.text-input{flex:1;background:var(--card2);border:1.5px solid var(--border);border-radius:7px;padding:.65rem .85rem;color:var(--text);font-family:'Barlow',sans-serif;font-size:.87rem;outline:none;}
+.text-input:focus{border-color:var(--blue);}
+.btn-sm{background:var(--blue);border:none;border-radius:7px;padding:.65rem .9rem;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:2px;font-weight:700;cursor:pointer;}
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:.55rem 1.3rem;border-radius:20px;font-weight:600;font-size:.82rem;z-index:999;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+@media(min-width:480px){.content{max-width:440px;margin:0 auto;}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginScreen">
-  <div class="login-title" id="loginTitle">JET SKI TOUR<br>SALOU</div>
-  <div class="login-sub" id="loginSub">ESPACE INTERNE MONITEURS</div>
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen" class="screen">
+  <div class="login-title">JET SKI TOUR<br>SALOU</div>
+  <div class="login-sub" id="l_sub">ESPACE INTERNE ÉQUIPE</div>
   <div class="login-divider"></div>
+  <div class="lang-row">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+    <button class="lang-btn" onclick="setLang('ca')">CA</button>
+  </div>
   <div class="login-card">
-    <label class="login-label" id="loginLabel">MOT DE PASSE</label>
-    <input class="login-input" type="password" id="loginInput" placeholder="••••••••" />
-    <button class="login-btn" id="loginBtn">ENTRER</button>
-    <div class="login-error" id="loginError">Mot de passe incorrect</div>
+    <label class="form-label" id="l_lbl">MOT DE PASSE</label>
+    <input class="form-input" type="password" id="loginInput" placeholder="••••••••" autocomplete="off">
+    <button class="btn-primary" id="l_btn" onclick="doLogin()">ENTRER</button>
+    <div class="err-msg" id="l_err">Mot de passe incorrect</div>
   </div>
 </div>
 
-<!-- PROFILE SELECT -->
-<div id="profileSelectScreen">
-  <div class="profile-select-title">QUI ES-TU ?</div>
-  <div class="profile-select-sub">SÉLECTIONNE TON PROFIL</div>
+<!-- ═══ PROFILE SELECT ═══ -->
+<div id="profileScreen" class="screen">
+  <div class="ps-title" id="ps_title">QUI ES-TU ?</div>
+  <div class="ps-sub" id="ps_sub">SÉLECTIONNE TON PROFIL</div>
   <div class="profile-grid" id="profileGrid"></div>
-  <div class="locked-banner" id="lockedBanner">🔒 Ce profil est déjà pris sur un autre appareil</div>
 </div>
 
-<!-- APP -->
+<!-- ═══ PIN ═══ -->
+<div id="pinScreen" class="screen">
+  <div class="pin-avatar" id="pinAvatar" style="background:#1e3a5a;color:var(--blue-light)">?</div>
+  <div class="pin-name" id="pinName">—</div>
+  <div class="pin-role" id="pinRole">—</div>
+  <div class="pin-label" id="pinLabel">Entrez votre code PIN</div>
+  <div class="pin-dots">
+    <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+    <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+  </div>
+  <div class="pin-pad">
+    <button class="pin-key" onclick="PK(1)">1</button><button class="pin-key" onclick="PK(2)">2</button><button class="pin-key" onclick="PK(3)">3</button>
+    <button class="pin-key" onclick="PK(4)">4</button><button class="pin-key" onclick="PK(5)">5</button><button class="pin-key" onclick="PK(6)">6</button>
+    <button class="pin-key" onclick="PK(7)">7</button><button class="pin-key" onclick="PK(8)">8</button><button class="pin-key" onclick="PK(9)">9</button>
+    <button class="pin-key" onclick="PK('d')">⌫</button><button class="pin-key" onclick="PK(0)">0</button><button class="pin-key" onclick="PK('ok')">OK</button>
+  </div>
+  <button class="pin-skip" id="pinSkip" onclick="pinFirst()">—</button>
+</div>
+
+<!-- ═══ ACCUEIL (Romane / Enola) ═══ -->
+<div id="accueilScreen" class="screen">
+  <div class="ac-title" id="ac_title">ENREGISTRER UNE SESSION</div>
+  <div class="ac-sub" id="ac_sub">MONITEUR + DURÉE</div>
+  <div class="ac-card">
+    <label class="ac-label" id="ac_mon_lbl">MONITEUR</label>
+    <select id="acMon" class="ac-select"></select>
+    <label class="ac-label" id="ac_dur_lbl">DURÉE</label>
+    <select id="acDur" class="ac-select"></select>
+    <button class="ac-btn" id="ac_btn" onclick="acAdd()">✅ VALIDER SESSION</button>
+    <div id="acList" class="ac-sessions"></div>
+  </div>
+  <button class="ac-logout" id="ac_logout" onclick="changeProfile()">↩ Changer de profil</button>
+</div>
+
+<!-- ═══ APP ═══ -->
 <div id="app">
-  <!-- TOPBAR -->
   <div class="topbar">
-    <div style="display:flex;align-items:center;gap:0.6rem">
+    <div style="display:flex;align-items:center;gap:.5rem">
       <div class="topbar-logo">JST SALOU</div>
-      <div class="topbar-user" id="topbarUser">
-        <div class="topbar-user-dot"></div>
-        <span id="topbarUserName">—</span>
-      </div>
+      <div class="topbar-user"><div class="topbar-dot"></div><span id="topbarName">—</span></div>
     </div>
-    <div class="lang-btns">
-      <button class="lang-btn" onclick="setLang('fr')">FR</button>
-      <button class="lang-btn active" onclick="setLang('es')">ES</button>
+    <div style="display:flex;gap:.35rem">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
       <button class="lang-btn" onclick="setLang('ca')">CA</button>
     </div>
-    <div class="topbar-date">
-      <div class="topbar-day" id="topDay"></div>
-      <div class="topbar-date-str" id="topDate"></div>
-    </div>
+    <div class="topbar-date"><div class="topbar-day" id="topDay"></div><div class="topbar-date-str" id="topDate"></div></div>
   </div>
-
-  <!-- TABS -->
-  <div class="tabs-wrap">
-    <div class="tabs" id="tabsBar">
-      <button class="tab active" onclick="showTab('tiempo')"><span class="tab-icon">🌊</span><span data-i="nav_tiempo">Tiempo</span></button>
-      <button class="tab" onclick="showTab('equipo')"><span class="tab-icon">👥</span><span data-i="nav_equipo">Equipo</span></button>
-      <button class="tab" onclick="showTab('horas')"><span class="tab-icon">⏱️</span><span data-i="nav_horas">Horas</span></button>
-      <button class="tab" onclick="showTab('tareas')"><span class="tab-icon">✅</span><span data-i="nav_tareas">Tareas</span></button>
-      <button class="tab" onclick="showTab('reservas')"><span class="tab-icon">📸</span><span data-i="nav_reservas">Reservas</span></button>
-      <button class="tab" onclick="showTab('descanso')"><span class="tab-icon">🏖️</span><span data-i="nav_descanso">Descanso</span></button>
-      <button class="tab" onclick="showTab('chat')"><span class="tab-icon">💬</span><span data-i="nav_chat">Chat</span></button>
-      <button class="tab" onclick="showTab('perfil')"><span class="tab-icon">🏄</span><span data-i="nav_perfil">Perfil</span></button>
-      <button class="tab" onclick="showTab('admin')" id="adminTab" style="display:none"><span class="tab-icon">🔧</span><span data-i="nav_admin">Admin</span></button>
-    </div>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="content">
-
-    <!-- TIEMPO -->
-    <div class="page active" id="page-tiempo">
-      <div class="page-title"><span class="page-title-icon">🌊</span><span data-i="nav_tiempo">Tiempo</span></div>
-      <div class="card">
-        <div class="meteo-loc">📍 SALOU, TARRAGONE</div>
-        <div class="meteo-grid">
-          <div class="meteo-box">
-            <div class="meteo-val" id="metWind">--</div>
-            <div class="meteo-unit">km/h</div>
-            <div class="meteo-key" data-i="met_viento">VIENTO</div>
-          </div>
-          <div class="meteo-box">
-            <div class="meteo-val" id="metWave">--</div>
-            <div class="meteo-unit">m</div>
-            <div class="meteo-key" data-i="met_olas">OLAS</div>
-          </div>
-          <div class="meteo-box">
-            <div class="meteo-val" id="metFeel">--</div>
-            <div class="meteo-unit">°C</div>
-            <div class="meteo-key" data-i="met_sensacion">SENSACIÓN</div>
-          </div>
-        </div>
-        <div class="meteo-status good" id="metStatus">🟢 <span data-i="met_good">Conditions favorables</span></div>
-        <div class="meteo-warn-msg" id="metWarn" style="display:none">⚠️ <span data-i="met_connwarn">Vérifiez votre connexion</span></div>
-        <button class="meteo-refresh" onclick="fetchMeteo()">🔄 <span data-i="met_refresh">Actualizar</span></button>
-      </div>
-      <div class="card">
-        <div class="card-label" data-i="met_tempair">TEMPERATURA AIRE</div>
-        <div class="temp-big" id="metTemp">-- °C</div>
-      </div>
-    </div>
-
-    <!-- EQUIPO -->
-    <div class="page" id="page-equipo">
-      <div class="page-title"><span class="page-title-icon">👥</span><span data-i="eq_title">EQUIPO DEL DÍA</span></div>
-      <div class="card">
-        <div class="card-label" data-i="eq_monitores">MONITORES</div>
-        <div id="monitorList"></div>
-      </div>
-    </div>
-
-    <!-- HORAS -->
-    <div class="page" id="page-horas">
-      <div class="page-title"><span class="page-title-icon">⏱️</span><span data-i="hor_title">HORAS EN EL AGUA</span></div>
-      <div class="card">
-        <div class="card-label" data-i="hor_sesion">SESIÓN</div>
-        <div class="select-row">
-          <select class="styled-select" id="selMonitor"></select>
-          <select class="styled-select" id="selDuration">
-            <option value="10">10 min</option>
-            <option value="20" selected>20 min</option>
-            <option value="30">30 min</option>
-            <option value="45">45 min</option>
-            <option value="60">60 min</option>
-            <option value="90">90 min</option>
-            <option value="120">2h</option>
-          </select>
-        </div>
-        <button class="btn-primary" onclick="addSession()">+ <span data-i="hor_validar">VALIDAR</span></button>
-      </div>
-      <div class="card">
-        <div class="card-label" data-i="hor_sessions">SESIONES DEL DÍA</div>
-        <div id="sessionList"></div>
-      </div>
-    </div>
-
-    <!-- TAREAS -->
-    <div class="page" id="page-tareas">
-      <div class="page-title"><span class="page-title-icon">✅</span><span data-i="tar_title">TAREAS DEL DÍA</span></div>
-      <div class="card">
-        <div class="card-label" data-i="tar_rotation">ROTACIÓN AUTOMÁTICA</div>
-        <div id="taskList"></div>
-        <button class="btn-secondary" onclick="redistributeTasks()">🔄 <span data-i="tar_redistribuir">Redistribuir</span></button>
-      </div>
-    </div>
-
-    <!-- RESERVAS -->
-    <div class="page" id="page-reservas">
-      <div class="page-title"><span class="page-title-icon">📸</span><span data-i="nav_reservas">RESERVAS</span></div>
-      <div class="card">
-        <div class="card-label">📷 <span data-i="res_foto">FOTO DEL CUADERNO</span></div>
-        <div class="camera-zone" id="cameraZone">
-          <div class="camera-placeholder">📓</div>
-          <div class="camera-txt" data-i="res_abre">Abre la cámara</div>
-          <img id="reservaImg" src="" alt="">
-          <input type="file" accept="image/*" capture="environment" onchange="handlePhoto(this)">
-        </div>
-        <button class="btn-primary" onclick="document.querySelector('#cameraZone input').click()">📷 <span data-i="res_camara">CÁMARA</span></button>
-      </div>
-    </div>
-
-    <!-- DESCANSO -->
-    <div class="page" id="page-descanso">
-      <div class="page-title"><span class="page-title-icon">🏖️</span><span data-i="des_title">DÍAS DE DESCANSO</span></div>
-      <div class="card">
-        <div class="card-label" data-i="des_por">DESCANSO POR MONITOR</div>
-        <div id="restList"></div>
-      </div>
-    </div>
-
-    <!-- CHAT -->
-    <div class="page" id="page-chat">
-      <div class="page-title"><span class="page-title-icon">💬</span><span data-i="chat_title">CHAT DEL EQUIPO</span></div>
-      <div class="card">
-        <div class="card-label" data-i="chat_new">NUEVO MENSAJE</div>
-        <select class="styled-select" id="chatSender" style="width:100%;margin-bottom:.6rem;"></select>
-        <textarea class="chat-input" id="chatMsg" rows="3" placeholder="Message..."></textarea>
-        <button class="btn-primary" onclick="sendChat()">💬 <span data-i="chat_enviar">ENVIAR</span></button>
-      </div>
-      <div class="card">
-        <div class="card-label" data-i="chat_msgs">MENSAJES</div>
-        <div id="chatList"></div>
-      </div>
-    </div>
-
-    <!-- PERFIL -->
-    <div class="page" id="page-perfil">
-      <div class="profile-hero">
-        <div class="profile-avatar" id="profAvatar" style="background:#1e3a5a;color:var(--blue-light)">T</div>
-        <div class="profile-name" id="profName">TIM</div>
-        <div class="profile-role" id="profRole">👑 CHEF</div>
-        <div class="pin-warn" id="pinWarn">⚠️ PIN par défaut — pensez à le changer</div>
-      </div>
-      <div class="stats-grid">
-        <div class="stat-box blue"><div class="stat-val" id="profSessions">0</div><div class="stat-lbl" data-i="prof_excursiones">EXCURSIONES TOTALES</div></div>
-        <div class="stat-box orange"><div class="stat-val" id="profHoras">0H00</div><div class="stat-lbl" data-i="prof_horas">HORAS EN EL AGUA</div></div>
-      </div>
-      <div class="card">
-        <div class="stat-box green" style="border:none;padding:.5rem 0"><div class="stat-val" id="profCuevas">0</div><div class="stat-lbl" data-i="prof_cuevas">CUEVAS HECHAS</div></div>
-      </div>
-      <div class="card">
-        <div class="card-label">HOY</div>
-        <div class="counter-row">
-          <button class="counter-btn minus" onclick="changeExcursion(-1)">−</button>
-          <span class="counter-val" id="todayCount">0</span>
-          <button class="counter-btn plus" onclick="changeExcursion(1)">+</button>
-        </div>
-        <div class="progress-dots" id="progressDots"></div>
-        <div class="progress-lbl" data-i="prof_objetivo">Objetivo: 10 excursiones</div>
-      </div>
-      <div class="quote-box" id="quoteBox">
-        <div id="quoteText"></div>
-        <div class="quote-attr">— L'ÉQUIPE JST</div>
-      </div>
-      <button class="btn-secondary" onclick="newQuote()" style="margin-bottom:1rem">✨ <span data-i="prof_nueva_cita">Nueva cita</span></button>
-      <!-- PIN CHANGE -->
-      <div class="card">
-        <div class="pin-section-lbl">🔒 <span data-i="prof_cambiar_pin">CHANGER MON CODE PIN</span></div>
-        <div style="text-align:center;font-size:.8rem;color:var(--text3);margin-bottom:.3rem" id="pinLabel">Entrez votre PIN actuel</div>
-        <div class="pin-dots" id="pinDots">
-          <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
-          <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
-        </div>
-        <div class="pin-pad">
-          <button class="pin-key" onclick="pinKey(1)">1</button><button class="pin-key" onclick="pinKey(2)">2</button><button class="pin-key" onclick="pinKey(3)">3</button>
-          <button class="pin-key" onclick="pinKey(4)">4</button><button class="pin-key" onclick="pinKey(5)">5</button><button class="pin-key" onclick="pinKey(6)">6</button>
-          <button class="pin-key" onclick="pinKey(7)">7</button><button class="pin-key" onclick="pinKey(8)">8</button><button class="pin-key" onclick="pinKey(9)">9</button>
-          <button class="pin-key" onclick="pinKey('del')">⌫</button><button class="pin-key" onclick="pinKey(0)">0</button><button class="pin-key" onclick="pinKey('ok')">OK</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ADMIN -->
-    <div class="page" id="page-admin">
-      <div class="page-title"><span class="page-title-icon">🔧</span>ADMIN</div>
-      <div class="admin-tag">ACCÈS RESTREINT — TIM & NACHO</div>
-      <div class="card">
-        <div class="admin-section-title" data-i="adm_moniteurs">MONITEURS</div>
-        <div id="adminMonitorList"></div>
-        <div class="add-monitor-row">
-          <input class="text-input" id="newMonName" placeholder="Nom..." />
-          <select class="styled-select" id="newMonRole" style="width:auto;padding:.7rem .6rem">
-            <option value="chef">👑 Chef</option>
-            <option value="monitor">🤿 Monitor</option>
-          </select>
-          <button class="btn-sm" onclick="addMonitor()">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="admin-section-title" data-i="adm_total_horas">TOTAL HORAS SAISON</div>
-        <div id="adminHoursTotal"></div>
-      </div>
-      <div class="card">
-        <div class="admin-section-title">MOT DE PASSE</div>
-        <div class="add-monitor-row">
-          <input class="text-input" id="newPass" type="password" placeholder="Nouveau MDP..." />
-          <button class="btn-sm" onclick="changePass()">OK</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="admin-section-title">CHANGER DE PROFIL</div>
-        <button class="btn-secondary" onclick="changeProfile()" style="margin-top:.3rem">🔄 <span>Se connecter en tant que...</span></button>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-</div><!-- /app -->
-
+  <div class="tabs-wrap"><div class="tabs" id="tabsBar"></div></div>
+  <div class="content" id="mainContent"></div>
+</div>
 <div class="toast" id="toast"></div>
+<input type="file" id="inputPhoto" accept="image/*" capture="environment" style="display:none" onchange="addMedia(this,'photo')">
+<input type="file" id="inputVideo" accept="video/*" capture="camcorder" style="display:none" onchange="addMedia(this,'video')">
 
 <script>
-// ══════════════════════════════════
-// STATE
-// ══════════════════════════════════
-const PASS = 'jst2026';
-let lang = 'es';
-let pinStep = 'current'; // 'current' | 'new' | 'confirm'
-let pinBuffer = '';
-let newPinBuffer = '';
-let monitors = [
-  {name:'Tim',   role:'chef',    color:'#1e3a5a', rest:'Mié'},
-  {name:'Nacho', role:'chef',    color:'#7c3d00', rest:'Lun'},
-  {name:'Llorens',role:'monitor',color:'#1a3d20', rest:'Vie'},
-  {name:'Munir', role:'monitor', color:'#4a1a4a', rest:'Jue'},
-  {name:'Miha',  role:'monitor', color:'#1a2a5a', rest:'Mar'},
-  {name:'Kevin', role:'monitor', color:'#1e3a5a', rest:''},
-  {name:'Lucas', role:'monitor', color:'#3a2a0f', rest:''},
-  {name:'Ottin', role:'monitor', color:'#1a1a2e', rest:''},
-];
-let sessions = []; // {monitor, duration, time}
-let tasks = [
-  {icon:'🗑️', key:'task_basura', sub:'', done:true},
-  {icon:'🔴', key:'task_chalecos', sub:'', done:false},
-  {icon:'⛽', key:'task_gasolina', sub:'', done:true},
-  {icon:'🏁', key:'task_circuitos', sub:'task_circuitos_sub', done:false},
-];
-let taskAssign = {};
-let chatMessages = [];
-let todayExcursions = 0;
-let userPIN = '1234'; // default
+// ═══════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════
+const PASS = 'JTS2026';
+const ADMINS = ['Tim','Nacho'];
+const ACCUEIL_ROLES = ['accueil'];
+const COLORS = ['#3a2800','#2a1a3a','#7c3d00','#1a2a5a','#1e3a5a','#1a3d20','#4a1a4a','#2a1e3a','#1a2a1a','#2a2a1a'];
 
-const days = {fr:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'], es:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'], ca:['Dg','Dl','Dm','Dc','Dj','Dv','Ds']};
-
-const quotes = [
-  "Ce que tu fais chaque matin sur l'eau, peu de gens osent même en rêver.",
-  "La mer ne ment jamais. Ni toi non plus.",
-  "Chaque vague est une chance. Chaque jour au port, une victoire.",
-  "L'équipe qui rit ensemble, gagne ensemble.",
-  "Salou ne dort pas. Et vous non plus.",
+let TEAM = [
+  {n:'Lukas',  r:'patron',  c:'#3a2800', rest:''},
+  {n:'Ema',    r:'patron',  c:'#2a1a3a', rest:''},
+  {n:'Nacho',  r:'chef',    c:'#7c3d00', rest:'Lun', senior:false},
+  {n:'Miha',   r:'chef',    c:'#1a2a5a', rest:'Mar', senior:false},
+  {n:'Tim',    r:'monitor', c:'#1e3a5a', rest:'Mer', senior:true},
+  {n:'Llorens',r:'monitor', c:'#1a3d20', rest:'Ven'},
+  {n:'Munir',  r:'monitor', c:'#4a1a4a', rest:'Jue'},
+  {n:'Nico',   r:'monitor', c:'#2a1e3a', rest:''},
+  {n:'Romane', r:'accueil', c:'#1a2a1a', rest:''},
+  {n:'Enola',  r:'accueil', c:'#2a2a1a', rest:'', aout:true},
 ];
 
-const i18n = {
-  fr: {
-    nav_tiempo:'Météo', nav_equipo:'Équipe', nav_horas:'Heures', nav_tareas:'Tâches',
-    nav_reservas:'Réservations', nav_descanso:'Repos', nav_chat:'Chat', nav_perfil:'Profil', nav_admin:'Admin',
-    met_viento:'VENT', met_olas:'VAGUES', met_sensacion:'RESSENTI', met_good:'Conditions favorables',
-    met_bad:'Conditions défavorables', met_warn_sea:'Mer agitée', met_connwarn:'Vérifiez votre connexion',
-    met_refresh:'Actualiser', met_tempair:'TEMPÉRATURE AIR',
-    eq_title:'ÉQUIPE DU JOUR', eq_monitores:'MONITEURS',
-    hor_title:'HEURES EN MER', hor_sesion:'SESSION', hor_validar:'VALIDER', hor_sessions:"SESSIONS DU JOUR",
-    tar_title:'TÂCHES DU JOUR', tar_rotation:'ROTATION AUTOMATIQUE', tar_redistribuir:'Redistribuer',
-    tar_ok:'OK', tar_todo:'À faire',
-    task_basura:'Vider les poubelles', task_chalecos:'Ranger la plateforme & gilets',
-    task_gasolina:'Vérifier l\'essence & amarres', task_circuitos:'Circuits (dédié)',
-    task_circuitos_sub:'⚡ 1 moniteur dédié aux circuits',
-    res_foto:'PHOTO DU CAHIER', res_abre:'Ouvrir la caméra', res_camara:'CAMÉRA',
-    des_title:'JOURS DE REPOS', des_por:'REPOS PAR MONITEUR',
-    chat_title:'CHAT ÉQUIPE', chat_new:'NOUVEAU MESSAGE', chat_enviar:'ENVOYER', chat_msgs:'MESSAGES',
-    prof_excursiones:'EXCURSIONS TOTALES', prof_horas:'HEURES EN MER', prof_cuevas:'CUEVAS FAITES',
-    prof_objetivo:'Objectif: 10 excursions', prof_nueva_cita:'Nouvelle citation',
-    prof_cambiar_pin:'CHANGER MON CODE PIN',
-    adm_moniteurs:'MONITEURS', adm_total_horas:'TOTAL HEURES SAISON',
-    day_sun:'Dim', day_mon:'Lun', day_tue:'Mar', day_wed:'Mer', day_thu:'Jeu', day_fri:'Ven', day_sat:'Sam',
+// ═══════════════════════════════════════════════════════
+// I18N — dictionnaire complet FR / ES / CA
+// ═══════════════════════════════════════════════════════
+const DICT = {
+  fr:{
+    /* login */ l_sub:'ESPACE INTERNE ÉQUIPE', l_lbl:'MOT DE PASSE', l_btn:'ENTRER', l_err:'Mot de passe incorrect',
+    /* profile */ ps_title:'QUI ES-TU ?', ps_sub:'SÉLECTIONNE TON PROFIL',
+    /* pin */ pin_enter:'Entrez votre code PIN', pin_new:'Définissez votre PIN (4 chiffres)', pin_wrong:'❌ PIN incorrect', pin_ok:'✅ PIN défini !', pin_changed:'✅ PIN changé !', pin_skip:'Première connexion — définir PIN', pin_current:'PIN actuel', pin_new2:'Nouveau PIN', pin_confirm:'Confirmer PIN',
+    /* accueil */ ac_title:'ENREGISTRER UNE SESSION', ac_sub:'MONITEUR + DURÉE', ac_mon_lbl:'MONITEUR', ac_dur_lbl:'DURÉE', ac_btn:'✅ VALIDER SESSION', ac_logout:'↩ Changer de profil',
+    /* rôles */ role_patron:'Patron', role_chef:'Chef', role_monitor:'Moniteur', role_accueil:'Accueil',
+    /* tabs */ tab0:'Météo', tab1:'Équipe', tab2:'Horas', tab3:'Tâches', tab4:'Réservations', tab5:'Repos', tab6:'Chat', tab7:'Profil', tab8:'Admin',
+    /* météo */ met_loc:'📍 SALOU · MER MÉDITERRANÉE',
+      met_vent:'VENT', met_vagues:'VAGUES', met_ressenti:'RESSENTI', met_dir:'DIR. VENT', met_uv:'UV', met_humid:'HUMIDITÉ', met_mer:'ÉTAT MER', met_temp:'TEMPÉRATURE AIR',
+      met_refresh:'🔄 Actualiser', met_update:'Mise à jour',
+      met_good:'🟢 MER CALME — Conditions favorables', met_warn:'🟡 MER MODÉRÉE — Vigilance', met_bad:'🔴 MER AGITÉE — Danger', met_err:'⚠️ Données indisponibles',
+    /* équipe */ eq_patrons:'👑 PATRONS', eq_chefs:'🎖️ CHEFS DE SAISON', eq_monitors:'🤿 MONITEURS',
+      badge_on:'✅ En service', badge_off:'🏖️ Repos', badge_patron:'👑 Patron',
+      today:'Aujourd\'hui', excursions_lbl:'excursion',
+    /* horas */ hor_title:'HORAS EN MER', hor_chrono:'⏱️ CHRONO EN MER', hor_reset_lbl:'Remis à zéro chaque matin',
+      hor_start:'▶ START', hor_stop:'⏸ STOP', hor_reset:'↺',
+      hor_session_lbl:'SESSION MANUELLE', hor_valider:'+ VALIDER SESSION', hor_sessions_today:'SESSIONS DU JOUR', hor_empty:'Aucune session',
+      dur_20:'20 min', dur_30:'30 min', dur_40:'40 min', dur_60:'1h', dur_120:'2h 🪨 Grotte',
+    /* tâches */ tar_title:'TÂCHES DU JOUR', tar_rotation:'ROTATION AUTOMATIQUE QUOTIDIENNE', tar_redistrib:'🔄 Redistribuer',
+      tar_ok:'✅ OK', tar_todo:'○ À faire',
+      task0:'Vider les poubelles', task1:'Ranger plateforme & gilets', task2:'Vérifier essence & amarres',
+      task3:'Circuits (dédié)', task3b:'⚡ 1 moniteur dédié aux circuits',
+    /* réservations */ res_title:'RÉSERVATIONS', res_media:'PHOTOS & VIDÉOS', res_photo:'📷 PHOTO', res_video:'🎥 VIDÉO', res_empty:'Aucun média — appuie sur Photo ou Vidéo',
+    /* repos */ des_title:'JOURS DE REPOS', des_lbl:'REPOS PAR MONITEUR',
+    /* chat */ chat_title:'CHAT ÉQUIPE', chat_new:'NOUVEAU MESSAGE', chat_send:'💬 ENVOYER', chat_msgs:'MESSAGES', chat_empty:'Aucun message',
+    /* profil */ prof_title:'MON PROFIL', prof_sessions_lbl:"SESSIONS AUJOURD'HUI", prof_horas_lbl:'TEMPS EN MER',
+      prof_cumul:'📊 CUMUL SAISON', prof_cs:'SESSIONS', prof_ch:'HEURES MER', prof_cc:'CUEVAS',
+      prof_excursions:"EXCURSIONS AUJOURD'HUI", prof_excursions_sub:'calculé depuis les sessions',
+      prof_objectif:'Objectif: 10 excursions', prof_quote:'✨ Nouvelle citation',
+      prof_pin_lbl:'🔒 CHANGER MON CODE PIN', prof_pin_warn:'PIN par défaut — changez-le', prof_change:'🔄 Changer de profil',
+    /* admin */ adm_title:'ADMIN', adm_tag:'ACCÈS RESTREINT — TIM & NACHO', adm_stats:'STATS ÉQUIPE', adm_total:'TOTAL HEURES SAISON', adm_add:'AJOUTER UN MEMBRE', adm_reset_pin:'RÉINITIALISER PIN',
+    /* toasts */ toast_session:'✅ Session ajoutée', toast_redist:'🔄 Redistribution OK', toast_denied:'🔒 Accès refusé', toast_pin_reset:'🔄 PIN réinitialisé',
+    days:['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+    months:['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
     days_short:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
-    login_title:'JET SKI TOUR\nSALOU', login_sub:'ESPACE INTERNE MONITEURS', login_label:'MOT DE PASSE', login_btn:'ENTRER',
   },
-  es: {
-    nav_tiempo:'Tiempo', nav_equipo:'Equipo', nav_horas:'Horas', nav_tareas:'Tareas',
-    nav_reservas:'Reservas', nav_descanso:'Descanso', nav_chat:'Chat', nav_perfil:'Perfil', nav_admin:'Admin',
-    met_viento:'VIENTO', met_olas:'OLAS', met_sensacion:'SENSACIÓN', met_good:'Conditions favorables',
-    met_bad:'Condiciones desfavorables', met_warn_sea:'Mar agitado', met_connwarn:'Vérifiez votre connexion',
-    met_refresh:'Actualizar', met_tempair:'TEMPERATURA AIRE',
-    eq_title:'EQUIPO DEL DÍA', eq_monitores:'MONITORES',
-    hor_title:'HORAS EN EL AGUA', hor_sesion:'SESIÓN', hor_validar:'VALIDAR', hor_sessions:'SESIONES DEL DÍA',
-    tar_title:'TAREAS DEL DÍA', tar_rotation:'ROTACIÓN AUTOMÁTICA', tar_redistribuir:'Redistribuir',
-    tar_ok:'OK', tar_todo:'Por hacer',
-    task_basura:'Vaciar la basura', task_chalecos:'Ordenar plataforma & chalecos',
-    task_gasolina:'Verificar gasolina & amarres', task_circuitos:'Circuitos (dedicado)',
-    task_circuitos_sub:'⚡ 1 monitor dedicado a los circuitos',
-    res_foto:'FOTO DEL CUADERNO', res_abre:'Abre la cámara', res_camara:'CÁMARA',
-    des_title:'DÍAS DE DESCANSO', des_por:'DESCANSO POR MONITOR',
-    chat_title:'CHAT DEL EQUIPO', chat_new:'NUEVO MENSAJE', chat_enviar:'ENVIAR', chat_msgs:'MENSAJES',
-    prof_excursiones:'EXCURSIONES TOTALES', prof_horas:'HORAS EN EL AGUA', prof_cuevas:'CUEVAS HECHAS',
-    prof_objetivo:'Objetivo: 10 excursiones', prof_nueva_cita:'Nueva cita',
-    prof_cambiar_pin:'CHANGER MON CODE PIN',
-    adm_moniteurs:'MONITORES', adm_total_horas:'TOTAL HORAS TEMPORADA',
+  es:{
+    l_sub:'ESPACIO INTERNO EQUIPO', l_lbl:'CONTRASEÑA', l_btn:'ENTRAR', l_err:'Contraseña incorrecta',
+    ps_title:'¿QUIÉN ERES?', ps_sub:'SELECCIONA TU PERFIL',
+    pin_enter:'Introduce tu código PIN', pin_new:'Define tu PIN (4 dígitos)', pin_wrong:'❌ PIN incorrecto', pin_ok:'✅ PIN definido!', pin_changed:'✅ PIN cambiado!', pin_skip:'Primera vez — definir PIN', pin_current:'PIN actual', pin_new2:'Nuevo PIN', pin_confirm:'Confirmar PIN',
+    ac_title:'REGISTRAR SESIÓN', ac_sub:'MONITOR + DURACIÓN', ac_mon_lbl:'MONITOR', ac_dur_lbl:'DURACIÓN', ac_btn:'✅ VALIDAR SESIÓN', ac_logout:'↩ Cambiar perfil',
+    role_patron:'Patrón', role_chef:'Jefe', role_monitor:'Monitor', role_accueil:'Recepción',
+    tab0:'Tiempo', tab1:'Equipo', tab2:'Horas', tab3:'Tareas', tab4:'Reservas', tab5:'Descanso', tab6:'Chat', tab7:'Perfil', tab8:'Admin',
+    met_loc:'📍 SALOU · MAR MEDITERRÁNEO',
+      met_vent:'VIENTO', met_vagues:'OLAS', met_ressenti:'SENSACIÓN', met_dir:'DIR. VIENTO', met_uv:'UV', met_humid:'HUMEDAD', met_mer:'ESTADO MAR', met_temp:'TEMPERATURA AIRE',
+      met_refresh:'🔄 Actualizar', met_update:'Actualizado',
+      met_good:'🟢 MAR TRANQUILO — Condiciones favorables', met_warn:'🟡 MAR MODERADO — Precaución', met_bad:'🔴 MAR AGITADO — Peligro', met_err:'⚠️ Datos no disponibles',
+    eq_patrons:'👑 PATRONES', eq_chefs:'🎖️ JEFES DE TEMPORADA', eq_monitors:'🤿 MONITORES',
+      badge_on:'✅ En servicio', badge_off:'🏖️ Descanso', badge_patron:'👑 Patrón',
+      today:'Hoy', excursions_lbl:'excursión',
+    hor_title:'HORAS EN EL AGUA', hor_chrono:'⏱️ CRONÓMETRO', hor_reset_lbl:'Reiniciado cada mañana',
+      hor_start:'▶ INICIAR', hor_stop:'⏸ PARAR', hor_reset:'↺',
+      hor_session_lbl:'SESIÓN MANUAL', hor_valider:'+ VALIDAR SESIÓN', hor_sessions_today:'SESIONES DEL DÍA', hor_empty:'Sin sesiones',
+      dur_20:'20 min', dur_30:'30 min', dur_40:'40 min', dur_60:'1h', dur_120:'2h 🪨 Cueva',
+    tar_title:'TAREAS DEL DÍA', tar_rotation:'ROTACIÓN AUTOMÁTICA DIARIA', tar_redistrib:'🔄 Redistribuir',
+      tar_ok:'✅ OK', tar_todo:'○ Por hacer',
+      task0:'Vaciar la basura', task1:'Ordenar plataforma & chalecos', task2:'Verificar gasolina & amarres',
+      task3:'Circuitos (dedicado)', task3b:'⚡ 1 monitor dedicado a los circuitos',
+    res_title:'RESERVAS', res_media:'FOTOS & VÍDEOS', res_photo:'📷 FOTO', res_video:'🎥 VÍDEO', res_empty:'Sin medios — pulsa Foto o Vídeo',
+    des_title:'DÍAS DE DESCANSO', des_lbl:'DESCANSO POR MONITOR',
+    chat_title:'CHAT EQUIPO', chat_new:'NUEVO MENSAJE', chat_send:'💬 ENVIAR', chat_msgs:'MENSAJES', chat_empty:'Sin mensajes',
+    prof_title:'MI PERFIL', prof_sessions_lbl:'SESIONES HOY', prof_horas_lbl:'TIEMPO EN EL AGUA',
+      prof_cumul:'📊 ACUMULADO TEMPORADA', prof_cs:'SESIONES', prof_ch:'HORAS AGUA', prof_cc:'CUEVAS',
+      prof_excursions:'EXCURSIONES HOY', prof_excursions_sub:'calculado desde las sesiones',
+      prof_objectif:'Objetivo: 10 excursiones', prof_quote:'✨ Nueva cita',
+      prof_pin_lbl:'🔒 CAMBIAR MI CÓDIGO PIN', prof_pin_warn:'PIN por defecto — cámbialo', prof_change:'🔄 Cambiar de perfil',
+    adm_title:'ADMIN', adm_tag:'ACCESO RESTRINGIDO — TIM & NACHO', adm_stats:'ESTADÍSTICAS EQUIPO', adm_total:'TOTAL HORAS TEMPORADA', adm_add:'AÑADIR MIEMBRO', adm_reset_pin:'RESETEAR PIN',
+    toast_session:'✅ Sesión añadida', toast_redist:'🔄 Redistribución OK', toast_denied:'🔒 Acceso denegado', toast_pin_reset:'🔄 PIN reiniciado',
+    days:['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+    months:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
     days_short:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
-    login_title:'JET SKI TOUR\nSALOU', login_sub:'ESPACE INTERNE MONITEURS', login_label:'MOT DE PASSE', login_btn:'ENTRER',
   },
-  ca: {
-    nav_tiempo:'Temps', nav_equipo:'Equip', nav_horas:'Hores', nav_tareas:'Tasques',
-    nav_reservas:'Reserves', nav_descanso:'Descans', nav_chat:'Xat', nav_perfil:'Perfil', nav_admin:'Admin',
-    met_viento:'VENT', met_olas:'ONES', met_sensacion:'SENSACIÓ', met_good:'Condicions favorables',
-    met_bad:'Condicions desfavorables', met_warn_sea:'Mar agitada', met_connwarn:'Verifiqueu la connexió',
-    met_refresh:'Actualitzar', met_tempair:'TEMPERATURA AIRE',
-    eq_title:"EQUIP DEL DIA", eq_monitores:'MONITORS',
-    hor_title:"HORES A L'AIGUA", hor_sesion:'SESSIÓ', hor_validar:'VALIDAR', hor_sessions:'SESSIONS DEL DIA',
-    tar_title:'TASQUES DEL DIA', tar_rotation:'ROTACIÓ AUTOMÀTICA', tar_redistribuir:'Redistribuir',
-    tar_ok:'OK', tar_todo:'Per fer',
-    task_basura:'Buidar les escombraries', task_chalecos:"Ordenar plataforma & armilles",
-    task_gasolina:'Verificar gasolina & amarraments', task_circuitos:'Circuits (dedicat)',
-    task_circuitos_sub:'⚡ 1 monitor dedicat als circuits',
-    res_foto:'FOTO DEL QUADERN', res_abre:'Obre la càmera', res_camara:'CÀMERA',
-    des_title:'DIES DE DESCANS', des_por:'DESCANS PER MONITOR',
-    chat_title:"XAT DE L'EQUIP", chat_new:'NOU MISSATGE', chat_enviar:'ENVIAR', chat_msgs:'MISSATGES',
-    prof_excursiones:'EXCURSIONS TOTALS', prof_horas:"HORES A L'AIGUA", prof_cuevas:'COVES FETES',
-    prof_objetivo:'Objectiu: 10 excursions', prof_nueva_cita:'Nova cita',
-    prof_cambiar_pin:'CANVIAR EL MEU CODI PIN',
-    adm_moniteurs:'MONITORS', adm_total_horas:'TOTAL HORES TEMPORADA',
+  ca:{
+    l_sub:'ESPAI INTERN EQUIP', l_lbl:'CONTRASENYA', l_btn:'ENTRAR', l_err:'Contrasenya incorrecta',
+    ps_title:'QUI ETS?', ps_sub:'SELECCIONA EL TEU PERFIL',
+    pin_enter:'Introdueix el teu codi PIN', pin_new:'Defineix el teu PIN (4 dígits)', pin_wrong:'❌ PIN incorrecte', pin_ok:'✅ PIN definit!', pin_changed:'✅ PIN canviat!', pin_skip:'Primera connexió — definir PIN', pin_current:'PIN actual', pin_new2:'Nou PIN', pin_confirm:'Confirmar PIN',
+    ac_title:'REGISTRAR SESSIÓ', ac_sub:'MONITOR + DURADA', ac_mon_lbl:'MONITOR', ac_dur_lbl:'DURADA', ac_btn:'✅ VALIDAR SESSIÓ', ac_logout:'↩ Canviar perfil',
+    role_patron:'Patró', role_chef:'Cap', role_monitor:'Monitor', role_accueil:'Recepció',
+    tab0:'Temps', tab1:'Equip', tab2:'Hores', tab3:'Tasques', tab4:'Reserves', tab5:'Descans', tab6:'Xat', tab7:'Perfil', tab8:'Admin',
+    met_loc:"📍 SALOU · MAR MEDITERRANI",
+      met_vent:'VENT', met_vagues:'ONES', met_ressenti:'SENSACIÓ', met_dir:'DIR. VENT', met_uv:'UV', met_humid:'HUMITAT', met_mer:'ESTAT MAR', met_temp:'TEMPERATURA AIRE',
+      met_refresh:'🔄 Actualitzar', met_update:'Actualitzat',
+      met_good:'🟢 MAR TRANQUIL — Condicions favorables', met_warn:'🟡 MAR MODERAT — Vigilància', met_bad:'🔴 MAR AGITAT — Perill', met_err:"⚠️ Dades no disponibles",
+    eq_patrons:'👑 PATRONS', eq_chefs:'🎖️ CAPS DE TEMPORADA', eq_monitors:'🤿 MONITORS',
+      badge_on:'✅ En servei', badge_off:'🏖️ Descans', badge_patron:'👑 Patró',
+      today:'Avui', excursions_lbl:'excursió',
+    hor_title:"HORES A L'AIGUA", hor_chrono:"⏱️ CRONÒMETRE", hor_reset_lbl:'Reiniciat cada matí',
+      hor_start:'▶ INICIAR', hor_stop:'⏸ ATURAR', hor_reset:'↺',
+      hor_session_lbl:'SESSIÓ MANUAL', hor_valider:'+ VALIDAR SESSIÓ', hor_sessions_today:'SESSIONS DEL DIA', hor_empty:'Sense sessions',
+      dur_20:'20 min', dur_30:'30 min', dur_40:'40 min', dur_60:'1h', dur_120:'2h 🪨 Cova',
+    tar_title:'TASQUES DEL DIA', tar_rotation:'ROTACIÓ AUTOMÀTICA DIÀRIA', tar_redistrib:'🔄 Redistribuir',
+      tar_ok:'✅ OK', tar_todo:'○ Per fer',
+      task0:'Buidar les escombraries', task1:"Ordenar plataforma & armilles", task2:'Verificar gasolina & amarraments',
+      task3:'Circuits (dedicat)', task3b:'⚡ 1 monitor dedicat als circuits',
+    res_title:'RESERVES', res_media:'FOTOS & VÍDEOS', res_photo:'📷 FOTO', res_video:'🎥 VÍDEO', res_empty:'Sense contingut — prem Foto o Vídeo',
+    des_title:'DIES DE DESCANS', des_lbl:'DESCANS PER MONITOR',
+    chat_title:'XAT EQUIP', chat_new:'NOU MISSATGE', chat_send:'💬 ENVIAR', chat_msgs:'MISSATGES', chat_empty:'Sense missatges',
+    prof_title:'EL MEU PERFIL', prof_sessions_lbl:'SESSIONS AVUI', prof_horas_lbl:"TEMPS A L'AIGUA",
+      prof_cumul:'📊 ACUMULAT TEMPORADA', prof_cs:'SESSIONS', prof_ch:"HORES AIGUA", prof_cc:'COVES',
+      prof_excursions:'EXCURSIONS AVUI', prof_excursions_sub:'calculat des de les sessions',
+      prof_objectif:'Objectiu: 10 excursions', prof_quote:'✨ Nova cita',
+      prof_pin_lbl:'🔒 CANVIAR EL MEU CODI PIN', prof_pin_warn:'PIN per defecte — recorda canviar-lo', prof_change:'🔄 Canviar de perfil',
+    adm_title:'ADMIN', adm_tag:'ACCÉS RESTRINGIT — TIM & NACHO', adm_stats:"ESTADÍSTIQUES EQUIP", adm_total:'TOTAL HORES TEMPORADA', adm_add:'AFEGIR MEMBRE', adm_reset_pin:'REINICIAR PIN',
+    toast_session:'✅ Sessió afegida', toast_redist:'🔄 Redistribució OK', toast_denied:'🔒 Accés denegat', toast_pin_reset:'🔄 PIN reiniciat',
+    days:['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte'],
+    months:['Gen','Feb','Mar','Abr','Mai','Jun','Jul','Ago','Set','Oct','Nov','Des'],
     days_short:['Dg','Dl','Dm','Dc','Dj','Dv','Ds'],
-    login_title:'JET SKI TOUR\nSALOU', login_sub:'ESPAI INTERN MONITORS', login_label:'CONTRASENYA', login_btn:'ENTRAR',
   }
 };
 
-// ══════════════════════════════════
-// INIT
-// ══════════════════════════════════
-function t(key){ return (i18n[lang]||i18n.es)[key] || key; }
+let lang = 'fr';
+function T(k){ return (DICT[lang]||DICT.fr)[k] ?? (DICT.fr[k] ?? k); }
 
-function setLang(l) {
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let currentUser = null, pendingUser = null;
+let sessions = [], chatMsgs = [], tasksDone = {}, mediaItems = [];
+
+function lk(k){ return 'jst26_'+k; }
+function today(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+
+function save(){
+  const td=today();
+  try{
+    localStorage.setItem(lk('s_'+td), JSON.stringify(sessions));
+    localStorage.setItem(lk('t_'+td), JSON.stringify(tasksDone));
+    localStorage.setItem(lk('chat'), JSON.stringify(chatMsgs));
+    localStorage.setItem(lk('m_'+td), JSON.stringify(mediaItems));
+  }catch(e){}
+}
+function load(){
+  const td=today();
+  try{
+    sessions  = JSON.parse(localStorage.getItem(lk('s_'+td))||'[]');
+    tasksDone = JSON.parse(localStorage.getItem(lk('t_'+td))||'{}');
+    chatMsgs  = JSON.parse(localStorage.getItem(lk('chat'))||'[]');
+    mediaItems= JSON.parse(localStorage.getItem(lk('m_'+td))||'[]');
+  }catch(e){ sessions=[];tasksDone={};chatMsgs=[];mediaItems=[]; }
+}
+function getCumul(n){ try{ return JSON.parse(localStorage.getItem(lk('c_'+n))||'{"s":0,"m":0,"cv":0}'); }catch(e){ return {s:0,m:0,cv:0}; } }
+function saveCumul(n,c){ try{ localStorage.setItem(lk('c_'+n),JSON.stringify(c)); }catch(e){} }
+function getPin(n){ return localStorage.getItem(lk('p_'+n))||'1234'; }
+function setPin(n,p){ localStorage.setItem(lk('p_'+n),p); }
+function hasPin(n){ return !!localStorage.getItem(lk('p_'+n)); }
+function getDevice(){ return localStorage.getItem('jst_dev'); }
+function saveDevice(n){ localStorage.setItem('jst_dev',n); }
+function clearDevice(){ localStorage.removeItem('jst_dev'); }
+function isAdmin(){ return ADMINS.includes(currentUser); }
+function isAccueil(n){ const m=TEAM.find(x=>x.n===n); return m&&ACCUEIL_ROLES.includes(m.r); }
+function isRestToday(m){
+  const ds=T('days_short');
+  const d=ds[new Date().getDay()];
+  return m.rest && m.rest===d;
+}
+
+// ═══════════════════════════════════════════════════════
+// LANG — tout re-render à chaque changement
+// ═══════════════════════════════════════════════════════
+function setLang(l){
   lang = l;
-  document.querySelectorAll('.lang-btn').forEach(b=>{
-    b.classList.toggle('active', b.textContent.trim().toLowerCase()===l);
-  });
-  applyLang();
-  renderAll();
-}
-
-function applyLang() {
-  document.querySelectorAll('[data-i]').forEach(el=>{
-    el.textContent = t(el.dataset.i);
-  });
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===l));
+  updateLoginScreen();
+  updateProfileScreen();
+  updatePinScreen();
+  updateAccueilScreen();
   updateDate();
+  if(currentUser && !isAccueil(currentUser)) rebuildApp();
 }
 
-function updateDate() {
-  const now = new Date();
-  const dayNames = {fr:['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
-                    es:['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
-                    ca:['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte']};
-  const months = {fr:['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
-                  es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-                  ca:['Gen','Feb','Mar','Abr','Mai','Jun','Jul','Ago','Set','Oct','Nov','Des']};
-  document.getElementById('topDay').textContent = (dayNames[lang]||dayNames.es)[now.getDay()];
-  document.getElementById('topDate').textContent = `${now.getDate()} ${(months[lang]||months.es)[now.getMonth()]} ${now.getFullYear()}`;
+function setText(id,v){ const e=document.getElementById(id); if(e) e.textContent=v; }
+function setVal(id,v){ const e=document.getElementById(id); if(e) e.value=v; }
+
+function updateLoginScreen(){
+  setText('l_sub', T('l_sub'));
+  setText('l_lbl', T('l_lbl'));
+  setText('l_btn', T('l_btn'));
+  setText('l_err', T('l_err'));
+}
+function updateProfileScreen(){
+  setText('ps_title', T('ps_title'));
+  setText('ps_sub', T('ps_sub'));
+  buildProfileGrid();
+}
+function updatePinScreen(){
+  if(!pendingUser) return;
+  setText('pinLabel', hasPin(pendingUser)?T('pin_enter'):T('pin_new'));
+  const skip=document.getElementById('pinSkip');
+  if(skip){ skip.textContent=T('pin_skip'); skip.style.display=hasPin(pendingUser)?'none':'block'; }
+}
+function updateAccueilScreen(){
+  setText('ac_title', T('ac_title'));
+  setText('ac_sub', T('ac_sub'));
+  setText('ac_mon_lbl', T('ac_mon_lbl'));
+  setText('ac_dur_lbl', T('ac_dur_lbl'));
+  setText('ac_btn', T('ac_btn'));
+  setText('ac_logout', T('ac_logout'));
+  buildAcDur();
 }
 
-// ══════════════════════════════════
-// CURRENT USER
-// ══════════════════════════════════
-let currentUser = null; // nom du moniteur connecté
+// ═══════════════════════════════════════════════════════
+// DATE
+// ═══════════════════════════════════════════════════════
+function updateDate(){
+  const now=new Date();
+  const dn=T('days'); const mn=T('months');
+  setText('topDay', Array.isArray(dn)?dn[now.getDay()]:'');
+  setText('topDate', `${now.getDate()} ${Array.isArray(mn)?mn[now.getMonth()]:''} ${now.getFullYear()}`);
+}
 
-const ADMINS = ['Tim','Nacho']; // seuls eux voient Admin et peuvent changer de sélecteur
-function isAdmin() { return ADMINS.includes(currentUser); }
+// ═══════════════════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════════════════
+document.getElementById('loginInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
 
-// ══════════════════════════════════
-// LOGIN — ÉTAPE 1 : MOT DE PASSE
-// ══════════════════════════════════
-document.getElementById('loginBtn').addEventListener('click', doLogin);
-document.getElementById('loginInput').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-
-function doLogin() {
-  const val = document.getElementById('loginInput').value;
-  if(val === PASS) {
+function doLogin(){
+  if(document.getElementById('loginInput').value === PASS){
     document.getElementById('loginScreen').style.display='none';
-    const saved = localStorage.getItem('jst_user');
-    if(saved && monitors.find(m=>m.name===saved)) {
-      selectProfile(saved);
-    } else {
-      showProfileSelect();
-    }
+    const saved=getDevice();
+    if(saved && TEAM.find(m=>m.n===saved)) showPin(saved);
+    else showProfiles();
   } else {
-    document.getElementById('loginError').style.display='block';
-    setTimeout(()=>document.getElementById('loginError').style.display='none', 2000);
+    const err=document.getElementById('l_err');
+    err.style.display='block';
+    setTimeout(()=>err.style.display='none',2000);
   }
 }
 
-// ══════════════════════════════════
-// LOGIN — ÉTAPE 2 : CHOIX DU PROFIL
-// ══════════════════════════════════
-function showProfileSelect() {
-  const screen = document.getElementById('profileSelectScreen');
-  screen.style.display='flex';
+// ═══════════════════════════════════════════════════════
+// PROFILES
+// ═══════════════════════════════════════════════════════
+function showProfiles(){
   buildProfileGrid();
+  document.getElementById('profileScreen').style.display='flex';
 }
 
-function buildProfileGrid() {
-  const grid = document.getElementById('profileGrid');
-  const colors = ['#1e3a5a','#7c3d00','#1a3d20','#4a1a4a','#1a2a5a','#2a1e3a','#3a2a0f','#1a1a2e'];
-  grid.innerHTML = monitors.map((m,i)=>`
-    <button class="profile-btn" onclick="selectProfile('${m.name}')">
-      ${m.role==='chef'?'<span class="pb-chef-badge">👑</span>':''}
-      <div class="pb-avatar" style="background:${colors[i%colors.length]}">${m.name[0]}</div>
-      <div class="pb-name">${m.name}</div>
-      <div class="pb-role">${m.role==='chef'?'Chef':'Moniteur'}</div>
+function buildProfileGrid(){
+  const grid=document.getElementById('profileGrid');
+  if(!grid) return;
+  const groups=[
+    {r:'patron', lbl:'eq_patrons'},
+    {r:'chef',   lbl:'eq_chefs'},
+    {r:'monitor',lbl:'eq_monitors'},
+    {r:'accueil',lbl:null, customLbl:'🎫 ACCUEIL'},
+  ];
+  let html='';
+  groups.forEach(g=>{
+    const list=TEAM.filter(m=>m.r===g.r);
+    if(!list.length) return;
+    const lbl=g.lbl?T(g.lbl):g.customLbl;
+    html+=`<div class="profile-section-label">${lbl}</div>`;
+    list.forEach(m=>{
+      const idx=TEAM.indexOf(m);
+      const col=m.c||COLORS[idx%COLORS.length];
+      const rLabel=T('role_'+m.r)||m.r;
+      const badge=m.r==='patron'?'👑':m.r==='chef'?'🎖️':m.aout?'🌟':'';
+      html+=`<button class="profile-btn" onclick="selectProfile('${m.n}')">
+        ${badge?`<span class="pb-badge">${badge}</span>`:''}
+        <div class="pb-avatar" style="background:${col};color:var(--blue-light)">${m.n[0]}</div>
+        <div class="pb-name">${m.n}</div>
+        <div class="pb-role">${rLabel}${m.aout?' · Août':''}</div>
+      </button>`;
+    });
+  });
+  grid.innerHTML=html;
+}
+
+function selectProfile(name){
+  pendingUser=name;
+  document.getElementById('profileScreen').style.display='none';
+  showPin(name);
+}
+
+// ═══════════════════════════════════════════════════════
+// PIN
+// ═══════════════════════════════════════════════════════
+let pinBuf='', pinState='enter'; // enter | setnew | confirm
+let newPinTmp='';
+
+function showPin(name){
+  pendingUser=name;
+  const m=TEAM.find(x=>x.n===name)||{};
+  const idx=TEAM.indexOf(m);
+  const col=m.c||COLORS[idx%COLORS.length];
+  document.getElementById('pinAvatar').style.background=col;
+  document.getElementById('pinAvatar').textContent=name[0];
+  setText('pinName',name.toUpperCase());
+  setText('pinRole',(T('role_'+m.r)||m.r));
+  pinBuf=''; pinState='enter'; newPinTmp='';
+  updatePinScreen();
+  updatePinDots('pd',pinBuf);
+  document.getElementById('pinScreen').style.display='flex';
+}
+
+function PK(k){
+  if(k==='d'){ pinBuf=pinBuf.slice(0,-1); updatePinDots('pd',pinBuf); return; }
+  if(k==='ok'){ processPIN(); return; }
+  if(pinBuf.length<4){ pinBuf+=String(k); updatePinDots('pd',pinBuf); }
+  if(pinBuf.length===4) setTimeout(processPIN,200);
+}
+
+function updatePinDots(prefix,buf){
+  for(let i=0;i<4;i++) document.getElementById(prefix+i)?.classList.toggle('on',i<buf.length);
+}
+
+function processPIN(){
+  const name=pendingUser;
+  if(!hasPin(name)){
+    // set new PIN
+    if(pinBuf.length===4){
+      setPin(name,pinBuf);
+      document.getElementById('pinScreen').style.display='none';
+      enterApp(name);
+      showToast(T('pin_ok'));
+    }
+    return;
+  }
+  if(pinBuf===getPin(name)){
+    document.getElementById('pinScreen').style.display='none';
+    enterApp(name);
+  } else {
+    setText('pinLabel',T('pin_wrong'));
+    pinBuf=''; updatePinDots('pd',pinBuf);
+    setTimeout(()=>{ setText('pinLabel',T('pin_enter')); },1500);
+  }
+}
+
+function pinFirst(){ /* already in set-new mode, just hint */ showToast(T('pin_new')); }
+
+// ═══════════════════════════════════════════════════════
+// ENTER APP
+// ═══════════════════════════════════════════════════════
+function enterApp(name){
+  currentUser=name;
+  saveDevice(name);
+  load();
+  if(isAccueil(name)){
+    showAccueil();
+  } else {
+    setText('topbarName',name);
+    document.getElementById('app').style.display='flex';
+    rebuildApp();
+    fetchMeteo();
+    setInterval(fetchMeteo,5*60*1000);
+    updateDate();
+    setInterval(updateDate,60000);
+    loadTimer();
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// ACCUEIL SCREEN
+// ═══════════════════════════════════════════════════════
+function showAccueil(){
+  updateAccueilScreen();
+  const sel=document.getElementById('acMon');
+  sel.innerHTML=TEAM.filter(m=>m.r==='monitor'||m.r==='chef').map(m=>`<option value="${m.n}">${m.n}</option>`).join('');
+  renderAcSessions();
+  document.getElementById('accueilScreen').style.display='flex';
+}
+
+function buildAcDur(){
+  const sel=document.getElementById('acDur');
+  if(!sel) return;
+  const keys=['dur_20','dur_30','dur_40','dur_60','dur_120'];
+  const vals=[20,30,40,60,120];
+  sel.innerHTML=keys.map((k,i)=>`<option value="${vals[i]}">${T(k)}</option>`).join('');
+}
+
+function acAdd(){
+  const mon=document.getElementById('acMon').value;
+  const dur=parseInt(document.getElementById('acDur').value);
+  const now=new Date();
+  const t=`${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`;
+  sessions.push({mon,dur,t,by:currentUser});
+  const c=getCumul(mon); c.s++; c.m+=dur; if(dur>=120) c.cv=(c.cv||0)+1; saveCumul(mon,c);
+  save(); renderAcSessions(); showToast(T('toast_session'));
+}
+
+function renderAcSessions(){
+  const el=document.getElementById('acList'); if(!el) return;
+  el.innerHTML=sessions.slice(-8).reverse().map(s=>{
+    const lbl=s.dur>=60?`${Math.floor(s.dur/60)}H${String(s.dur%60).padStart(2,'00')||'00'}`:`${s.dur}min`;
+    return `<div class="ac-session-row"><span style="font-weight:700;color:var(--blue-light)">${s.mon}</span><span style="color:var(--text2)">${lbl} · ${s.t}</span></div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// APP — REBUILD COMPLET (appelé à chaque changement de langue)
+// ═══════════════════════════════════════════════════════
+let currentTab = 'meteo';
+
+function rebuildApp(){
+  buildTabs();
+  renderPage(currentTab);
+  const admin=document.querySelector('[data-tab="admin"]');
+  if(admin) admin.style.display=isAdmin()?'flex':'none';
+}
+
+function buildTabs(){
+  const bar=document.getElementById('tabsBar');
+  const tabs=[
+    {id:'meteo',  icon:'🌊', lbl:'tab0'},
+    {id:'equipe', icon:'👥', lbl:'tab1'},
+    {id:'horas',  icon:'⏱️', lbl:'tab2'},
+    {id:'taches', icon:'✅', lbl:'tab3'},
+    {id:'reservas',icon:'📸',lbl:'tab4'},
+    {id:'repos',  icon:'🏖️', lbl:'tab5'},
+    {id:'chat',   icon:'💬', lbl:'tab6'},
+    {id:'profil', icon:'🏄', lbl:'tab7'},
+    {id:'admin',  icon:'🔧', lbl:'tab8'},
+  ];
+  bar.innerHTML=tabs.map(tb=>`
+    <button class="tab${currentTab===tb.id?' active':''}" data-tab="${tb.id}" onclick="switchTab('${tb.id}')"
+      style="${tb.id==='admin'?(isAdmin()?'':'display:none'):''}">
+      ${tb.icon} ${T(tb.lbl)}
     </button>`).join('');
 }
 
-function selectProfile(name) {
-  currentUser = name;
-  localStorage.setItem('jst_user', name);
-  document.getElementById('profileSelectScreen').style.display='none';
-  document.getElementById('app').style.display='flex';
-  document.getElementById('topbarUserName').textContent = name;
-  initApp();
+function switchTab(id){
+  currentTab=id;
+  buildTabs();
+  renderPage(id);
 }
 
-// Bloquer le sélecteur de moniteur dans Horas pour les non-admins
-function lockMonitorSelect() {
-  const sel = document.getElementById('selMonitor');
-  if(!isAdmin()) {
-    // Forcer la valeur sur le moniteur connecté et désactiver
-    sel.value = currentUser;
-    // Désactiver toutes les options sauf la sienne
-    Array.from(sel.options).forEach(opt=>{
-      opt.disabled = opt.value !== currentUser;
-    });
-    sel.style.opacity='0.6'; sel.style.cursor='not-allowed';
-  } else {
-    Array.from(sel.options).forEach(opt=>{ opt.disabled=false; });
-    sel.style.opacity='1'; sel.style.cursor='pointer';
-  }
-  // Pareil pour le chat sender
-  const chatSel = document.getElementById('chatSender');
-  if(!isAdmin()) {
-    chatSel.value = currentUser;
-    Array.from(chatSel.options).forEach(opt=>{ opt.disabled = opt.value !== currentUser; });
-    chatSel.style.opacity='0.6'; chatSel.style.cursor='not-allowed';
-  } else {
-    Array.from(chatSel.options).forEach(opt=>{ opt.disabled=false; });
-    chatSel.style.opacity='1'; chatSel.style.cursor='pointer';
-  }
+function renderPage(id){
+  const mc=document.getElementById('mainContent');
+  const pages={
+    meteo:  pageMeteo,
+    equipe: pageEquipe,
+    horas:  pageHoras,
+    taches: pageTaches,
+    reservas:pageReservas,
+    repos:  pageRepos,
+    chat:   pageChat,
+    profil: pageProfil,
+    admin:  pageAdmin,
+  };
+  mc.innerHTML=(pages[id]||pageMeteo)();
+  // post-render hooks
+  if(id==='profil'){ renderPinChangeSection(); renderProgressDots(); }
 }
 
-// ══════════════════════════════════
-// APP INIT
-// ══════════════════════════════════
-function initApp() {
-  updateDate();
-  assignTasks();
-  renderAll();
-  fetchMeteo();
-  newQuote();
-  buildProgressDots();
-  lockMonitorSelect();
-  // Onglet Admin : visible seulement pour Tim & Nacho
-  document.getElementById('adminTab').style.display = isAdmin() ? 'flex' : 'none';
+// ─── MÉTÉO ───
+function pageMeteo(){
+  return `<div class="page-title">🌊 ${T('tab0')}</div>
+  <div class="card">
+    <div class="meteo-loc">${T('met_loc')}</div>
+    <div class="meteo-grid">
+      <div class="meteo-box"><div class="meteo-val" id="mWind">--</div><div class="meteo-unit">km/h</div><div class="meteo-key">${T('met_vent')}</div></div>
+      <div class="meteo-box"><div class="meteo-val" id="mWave">--</div><div class="meteo-unit">m</div><div class="meteo-key">${T('met_vagues')}</div></div>
+      <div class="meteo-box"><div class="meteo-val" id="mFeel">--</div><div class="meteo-unit">°C</div><div class="meteo-key">${T('met_ressenti')}</div></div>
+    </div>
+    <div class="meteo-status good" id="mStatus">🟢 ...</div>
+    <div class="meteo-extra-grid">
+      <div class="meteo-extra-box"><div class="meteo-extra-val" id="mDir">--</div><div class="meteo-extra-key">${T('met_dir')}</div></div>
+      <div class="meteo-extra-box"><div class="meteo-extra-val" id="mUv">--</div><div class="meteo-extra-key">${T('met_uv')}</div></div>
+      <div class="meteo-extra-box"><div class="meteo-extra-val" id="mHumid">--</div><div class="meteo-extra-key">${T('met_humid')}</div></div>
+      <div class="meteo-extra-box"><div class="meteo-extra-val" id="mMer">--</div><div class="meteo-extra-key">${T('met_mer')}</div></div>
+    </div>
+    <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.4rem" id="mUpdate"></div>
+    <button onclick="fetchMeteo()" style="width:100%;background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:.75rem;font-size:.87rem;color:var(--blue-light);cursor:pointer;margin-top:.55rem">${T('met_refresh')}</button>
+  </div>
+  <div class="card">
+    <div class="card-label">${T('met_temp')}</div>
+    <div class="temp-big" id="mTemp">-- °C</div>
+  </div>`;
 }
 
-function renderAll() {
-  renderMonitors();
-  renderMonitorSelects();
-  renderSessions();
-  renderTasks();
-  renderRest();
-  renderChat();
-  renderPerfil();
-  renderAdmin();
-}
-
-// ══════════════════════════════════
-// TABS
-// ══════════════════════════════════
-function showTab(id) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('page-'+id)?.classList.add('active');
-  document.querySelectorAll('.tab').forEach(t=>{
-    if(t.getAttribute('onclick')?.includes("'"+id+"'")) t.classList.add('active');
-  });
-  if(id==='perfil') renderPerfil();
-}
-
-// ══════════════════════════════════
-// MÉTÉO
-// ══════════════════════════════════
-async function fetchMeteo() {
-  try {
-    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=41.07&longitude=1.13&current=temperature_2m,apparent_temperature,wind_speed_10m,wave_height&wind_speed_unit=kmh');
-    const data = await r.json();
-    const c = data.current;
-    const wind = Math.round(c.wind_speed_10m);
-    const wave = (c.wave_height||0).toFixed(1);
-    const feel = Math.round(c.apparent_temperature);
-    const temp = Math.round(c.temperature_2m);
-    document.getElementById('metWind').textContent = wind;
-    document.getElementById('metWave').textContent = wave;
-    document.getElementById('metFeel').textContent = feel;
-    document.getElementById('metTemp').textContent = temp + ' °C';
-    document.getElementById('metWarn').style.display = 'none';
-    const status = document.getElementById('metStatus');
-    if(wind < 20 && wave < 0.5) {
-      status.className='meteo-status good'; status.innerHTML='🟢 '+t('met_good');
-    } else if(wind > 35 || wave > 1.2) {
-      status.className='meteo-status bad'; status.innerHTML='🔴 '+t('met_bad');
-    } else {
-      status.className='meteo-status warn'; status.innerHTML='🟡 '+t('met_warn_sea');
+const LAT=41.0748,LON=1.1340;
+async function fetchMeteo(){
+  if(currentTab!=='meteo') return;
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,relative_humidity_2m,uv_index,wave_height&wind_speed_unit=kmh&timezone=Europe%2FMadrid`);
+    const d=await r.json(); const c=d.current;
+    const wind=Math.round(c.wind_speed_10m), wave=parseFloat((c.wave_height||0).toFixed(1));
+    setText('mWind',wind); setText('mWave',wave.toFixed(1)); setText('mFeel',Math.round(c.apparent_temperature));
+    setText('mTemp',Math.round(c.temperature_2m)+' °C');
+    setText('mDir',['N','NE','E','SE','S','SO','O','NO'][Math.round((c.wind_direction_10m||0)/45)%8]);
+    setText('mUv',Math.round(c.uv_index||0)); setText('mHumid',Math.round(c.relative_humidity_2m||0)+'%');
+    setText('mMer',wave<0.4?'🟢':wave<1?'🟡':'🔴');
+    const now=new Date(); setText('mUpdate',`${T('met_update')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`);
+    const st=document.getElementById('mStatus');
+    if(st){
+      if(wind<20&&wave<0.6){st.className='meteo-status good';st.textContent=T('met_good');}
+      else if(wind>35||wave>1.5){st.className='meteo-status bad';st.textContent=T('met_bad');}
+      else{st.className='meteo-status warn';st.textContent=T('met_warn');}
     }
-  } catch(e) {
-    document.getElementById('metWarn').style.display='block';
-  }
+  }catch(e){ const st=document.getElementById('mStatus'); if(st){st.className='meteo-status warn';st.textContent=T('met_err');} }
 }
 
-// ══════════════════════════════════
-// ÉQUIPE
-// ══════════════════════════════════
-const avatarColors = ['#1e3a5a','#7c3d00','#1a3d20','#4a1a4a','#1a2a5a','#2a1e3a','#3a2a0f','#1a1a2e'];
+// ─── ÉQUIPE ───
+function getTotals(){ const t={}; sessions.forEach(s=>{ t[s.mon]=(t[s.mon]||0)+s.dur; }); return t; }
 
-function renderMonitors() {
-  const list = document.getElementById('monitorList');
-  const totals = getSessionTotals();
-  list.innerHTML = monitors.map((m,i)=>{
-    const mins = totals[m.name]||0;
-    const hStr = `${Math.floor(mins/60)}H${String(mins%60).padStart(2,'0')}`;
-    const restDay = m.rest || (lang==='fr'?'Aucun':lang==='ca'?'Cap':'Ninguno');
-    const isOff = isRestToday(m);
-    return `<div class="monitor-card">
-      <div class="avatar" style="background:${avatarColors[i%avatarColors.length]};color:var(--blue-light)">${m.name[0]}</div>
-      <div class="monitor-info">
-        <div class="monitor-name">${m.name}</div>
-        <div class="monitor-role">${m.role==='chef'?'👑':'🤿'} ${m.role==='chef'?'Chef':'Moniteur'}</div>
-        <span class="monitor-badge ${isOff?'off':''}">${isOff?(lang==='fr'?'Repos':lang==='ca'?'Descans':'Descanso'):(lang==='fr'?'En service':lang==='ca'?'En servei':'En servicio')}</span>
-      </div>
-      <div class="monitor-hours">
-        <div class="monitor-hours-val">${hStr}</div>
-        <div class="monitor-hours-lbl">${lang==='fr'?"Aujourd'hui":lang==='ca'?'Avui':'Hoy'}</div>
-        <div class="monitor-del" onclick="deleteMonitor(${i})">🗑️</div>
-      </div>
+function pageEquipe(){
+  const totals=getTotals();
+  const groups=[
+    {r:'patron',lbl:'eq_patrons',pat:true},
+    {r:'chef',  lbl:'eq_chefs',  pat:false},
+    {r:'monitor',lbl:'eq_monitors',pat:false},
+    {r:'accueil',lbl:null,pat:false,customLbl:'🎫 '+T('role_accueil').toUpperCase()},
+  ];
+  let html='';
+  groups.forEach(g=>{
+    const list=TEAM.filter(m=>m.r===g.r);
+    if(!list.length) return;
+    const lbl=g.lbl?T(g.lbl):g.customLbl;
+    html+=`<div class="card"><div class="card-label">${lbl}</div>`;
+    list.forEach(m=>{
+      const mins=totals[m.n]||0;
+      const hStr=`${Math.floor(mins/60)}H${String(mins%60).padStart(2,'00')}`;
+      const excu=sessions.filter(s=>s.mon===m.n).length;
+      const off=isRestToday(m);
+      const cardCls=g.pat?'pat':'mon';
+      const bdg=g.pat?`<span class="badge gold">${T('badge_patron')}</span>`:
+                      `<span class="badge ${off?'off':'on'}">${off?T('badge_off'):T('badge_on')}</span>`;
+      const rLbl=T('role_'+m.r)||m.r;
+      const extra=m.senior?' · Sénior':m.aout?' · Août':'';
+      html+=`<div class="member-card ${cardCls}">
+        <div class="avatar" style="background:${m.c||'#1e3a5a'};color:var(--blue-light)">${m.n[0]}</div>
+        <div class="member-info">
+          <div class="member-name">${m.n}</div>
+          <div class="member-role">${rLbl}${extra}</div>
+          ${bdg}
+        </div>
+        <div class="member-stats">
+          <div class="member-time">${hStr}</div>
+          <div class="member-excursions">${excu} ${T('excursions_lbl')}${excu>1?'s':''}</div>
+          ${isAdmin()&&m.r!=='patron'?`<div style="font-size:.8rem;color:var(--text3);cursor:pointer;margin-top:.2rem" onclick="delMember('${m.n}')">🗑️</div>`:''}
+        </div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  return html;
+}
+
+function delMember(name){
+  if(!isAdmin()){showToast(T('toast_denied'));return;}
+  const idx=TEAM.findIndex(m=>m.n===name);
+  if(idx>-1&&TEAM[idx].r!=='patron') TEAM.splice(idx,1);
+  renderPage('equipe');
+}
+
+// ─── HORAS ───
+let timerSec=0,timerOn=false,timerIv=null;
+
+function loadTimer(){
+  const td=today();
+  timerSec=parseInt(localStorage.getItem(lk('ti_'+td))||'0');
+  const on=localStorage.getItem(lk('tr_'+td))==='1';
+  const started=parseInt(localStorage.getItem(lk('ts_'+td))||'0');
+  if(on&&started) timerSec+=Math.floor((Date.now()-started)/1000);
+  if(on) startTi();
+}
+function saveTi(on){
+  const td=today();
+  localStorage.setItem(lk('ti_'+td),timerSec);
+  localStorage.setItem(lk('tr_'+td),on?'1':'0');
+  if(on) localStorage.setItem(lk('ts_'+td),Date.now());
+  else localStorage.removeItem(lk('ts_'+td));
+}
+function startTi(){ timerOn=true; clearInterval(timerIv); timerIv=setInterval(()=>{ timerSec++; updateTimerDisplay(); saveTi(true); },1000); }
+function timerStart(){ if(timerOn)return; startTi(); saveTi(true); }
+function timerStop(){ if(!timerOn)return; timerOn=false; clearInterval(timerIv); saveTi(false); }
+function timerReset(){ timerStop(); timerSec=0; updateTimerDisplay(); saveTi(false); }
+function updateTimerDisplay(){
+  const h=Math.floor(timerSec/3600),m=Math.floor((timerSec%3600)/60),s=timerSec%60;
+  setText('timerDisp',`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'00')}`);
+}
+
+function buildDurOpts(){
+  return [20,30,40,60,120].map((v,i)=>`<option value="${v}">${T(['dur_20','dur_30','dur_40','dur_60','dur_120'][i])}</option>`).join('');
+}
+function buildMonOpts(){
+  const list=isAdmin()?TEAM.filter(m=>m.r==='monitor'||m.r==='chef'):[TEAM.find(m=>m.n===currentUser)].filter(Boolean);
+  return list.map(m=>`<option value="${m.n}">${m.n}</option>`).join('');
+}
+
+function pageHoras(){
+  return `<div class="page-title">⏱️ ${T('hor_title')}</div>
+
+  <div class="card">
+    <div class="card-label">${T('hor_session_lbl')}</div>
+    <div class="sel-row">
+      <select class="styled-select" id="selMon">${buildMonOpts()}</select>
+      <select class="styled-select" id="selDur">${buildDurOpts()}</select>
+    </div>
+    <button class="btn-primary" onclick="addSession()">${T('hor_valider')}</button>
+  </div>
+  <div class="card">
+    <div class="card-label">${T('hor_sessions_today')}</div>
+    ${renderSessionsList()}
+  </div>`;
+}
+
+function renderSessionsList(){
+  if(!sessions.length) return `<div style="color:var(--text3);text-align:center;padding:.9rem;font-size:.82rem">${T('hor_empty')}</div>`;
+  return sessions.map((s,i)=>{
+    const lbl=s.dur>=60?`${Math.floor(s.dur/60)}H${String(s.dur%60).padStart(2,'00')||'00'}`:`${s.dur}MIN`;
+    return `<div class="session-row">
+      <div><div class="session-name">${s.mon}</div><div class="session-meta">${s.dur}min · ${s.t}${s.by&&s.by!==s.mon?' · '+s.by:''}</div></div>
+      <div style="display:flex;align-items:center"><span class="session-dur">${lbl}</span><span class="session-del" onclick="delSession(${i})">✕</span></div>
     </div>`;
   }).join('');
 }
 
-function isRestToday(m) {
-  const d = new Date().getDay();
-  const dShort = (i18n[lang]||i18n.es).days_short[d];
-  return m.rest && m.rest === dShort;
-}
-
-function deleteMonitor(i) {
-  if(!isAdmin()) { showToast('🔒 Accès refusé'); return; }
-  if(monitors[i].name==='Tim'||monitors[i].name==='Nacho') return;
-  monitors.splice(i,1);
-  renderAll();
-}
-
-function getSessionTotals() {
-  const t={};
-  sessions.forEach(s=>{ t[s.monitor]=(t[s.monitor]||0)+s.duration; });
-  return t;
-}
-
-// ══════════════════════════════════
-// HORAS
-// ══════════════════════════════════
-function renderMonitorSelects() {
-  const opts = monitors.map(m=>`<option value="${m.name}">${m.name}</option>`).join('');
-  document.getElementById('selMonitor').innerHTML = opts;
-  document.getElementById('chatSender').innerHTML = opts;
-  if(currentUser) lockMonitorSelect();
-}
-
-function addSession() {
-  const mon = isAdmin() ? document.getElementById('selMonitor').value : currentUser;
-  const dur = parseInt(document.getElementById('selDuration').value);
-  const now = new Date();
-  const hStr = `${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`;
-  sessions.push({monitor:mon, duration:dur, time:hStr});
-  renderSessions();
-  renderMonitors();
-  renderPerfil();
-  showToast('✅ Session ajoutée');
-}
-
-function renderSessions() {
-  const list = document.getElementById('sessionList');
-  if(!sessions.length){ list.innerHTML=`<div style="color:var(--text3);text-align:center;padding:1rem;font-size:.85rem">${lang==='fr'?'Aucune session':'Sin sesiones'}</div>`; return; }
-  list.innerHTML = sessions.map((s,i)=>{
-    const label = s.duration>=60?`${Math.floor(s.duration/60)}H${String(s.duration%60).padStart(2,'0')||'00'}MIN`:`${s.duration}MIN`;
-    return `<div class="session-item">
-      <div><div class="session-name">${s.monitor}</div><div class="session-meta">${s.duration}min · ${s.time}</div></div>
-      <div style="display:flex;align-items:center">
-        <span class="session-dur">${label}</span>
-        <span class="session-del" onclick="delSession(${i})">✕</span>
-      </div>
-    </div>`;
-  }).join('');
+function addSession(){
+  const mon=document.getElementById('selMon')?.value||(isAdmin()?TEAM[4].n:currentUser);
+  const dur=parseInt(document.getElementById('selDur')?.value||'30');
+  const now=new Date();
+  const t=`${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`;
+  sessions.push({mon,dur,t,by:currentUser});
+  const c=getCumul(mon); c.s++; c.m+=dur; if(dur>=120) c.cv=(c.cv||0)+1; saveCumul(mon,c);
+  save(); renderPage('horas'); showToast(T('toast_session'));
 }
 
 function delSession(i){
-  if(!isAdmin() && sessions[i].monitor !== currentUser){ showToast('🔒 Accès refusé'); return; }
-  sessions.splice(i,1); renderSessions(); renderMonitors(); renderPerfil();
+  if(!isAdmin()&&sessions[i].mon!==currentUser){showToast(T('toast_denied'));return;}
+  const s=sessions[i];
+  const c=getCumul(s.mon); c.s=Math.max(0,c.s-1); c.m=Math.max(0,c.m-s.dur);
+  if(s.dur>=120) c.cv=Math.max(0,(c.cv||0)-1); saveCumul(s.mon,c);
+  sessions.splice(i,1); save(); renderPage('horas');
 }
 
-// ══════════════════════════════════
-// TAREAS
-// ══════════════════════════════════
-function assignTasks() {
-  tasks.forEach((task,i)=>{ if(!taskAssign[i]) taskAssign[i]=monitors[i%monitors.length]?.name||'Tim'; });
+// ─── TÂCHES ───
+const TASKS=[
+  {icon:'🗑️',k:'task0',sk:''},
+  {icon:'🔴',k:'task1',sk:''},
+  {icon:'⛽',k:'task2',sk:''},
+  {icon:'🏁',k:'task3',sk:'task3b'},
+];
+let taskAssign={};
+
+function getActiveM(){ return TEAM.filter(m=>m.r==='monitor'||m.r==='chef'); }
+function getDailyAssign(){
+  const dk=today(); const saved=localStorage.getItem(lk('ta_'+dk));
+  if(saved) return JSON.parse(saved);
+  const dayN=Math.floor((new Date()-new Date('2026-01-01'))/(864e5));
+  const active=getActiveM(); const a={};
+  TASKS.forEach((_,i)=>a[i]=active[(dayN+i)%active.length]?.n||'Tim');
+  localStorage.setItem(lk('ta_'+dk),JSON.stringify(a)); return a;
 }
 
-function renderTasks() {
-  const list = document.getElementById('taskList');
-  list.innerHTML = tasks.map((task,i)=>{
-    const name = t(task.key);
-    const sub = task.sub ? t(task.sub) : '';
-    return `<div class="task-card">
+function pageTaches(){
+  taskAssign=getDailyAssign();
+  const d=new Date();
+  const ds=T('days_short'); const ms=T('months');
+  const dayLabel=`📅 ${Array.isArray(ds)?ds[d.getDay()]:''} ${d.getDate()} ${Array.isArray(ms)?ms[d.getMonth()]:''} ${d.getFullYear()}`;
+  let html=`<div class="page-title">✅ ${T('tar_title')}</div>
+  <div class="card">
+    <div class="card-label">${T('tar_rotation')}</div>
+    <div class="date-badge">${dayLabel}</div>`;
+  TASKS.forEach((task,i)=>{
+    const done=!!tasksDone[i];
+    html+=`<div class="task-card">
       <span class="task-icon">${task.icon}</span>
       <div class="task-info">
-        <div class="task-name">${name}</div>
-        ${sub?`<div class="task-sub">${sub}</div>`:''}
+        <div class="task-name">${T(task.k)}</div>
+        ${task.sk?`<div class="task-sub">${T(task.sk)}</div>`:''}
       </div>
       <div class="task-right">
         <div class="task-assigned">👤 ${taskAssign[i]||'?'}</div>
-        <button class="task-btn ${task.done?'done':'todo'}" onclick="toggleTask(${i})">
-          ${task.done?'✅ '+t('tar_ok'):'○ '+t('tar_todo')}
-        </button>
+        <button class="task-btn ${done?'done':'todo'}" onclick="toggleTask(${i})">${done?T('tar_ok'):T('tar_todo')}</button>
       </div>
     </div>`;
-  }).join('');
+  });
+  if(isAdmin()) html+=`<button class="btn-secondary" onclick="redistTasks()" style="margin-top:.4rem">${T('tar_redistrib')}</button>`;
+  html+='</div>';
+  return html;
 }
 
-function toggleTask(i){ tasks[i].done=!tasks[i].done; renderTasks(); }
-
-function redistributeTasks() {
-  const shuffled=[...monitors].sort(()=>Math.random()-.5);
-  tasks.forEach((t,i)=>{ taskAssign[i]=shuffled[i%shuffled.length]?.name||'Tim'; t.done=false; });
-  renderTasks(); showToast('🔄 Redistribution OK');
+function toggleTask(i){ tasksDone[i]=!tasksDone[i]; save(); renderPage('taches'); }
+function redistTasks(){
+  if(!isAdmin()){showToast(T('toast_denied'));return;}
+  const a=getActiveM().sort(()=>Math.random()-.5);
+  const assign={};
+  TASKS.forEach((_,i)=>assign[i]=a[i%a.length]?.n||'Tim');
+  tasksDone={};
+  localStorage.setItem(lk('ta_'+today()),JSON.stringify(assign));
+  save(); renderPage('taches'); showToast(T('toast_redist'));
 }
 
-// ══════════════════════════════════
-// RESERVAS
-// ══════════════════════════════════
-function handlePhoto(input) {
-  const file = input.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e=>{
-    const img = document.getElementById('reservaImg');
-    const ph = document.querySelector('.camera-placeholder');
-    const txt = document.querySelector('.camera-txt');
-    img.src=e.target.result; img.style.display='block';
-    if(ph) ph.style.display='none'; if(txt) txt.style.display='none';
+// ─── RÉSERVATIONS ───
+function pageReservas(){
+  let gallery='';
+  if(!mediaItems.length){
+    gallery=`<div class="media-empty">${T('res_empty')}</div>`;
+  } else {
+    gallery=`<div class="media-gallery">${mediaItems.map((m,i)=>{
+      const media=m.type==='photo'
+        ?`<img src="${m.src}" alt="">`
+        :`<video src="${m.src}" muted playsinline onclick="this.paused?this.play():this.pause()"></video>`;
+      return `<div class="media-thumb">${media}
+        <span class="media-badge">${m.type==='photo'?'📷':'🎥'} ${m.t}</span>
+        <button class="media-del" onclick="delMedia(${i})">✕</button>
+      </div>`;
+    }).join('')}</div>`;
+  }
+  return `<div class="page-title">📸 ${T('res_title')}</div>
+  <div class="card">
+    <div class="card-label">${T('res_media')}</div>
+    <div class="media-btns">
+      <button class="media-btn photo" onclick="document.getElementById('inputPhoto').click()">${T('res_photo')}</button>
+      <button class="media-btn video" onclick="document.getElementById('inputVideo').click()">${T('res_video')}</button>
+    </div>
+    ${gallery}
+  </div>`;
+}
+
+function addMedia(input,type){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const now=new Date();
+    mediaItems.push({type,src:e.target.result,t:`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`,by:currentUser});
+    save(); renderPage('reservas'); showToast(type==='photo'?'📷 +1':'🎥 +1');
   };
   reader.readAsDataURL(file);
+  input.value='';
 }
 
-// ══════════════════════════════════
-// DESCANSO
-// ══════════════════════════════════
-function renderRest() {
-  const daysArr = (i18n[lang]||i18n.es).days_short;
-  const list = document.getElementById('restList');
-  list.innerHTML = monitors.map((m,mi)=>`
-    <div class="rest-card">
-      <div style="min-width:64px">
-        <div class="rest-name">${m.name}</div>
-        <div class="rest-day-lbl">${m.rest||'—'}</div>
-      </div>
-      <div class="days-row">
-        ${daysArr.map(d=>`<button class="day-pill ${m.rest===d?'selected':''}" onclick="setRest(${mi},'${d}')">${d}</button>`).join('')}
-      </div>
-    </div>`).join('');
+function delMedia(i){ mediaItems.splice(i,1); save(); renderPage('reservas'); }
+
+// ─── REPOS ───
+function pageRepos(){
+  const ds=T('days_short');
+  const dArr=Array.isArray(ds)?ds:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  let html=`<div class="page-title">🏖️ ${T('des_title')}</div>
+  <div class="card"><div class="card-label">${T('des_lbl')}</div>`;
+  TEAM.filter(m=>m.r!=='patron').forEach(m=>{
+    html+=`<div class="rest-card">
+      <div><div class="rest-name">${m.n}</div><div class="rest-day">${m.rest||'—'}</div></div>
+      <div class="days-row">${dArr.map(d=>`<button class="day-pill ${m.rest===d?'on':''}" onclick="setRest('${m.n}','${d}')">${d.slice(0,2)}</button>`).join('')}</div>
+    </div>`;
+  });
+  html+='</div>';
+  return html;
 }
 
-function setRest(mi, day) {
-  // Non-admins ne peuvent modifier que leur propre repos
-  if(!isAdmin() && monitors[mi].name !== currentUser) {
-    showToast('🔒 Accès refusé'); return;
-  }
-  monitors[mi].rest = monitors[mi].rest===day?'':day;
-  renderRest(); renderMonitors();
+function setRest(name,day){
+  const m=TEAM.find(x=>x.n===name);
+  if(!m) return;
+  if(!isAdmin()&&name!==currentUser){showToast(T('toast_denied'));return;}
+  m.rest=m.rest===day?'':day;
+  renderPage('repos');
 }
 
-// ══════════════════════════════════
-// CHAT
-// ══════════════════════════════════
-function sendChat() {
-  const sender = isAdmin() ? document.getElementById('chatSender').value : currentUser;
-  const msg = document.getElementById('chatMsg').value.trim();
-  if(!msg) return;
-  const now=new Date();
-  chatMessages.push({sender,msg,time:`${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`});
-  document.getElementById('chatMsg').value='';
-  renderChat();
-}
-
-function renderChat() {
-  const list = document.getElementById('chatList');
-  if(!chatMessages.length){ list.innerHTML=`<div style="color:var(--text3);text-align:center;padding:1rem;font-size:.85rem">...</div>`; return; }
-  list.innerHTML = chatMessages.map((c,i)=>`
+// ─── CHAT ───
+function pageChat(){
+  const senderOpts=TEAM.map(m=>`<option value="${m.n}"${m.n===currentUser?' selected':''}>${m.n}</option>`).join('');
+  let msgs='';
+  if(!chatMsgs.length) msgs=`<div style="color:var(--text3);text-align:center;padding:.9rem;font-size:.82rem">${T('chat_empty')}</div>`;
+  else msgs=chatMsgs.map((c,i)=>`
     <div class="chat-msg">
-      <div class="chat-msg-header">
-        <div class="chat-avatar" style="background:#1e3a5a;color:var(--blue-light)">${c.sender[0]}</div>
-        <span class="chat-sender">${c.sender}</span>
-        <span class="chat-time">${c.time}</span>
-      </div>
+      <div class="chat-header"><div class="chat-av">${c.from[0]}</div><span class="chat-sender">${c.from}</span><span class="chat-time">${c.t}</span></div>
       <div class="chat-text">${c.msg}</div>
       <span class="chat-del" onclick="delChat(${i})">✕</span>
     </div>`).join('');
+  return `<div class="page-title">💬 ${T('chat_title')}</div>
+  <div class="card">
+    <div class="card-label">${T('chat_new')}</div>
+    ${isAdmin()?`<select class="styled-select" id="chatFrom" style="width:100%;margin-bottom:.55rem">${senderOpts}</select>`:''}
+    <textarea class="chat-input" id="chatMsg" rows="3" placeholder="Message..."></textarea>
+    <button class="btn-primary" onclick="sendChat()">${T('chat_send')}</button>
+  </div>
+  <div class="card">
+    <div class="card-label">${T('chat_msgs')}</div>
+    ${msgs}
+  </div>`;
 }
 
+function sendChat(){
+  const from=isAdmin()?(document.getElementById('chatFrom')?.value||currentUser):currentUser;
+  const msg=document.getElementById('chatMsg')?.value.trim(); if(!msg) return;
+  const now=new Date();
+  chatMsgs.push({from,msg,t:`${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`});
+  save(); renderPage('chat');
+}
 function delChat(i){
-  if(!isAdmin() && chatMessages[i].sender !== currentUser){ showToast('🔒 Accès refusé'); return; }
-  chatMessages.splice(i,1); renderChat();
+  if(!isAdmin()&&chatMsgs[i].from!==currentUser){showToast(T('toast_denied'));return;}
+  chatMsgs.splice(i,1); save(); renderPage('chat');
 }
 
-// ══════════════════════════════════
-// PERFIL
-// ══════════════════════════════════
-function renderPerfil() {
-  const totals = getSessionTotals();
-  const user = currentUser || 'Tim';
-  const userMins = totals[user]||0;
-  const sessions_count = sessions.filter(s=>s.monitor===user).length;
-  const h = Math.floor(userMins/60), m = userMins%60;
-  document.getElementById('profSessions').textContent = sessions_count;
-  document.getElementById('profHoras').textContent = `${h}H${String(m).padStart(2,'0')}`;
-  document.getElementById('profCuevas').textContent = Math.max(0, todayExcursions-1);
-  document.getElementById('todayCount').textContent = todayExcursions;
-  // Nom & rôle
-  const mon = monitors.find(m=>m.name===user)||monitors[0];
-  document.getElementById('profName').textContent = user.toUpperCase();
-  document.getElementById('profRole').textContent = mon?.role==='chef'?'👑 CHEF':'🤿 MONITEUR';
-  const colors=['#1e3a5a','#7c3d00','#1a3d20','#4a1a4a','#1a2a5a','#2a1e3a','#3a2a0f','#1a1a2e'];
-  const idx = monitors.findIndex(m=>m.name===user);
-  document.getElementById('profAvatar').style.background = colors[idx%colors.length]||'#1e3a5a';
-  document.getElementById('profAvatar').textContent = user[0];
-  buildProgressDots();
-  document.getElementById('pinWarn').style.display = userPIN==='1234'?'inline-block':'none';
-}
-
-function buildProgressDots() {
-  const wrap = document.getElementById('progressDots');
-  wrap.innerHTML = Array.from({length:10},(_,i)=>`<div class="dot ${i<todayExcursions?'active':''}"></div>`).join('');
-}
-
-function changeExcursion(delta) {
-  todayExcursions = Math.max(0, Math.min(10, todayExcursions+delta));
-  renderPerfil();
-}
-
-const quotesArr = quotes;
+// ─── PROFIL ───
+const QUOTES=[
+  "Ce que tu fais chaque matin sur l'eau, peu de gens osent en rêver.",
+  "La mer ne ment jamais. Ni toi non plus.",
+  "L'équipe qui rit ensemble, gagne ensemble.",
+  "Salou ne dort pas. Et vous non plus.",
+  "On ne compte pas les heures, on les vit.",
+];
 let quoteIdx=0;
-function newQuote() {
-  quoteIdx = (quoteIdx+1)%quotesArr.length;
-  document.getElementById('quoteText').textContent = '"'+quotesArr[quoteIdx]+'"';
+
+// PIN change state
+let cpBuf='', cpState='current', cpNew='';
+
+function pageProfil(){
+  const u=currentUser;
+  const m=TEAM.find(x=>x.n===u)||{c:'#1e3a5a',r:'monitor'};
+  const rLbl={patron:'👑 '+T('role_patron'),chef:'🎖️ '+T('role_chef'),monitor:'🤿 '+T('role_monitor'),accueil:'🎫 '+T('role_accueil')}[m.r]||'';
+  const userSess=sessions.filter(s=>s.mon===u);
+  const mins=userSess.reduce((a,s)=>a+s.dur,0);
+  const h=Math.floor(mins/60),mm=mins%60;
+  const excursions=userSess.length;
+  const cumul=getCumul(u);
+  const pinWarnStyle=hasPin(u)?'display:none':'display:inline-block';
+
+  return `<div class="page-title">🏄 ${T('prof_title')}</div>
+  <div class="prof-hero">
+    <div class="prof-avatar" style="background:${m.c||'#1e3a5a'};color:var(--blue-light)">${u[0]}</div>
+    <div class="prof-name">${u.toUpperCase()}</div>
+    <div class="prof-role">${rLbl}</div>
+    <div class="pin-warn" style="${pinWarnStyle}">⚠️ ${T('prof_pin_warn')}</div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-box blue"><div class="stat-val">${userSess.length}</div><div class="stat-lbl">${T('prof_sessions_lbl')}</div></div>
+    <div class="stat-box orange"><div class="stat-val">${h}H${String(mm).padStart(2,'0')}</div><div class="stat-lbl">${T('prof_horas_lbl')}</div></div>
+  </div>
+  <div class="cumul-section">
+    <div class="cumul-title">${T('prof_cumul')}</div>
+    <div class="cumul-grid">
+      <div class="cumul-box"><div class="cumul-val">${cumul.s}</div><div class="cumul-lbl">${T('prof_cs')}</div></div>
+      <div class="cumul-box"><div class="cumul-val">${Math.floor(cumul.m/60)}H</div><div class="cumul-lbl">${T('prof_ch')}</div></div>
+      <div class="cumul-box"><div class="cumul-val">${cumul.cv||0}</div><div class="cumul-lbl">${T('prof_cc')}</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">${T('prof_excursions')}</div>
+    <div class="excursion-display">
+      <div class="excursion-count" id="excCount">${excursions}</div>
+      <div class="excursion-sub">${T('prof_excursions_sub')}</div>
+    </div>
+    <div class="progress-dots" id="progDots"></div>
+    <div class="progress-lbl">${T('prof_objectif')}</div>
+  </div>
+  <div class="quote-box"><div id="quoteText">"${QUOTES[quoteIdx]}"</div><div class="quote-attr">— L'ÉQUIPE JST</div></div>
+  <button class="btn-secondary" onclick="newQuote()" style="margin-bottom:.9rem">${T('prof_quote')}</button>
+  <div class="card pin-change-section">
+    <div class="card-label" id="cpLabel">${T('prof_pin_lbl')}</div>
+    <div style="text-align:center;font-size:.78rem;color:var(--text3);margin-bottom:.3rem" id="cpSub">${T('pin_current')}</div>
+    <div class="pin-dots" id="cpDots">
+      <div class="pin-dot" id="cp0"></div><div class="pin-dot" id="cp1"></div>
+      <div class="pin-dot" id="cp2"></div><div class="pin-dot" id="cp3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="CP(1)">1</button><button class="pin-key" onclick="CP(2)">2</button><button class="pin-key" onclick="CP(3)">3</button>
+      <button class="pin-key" onclick="CP(4)">4</button><button class="pin-key" onclick="CP(5)">5</button><button class="pin-key" onclick="CP(6)">6</button>
+      <button class="pin-key" onclick="CP(7)">7</button><button class="pin-key" onclick="CP(8)">8</button><button class="pin-key" onclick="CP(9)">9</button>
+      <button class="pin-key" onclick="CP('d')">⌫</button><button class="pin-key" onclick="CP(0)">0</button><button class="pin-key" onclick="CP('ok')">OK</button>
+    </div>
+  </div>
+  <div class="card"><button class="btn-secondary" onclick="changeProfile()">${T('prof_change')}</button></div>`;
 }
 
-// PIN
-let pinState='current', pinBuf='', newPinBuf='';
-function pinKey(k) {
-  if(k==='del'){ pinBuf=pinBuf.slice(0,-1); updatePinDots(); return; }
-  if(k==='ok') { processPIN(); return; }
-  if(pinBuf.length<4) { pinBuf+=k; updatePinDots(); }
-  if(pinBuf.length===4) setTimeout(processPIN,200);
+function renderPinChangeSection(){ cpBuf=''; cpState='current'; cpNew=''; updateCpDots(); }
+function updateCpDots(){ for(let i=0;i<4;i++) document.getElementById('cp'+i)?.classList.toggle('on',i<cpBuf.length); }
+function CP(k){
+  if(k==='d'){cpBuf=cpBuf.slice(0,-1);updateCpDots();return;}
+  if(k==='ok'){processCP();return;}
+  if(cpBuf.length<4){cpBuf+=String(k);updateCpDots();}
+  if(cpBuf.length===4) setTimeout(processCP,200);
 }
-function updatePinDots(){
-  for(let i=0;i<4;i++) document.getElementById('pd'+i)?.classList.toggle('filled',i<pinBuf.length);
-}
-function processPIN(){
-  if(pinState==='current'){
-    if(pinBuf===userPIN){ pinState='new'; document.getElementById('pinLabel').textContent='Entrez le nouveau PIN'; pinBuf=''; updatePinDots(); }
-    else { document.getElementById('pinLabel').textContent='❌ PIN incorrect'; pinBuf=''; updatePinDots(); setTimeout(()=>document.getElementById('pinLabel').textContent='Entrez votre PIN actuel',1500); }
-  } else if(pinState==='new'){
-    newPinBuf=pinBuf; pinState='confirm'; document.getElementById('pinLabel').textContent='Confirmez le nouveau PIN'; pinBuf=''; updatePinDots();
-  } else if(pinState==='confirm'){
-    if(pinBuf===newPinBuf){ userPIN=pinBuf; pinState='current'; pinBuf=''; newPinBuf=''; updatePinDots(); document.getElementById('pinLabel').textContent='Entrez votre PIN actuel'; showToast('✅ PIN changé !'); renderPerfil(); }
-    else { document.getElementById('pinLabel').textContent='❌ PINs différents'; pinBuf=''; newPinBuf=''; pinState='current'; updatePinDots(); }
+function processCP(){
+  if(cpState==='current'){
+    if(cpBuf===getPin(currentUser)){cpState='new';cpBuf='';setText('cpSub',T('pin_new2'));updateCpDots();}
+    else{setText('cpSub',T('pin_wrong'));cpBuf='';updateCpDots();setTimeout(()=>setText('cpSub',T('pin_current')),1500);}
+  } else if(cpState==='new'){
+    cpNew=cpBuf; cpState='confirm'; cpBuf=''; setText('cpSub',T('pin_confirm')); updateCpDots();
+  } else {
+    if(cpBuf===cpNew){setPin(currentUser,cpBuf);cpState='current';cpBuf='';cpNew='';updateCpDots();setText('cpSub',T('pin_current'));showToast(T('pin_changed'));renderPage('profil');}
+    else{setText('cpSub',T('pin_wrong'));cpBuf='';cpNew='';cpState='current';updateCpDots();}
   }
 }
+function renderProgressDots(){
+  const u=currentUser;
+  const excursions=sessions.filter(s=>s.mon===u).length;
+  const el=document.getElementById('progDots');
+  if(el) el.innerHTML=Array.from({length:10},(_,i)=>`<div class="dot ${i<excursions?'on':''}"></div>`).join('');
+}
+function newQuote(){ quoteIdx=(quoteIdx+1)%QUOTES.length; setText('quoteText',`"${QUOTES[quoteIdx]}"`); }
 
-// ══════════════════════════════════
-// ADMIN (Tim & Nacho seulement)
-// ══════════════════════════════════
-function renderAdmin() {
-  // Monitor list
-  const totals = getSessionTotals();
-  document.getElementById('adminMonitorList').innerHTML = monitors.map((m,i)=>`
-    <div class="admin-monitor-row">
-      <div class="admin-monitor-name">${m.name}</div>
-      <span style="font-size:.75rem;color:var(--text3);">${m.role==='chef'?'👑':''} </span>
-      <div class="admin-monitor-total">${totals[m.name]||0} min</div>
-    </div>`).join('');
-  // Total season (mock)
-  const total = Object.values(totals).reduce((a,b)=>a+b,0);
-  document.getElementById('adminHoursTotal').innerHTML = `<div style="font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;color:var(--orange);text-align:center">${Math.floor(total/60)}H${String(total%60).padStart(2,'0')}</div>`;
+// ─── ADMIN ───
+function pageAdmin(){
+  if(!isAdmin()) return '<div class="card">Accès refusé</div>';
+  let totalMins=0;
+  let rows=TEAM.map(m=>{
+    const c=getCumul(m.n); totalMins+=c.m;
+    return `<div class="adm-row"><div class="adm-name">${m.n}</div><span style="font-size:.7rem;color:var(--text3)">${m.r}</span><div class="adm-total">${Math.floor(c.m/60)}H${String(c.m%60).padStart(2,'00')} saison</div></div>`;
+  }).join('');
+  const monOpts=TEAM.map(m=>`<option value="${m.n}">${m.n}</option>`).join('');
+  return `<div class="page-title">🔧 ${T('adm_title')}</div>
+  <div class="admin-tag">${T('adm_tag')}</div>
+  <div class="card"><div class="card-label">${T('adm_stats')}</div>${rows}</div>
+  <div class="card">
+    <div class="card-label">${T('adm_total')}</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;color:var(--orange);text-align:center">${Math.floor(totalMins/60)}H${String(totalMins%60).padStart(2,'00')}</div>
+  </div>
+  <div class="card">
+    <div class="card-label">${T('adm_add')}</div>
+    <div class="add-row">
+      <input class="text-input" id="newName" placeholder="Nom...">
+      <select class="styled-select" id="newRole" style="width:auto;padding:.6rem .5rem">
+        <option value="patron">👑 Patron</option>
+        <option value="chef">🎖️ Chef</option>
+        <option value="monitor" selected>🤿 Monitor</option>
+        <option value="accueil">🎫 Accueil</option>
+      </select>
+      <button class="btn-sm" onclick="addMember()">+</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">${T('adm_reset_pin')}</div>
+    <div class="add-row">
+      <select class="styled-select" id="resetSel" style="flex:1">${monOpts}</select>
+      <button class="btn-sm" onclick="adminResetPin()">Reset</button>
+    </div>
+  </div>`;
 }
 
-function addMonitor() {
-  const name = document.getElementById('newMonName').value.trim();
-  if(!name) return;
-  monitors.push({name, role:document.getElementById('newMonRole').value, color:'#1e3a5a', rest:''});
-  document.getElementById('newMonName').value='';
-  renderAll(); showToast('👤 '+name+' ajouté');
+function addMember(){
+  if(!isAdmin()){showToast(T('toast_denied'));return;}
+  const name=document.getElementById('newName')?.value.trim(); if(!name) return;
+  const role=document.getElementById('newRole')?.value||'monitor';
+  TEAM.push({n:name,r:role,c:COLORS[TEAM.length%COLORS.length],rest:''});
+  document.getElementById('newName').value='';
+  renderPage('admin'); showToast('👤 '+name);
+}
+function adminResetPin(){
+  if(!isAdmin()){showToast(T('toast_denied'));return;}
+  const name=document.getElementById('resetSel')?.value; if(!name) return;
+  localStorage.removeItem(lk('p_'+name));
+  showToast(T('toast_pin_reset'));
 }
 
-function changePass() {
-  const np = document.getElementById('newPass').value;
-  if(np.length<4) return;
-  // Note: in production would persist this
-  showToast('🔒 Mot de passe mis à jour');
-  document.getElementById('newPass').value='';
-}
-
-function changeProfile() {
-  localStorage.removeItem('jst_user');
-  currentUser = null;
+// ─── CHANGE PROFILE ───
+function changeProfile(){
+  clearDevice(); currentUser=null;
   document.getElementById('app').style.display='none';
-  showProfileSelect();
+  document.getElementById('accueilScreen').style.display='none';
+  document.getElementById('loginInput').value='';
+  document.getElementById('loginScreen').style.display='flex';
+  updateLoginScreen();
 }
 
-// ══════════════════════════════════
-// AUTO-LOGIN AU CHARGEMENT
-// ══════════════════════════════════
-window.addEventListener('DOMContentLoaded', ()=>{
-  const saved = localStorage.getItem('jst_user');
-  if(saved && monitors.find(m=>m.name===saved)) {
-    // Profil connu → skip login + sélection directement
-    document.getElementById('loginScreen').style.display='none';
-    selectProfile(saved);
-  }
-});
-
-// ══════════════════════════════════
-// TOAST
-// ══════════════════════════════════
-function showToast(msg) {
-  const t = document.getElementById('toast');
+// ─── TOAST ───
+function showToast(msg){
+  const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2000);
+  setTimeout(()=>t.classList.remove('show'),2200);
 }
 
-// START
-updateDate();
-setInterval(updateDate, 60000);
+// ─── INIT ───
+window.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('loginInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+  updateLoginScreen();
+  updateDate();
+  setInterval(updateDate,60000);
+});
 </script>
 </body>
 </html>
