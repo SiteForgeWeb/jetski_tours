@@ -222,8 +222,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 </head>
 <body>
 
+<!-- ═══ PROFILE SELECT ═══ -->
 <!-- ═══ LOGIN ═══ -->
-<div id="loginScreen" class="screen">
+<div id="loginScreen" class="screen" style="display:flex">
   <div class="login-title">JET SKI TOUR<br>SALOU</div>
   <div class="login-sub" id="l_sub">ESPACE INTERNE ÉQUIPE</div>
   <div class="login-divider"></div>
@@ -240,7 +241,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
   </div>
 </div>
 
-<!-- ═══ PROFILE SELECT ═══ -->
 <div id="profileScreen" class="screen">
   <div class="ps-title" id="ps_title">QUI ES-TU ?</div>
   <div class="ps-sub" id="ps_sub">SÉLECTIONNE TON PROFIL</div>
@@ -266,20 +266,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
   <button class="pin-skip" id="pinSkip" onclick="pinFirst()">—</button>
 </div>
 
-<!-- ═══ ACCUEIL (Romane / Enola) ═══ -->
-<div id="accueilScreen" class="screen">
-  <div class="ac-title" id="ac_title">ENREGISTRER UNE SESSION</div>
-  <div class="ac-sub" id="ac_sub">MONITEUR + DURÉE</div>
-  <div class="ac-card">
-    <label class="ac-label" id="ac_mon_lbl">MONITEUR</label>
-    <select id="acMon" class="ac-select"></select>
-    <label class="ac-label" id="ac_dur_lbl">DURÉE</label>
-    <select id="acDur" class="ac-select"></select>
-    <button class="ac-btn" id="ac_btn" onclick="acAdd()">✅ VALIDER SESSION</button>
-    <div id="acList" class="ac-sessions"></div>
-  </div>
-  <button class="ac-logout" id="ac_logout" onclick="changeProfile()">↩ Changer de profil</button>
-</div>
+
 
 <!-- ═══ APP ═══ -->
 <div id="app">
@@ -501,12 +488,6 @@ function setLang(l){
 function setText(id,v){ const e=document.getElementById(id); if(e) e.textContent=v; }
 function setVal(id,v){ const e=document.getElementById(id); if(e) e.value=v; }
 
-function updateLoginScreen(){
-  setText('l_sub', T('l_sub'));
-  setText('l_lbl', T('l_lbl'));
-  setText('l_btn', T('l_btn'));
-  setText('l_err', T('l_err'));
-}
 function updateProfileScreen(){
   setText('ps_title', T('ps_title'));
   setText('ps_sub', T('ps_sub'));
@@ -534,33 +515,29 @@ function updateAccueilScreen(){
 function updateDate(){
   const now=new Date();
   const dn=T('days'); const mn=T('months');
-  setText('topDay', Array.isArray(dn)?dn[now.getDay()]:'');
-  setText('topDate', `${now.getDate()} ${Array.isArray(mn)?mn[now.getMonth()]:''} ${now.getFullYear()}`);
+  if(document.getElementById('topDay'))
+    setText('topDay', Array.isArray(dn)?dn[now.getDay()]:'');
+  if(document.getElementById('topDate'))
+    setText('topDate', `${now.getDate()} ${Array.isArray(mn)?mn[now.getMonth()]:''} ${now.getFullYear()}`);
 }
 
 // ═══════════════════════════════════════════════════════
 // LOGIN
 // ═══════════════════════════════════════════════════════
-document.getElementById('loginInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
 
-function doLogin(){
-  if(document.getElementById('loginInput').value === PASS){
-    document.getElementById('loginScreen').style.display='none';
-    const saved=getDevice();
-    if(saved && TEAM.find(m=>m.n===saved)) showPin(saved);
-    else showProfiles();
-  } else {
-    const err=document.getElementById('l_err');
-    err.style.display='block';
-    setTimeout(()=>err.style.display='none',2000);
-  }
 }
 
 // ═══════════════════════════════════════════════════════
 // PROFILES
 // ═══════════════════════════════════════════════════════
 function showProfiles(){
+  // Hide all screens
+  ['pinScreen','app'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display='none';
+  });
   buildProfileGrid();
+  updateProfileScreen();
   document.getElementById('profileScreen').style.display='flex';
 }
 
@@ -571,7 +548,7 @@ function buildProfileGrid(){
     {r:'patron', lbl:'eq_patrons'},
     {r:'chef',   lbl:'eq_chefs'},
     {r:'monitor',lbl:'eq_monitors'},
-    {r:'accueil',lbl:null, customLbl:'🎫 ACCUEIL'},
+    {r:'accueil',lbl:'eq_monitors', customLbl:null},
   ];
   let html='';
   groups.forEach(g=>{
@@ -664,18 +641,13 @@ function enterApp(name){
   currentUser=name;
   saveDevice(name);
   load();
-  if(isAccueil(name)){
-    showAccueil();
-  } else {
-    setText('topbarName',name);
-    document.getElementById('app').style.display='flex';
-    rebuildApp();
-    fetchMeteo();
-    setInterval(fetchMeteo,5*60*1000);
-    updateDate();
-    setInterval(updateDate,60000);
-    loadTimer();
-  }
+  setText('topbarName',name);
+  document.getElementById('app').style.display='flex';
+  rebuildApp();
+  fetchMeteo();
+  setInterval(fetchMeteo,5*60*1000);
+  updateDate();
+  setInterval(updateDate,60000);
 }
 
 // ═══════════════════════════════════════════════════════
@@ -753,7 +725,9 @@ function switchTab(id){
   renderPage(id);
 }
 
-function renderPage(id){
+let renderPageArg=null;
+function renderPage(id,arg){
+  renderPageArg=arg||null;
   const mc=document.getElementById('mainContent');
   const pages={
     meteo:  pageMeteo,
@@ -763,7 +737,7 @@ function renderPage(id){
     reservas:pageReservas,
     repos:  pageRepos,
     chat:   pageChat,
-    profil: pageProfil,
+    profil: ()=>pageProfil(renderPageArg),
     admin:  pageAdmin,
   };
   mc.innerHTML=(pages[id]||pageMeteo)();
@@ -825,10 +799,10 @@ function getTotals(){ const t={}; sessions.forEach(s=>{ t[s.mon]=(t[s.mon]||0)+s
 function pageEquipe(){
   const totals=getTotals();
   const groups=[
-    {r:'patron',lbl:'eq_patrons',pat:true},
-    {r:'chef',  lbl:'eq_chefs',  pat:false},
+    {r:'patron', lbl:'eq_patrons', pat:true},
+    {r:'chef',   lbl:'eq_chefs',   pat:false},
     {r:'monitor',lbl:'eq_monitors',pat:false},
-    {r:'accueil',lbl:null,pat:false,customLbl:'🎫 '+T('role_accueil').toUpperCase()},
+    {r:'accueil',lbl:'eq_monitors',pat:false},
   ];
   let html='';
   groups.forEach(g=>{
@@ -903,7 +877,10 @@ function buildDurOpts(){
   return [20,30,40,60,120].map((v,i)=>`<option value="${v}">${T(['dur_20','dur_30','dur_40','dur_60','dur_120'][i])}</option>`).join('');
 }
 function buildMonOpts(){
-  const list=isAdmin()?TEAM.filter(m=>m.r==='monitor'||m.r==='chef'):[TEAM.find(m=>m.n===currentUser)].filter(Boolean);
+  // Admin can select anyone, others only themselves
+  const list=isAdmin()
+    ?TEAM.filter(m=>m.r==='monitor'||m.r==='chef'||m.r==='accueil')
+    :[TEAM.find(m=>m.n===currentUser)].filter(Boolean);
   return list.map(m=>`<option value="${m.n}">${m.n}</option>`).join('');
 }
 
@@ -962,7 +939,7 @@ const TASKS=[
 ];
 let taskAssign={};
 
-function getActiveM(){ return TEAM.filter(m=>m.r==='monitor'||m.r==='chef'); }
+function getActiveM(){ return TEAM.filter(m=>m.r==='monitor'); }
 function getDailyAssign(){
   const dk=today(); const saved=localStorage.getItem(lk('ta_'+dk));
   if(saved) return JSON.parse(saved);
@@ -1113,20 +1090,37 @@ function delChat(i){
 }
 
 // ─── PROFIL ───
-const QUOTES=[
-  "Ce que tu fais chaque matin sur l'eau, peu de gens osent en rêver.",
-  "La mer ne ment jamais. Ni toi non plus.",
-  "L'équipe qui rit ensemble, gagne ensemble.",
-  "Salou ne dort pas. Et vous non plus.",
-  "On ne compte pas les heures, on les vit.",
-];
+const QUOTES={
+  fr:[
+    "Ce que tu fais chaque matin sur l'eau, peu de gens osent en rêver.",
+    "La mer ne ment jamais. Ni toi non plus.",
+    "L'équipe qui rit ensemble, gagne ensemble.",
+    "Salou ne dort pas. Et vous non plus.",
+    "On ne compte pas les heures, on les vit.",
+  ],
+  es:[
+    "Lo que haces cada mañana en el agua, poca gente se atreve a soñarlo.",
+    "El mar nunca miente. Ni tú tampoco.",
+    "El equipo que ríe junto, gana junto.",
+    "Salou no duerme. Y vosotros tampoco.",
+    "No contamos las horas, las vivimos.",
+  ],
+  ca:[
+    "El que fas cada matí a l'aigua, poca gent gosa ni somiar-ho.",
+    "El mar mai menteix. Ni tu tampoc.",
+    "L'equip que riu junt, guanya junt.",
+    "Salou no dorm. I vosaltres tampoc.",
+    "No comptem les hores, les vivim.",
+  ],
+};
+function getQuotes(){ return QUOTES[lang]||QUOTES.fr; }
 let quoteIdx=0;
 
 // PIN change state
 let cpBuf='', cpState='current', cpNew='';
 
-function pageProfil(){
-  const u=currentUser;
+function pageProfil(viewUser){
+  const u=viewUser||currentUser;
   const m=TEAM.find(x=>x.n===u)||{c:'#1e3a5a',r:'monitor'};
   const rLbl={patron:'👑 '+T('role_patron'),chef:'🎖️ '+T('role_chef'),monitor:'🤿 '+T('role_monitor'),accueil:'🎫 '+T('role_accueil')}[m.r]||'';
   const userSess=sessions.filter(s=>s.mon===u);
@@ -1136,7 +1130,16 @@ function pageProfil(){
   const cumul=getCumul(u);
   const pinWarnStyle=hasPin(u)?'display:none':'display:inline-block';
 
+  // Build member selector
+  const memberSel = TEAM.filter(m=>m.r!=='patron').map(m=>
+    `<option value="${m.n}"${m.n===u?' selected':''}>${m.n}</option>`
+  ).join('');
+  const selectorHtml = `<div style="margin-bottom:.9rem">
+    <select class="styled-select" style="width:100%" onchange="renderPage('profil',this.value)">${memberSel}</select>
+  </div>`;
+
   return `<div class="page-title">🏄 ${T('prof_title')}</div>
+  ${selectorHtml}
   <div class="prof-hero">
     <div class="prof-avatar" style="background:${m.c||'#1e3a5a'};color:var(--blue-light)">${u[0]}</div>
     <div class="prof-name">${u.toUpperCase()}</div>
@@ -1164,10 +1167,10 @@ function pageProfil(){
     <div class="progress-dots" id="progDots"></div>
     <div class="progress-lbl">${T('prof_objectif')}</div>
   </div>
-  <div class="quote-box"><div id="quoteText">"${QUOTES[quoteIdx]}"</div><div class="quote-attr">— L'ÉQUIPE JST</div></div>
+  <div class="quote-box"><div id="quoteText">"${getQuotes()[quoteIdx]}"</div><div class="quote-attr">— L'ÉQUIPE JST</div></div>
   <button class="btn-secondary" onclick="newQuote()" style="margin-bottom:.9rem">${T('prof_quote')}</button>
-  <div class="card pin-change-section">
-    <div class="card-label" id="cpLabel">${T('prof_pin_lbl')}</div>
+  ${u===currentUser?`<div class="card pin-change-section">
+    <div class="card-label">${T('prof_pin_lbl')}</div>
     <div style="text-align:center;font-size:.78rem;color:var(--text3);margin-bottom:.3rem" id="cpSub">${T('pin_current')}</div>
     <div class="pin-dots" id="cpDots">
       <div class="pin-dot" id="cp0"></div><div class="pin-dot" id="cp1"></div>
@@ -1179,7 +1182,7 @@ function pageProfil(){
       <button class="pin-key" onclick="CP(7)">7</button><button class="pin-key" onclick="CP(8)">8</button><button class="pin-key" onclick="CP(9)">9</button>
       <button class="pin-key" onclick="CP('d')">⌫</button><button class="pin-key" onclick="CP(0)">0</button><button class="pin-key" onclick="CP('ok')">OK</button>
     </div>
-  </div>
+  </div>`:``}
   <div class="card"><button class="btn-secondary" onclick="changeProfile()">${T('prof_change')}</button></div>`;
 }
 
@@ -1203,12 +1206,12 @@ function processCP(){
   }
 }
 function renderProgressDots(){
-  const u=currentUser;
+  const u=renderPageArg||currentUser;
   const excursions=sessions.filter(s=>s.mon===u).length;
   const el=document.getElementById('progDots');
   if(el) el.innerHTML=Array.from({length:10},(_,i)=>`<div class="dot ${i<excursions?'on':''}"></div>`).join('');
 }
-function newQuote(){ quoteIdx=(quoteIdx+1)%QUOTES.length; setText('quoteText',`"${QUOTES[quoteIdx]}"`); }
+function newQuote(){ quoteIdx=(quoteIdx+1)%QUOTES.length; setText('quoteText',`"${getQuotes()[quoteIdx]}"`); }
 
 // ─── ADMIN ───
 function pageAdmin(){
@@ -1267,10 +1270,11 @@ function adminResetPin(){
 function changeProfile(){
   clearDevice(); currentUser=null;
   document.getElementById('app').style.display='none';
-  document.getElementById('accueilScreen').style.display='none';
+  document.getElementById('profileScreen').style.display='none';
+  document.getElementById('pinScreen').style.display='none';
   document.getElementById('loginInput').value='';
-  document.getElementById('loginScreen').style.display='flex';
   updateLoginScreen();
+  document.getElementById('loginScreen').style.display='flex';
 }
 
 // ─── TOAST ───
@@ -1281,6 +1285,26 @@ function showToast(msg){
 }
 
 // ─── INIT ───
+function doLogin(){
+  if(document.getElementById('loginInput').value === PASS){
+    document.getElementById('loginScreen').style.display='none';
+    const saved = getDevice();
+    if(saved && TEAM.find(m=>m.n===saved)) showPin(saved);
+    else showProfiles();
+  } else {
+    const err=document.getElementById('l_err');
+    err.style.display='block';
+    setTimeout(()=>err.style.display='none',2000);
+  }
+}
+
+function updateLoginScreen(){
+  setText('l_sub', T('l_sub'));
+  setText('l_lbl', T('l_lbl'));
+  setText('l_btn', T('l_btn'));
+  setText('l_err', T('l_err'));
+}
+
 window.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('loginInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
   updateLoginScreen();
