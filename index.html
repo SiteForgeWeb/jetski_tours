@@ -464,7 +464,6 @@ function getDevice(){ return localStorage.getItem('jst_dev'); }
 function saveDevice(n){ localStorage.setItem('jst_dev',n); }
 function clearDevice(){ localStorage.removeItem('jst_dev'); }
 function isAdmin(){ return ADMINS.includes(currentUser); }
-function isAccueil(n){ const m=TEAM.find(x=>x.n===n); return m&&ACCUEIL_ROLES.includes(m.r); }
 function isRestToday(m){
   const ds=T('days_short');
   const d=ds[new Date().getDay()];
@@ -480,9 +479,8 @@ function setLang(l){
   updateLoginScreen();
   updateProfileScreen();
   updatePinScreen();
-  updateAccueilScreen();
   updateDate();
-  if(currentUser && !isAccueil(currentUser)) rebuildApp();
+  if(currentUser) rebuildApp();
 }
 
 function setText(id,v){ const e=document.getElementById(id); if(e) e.textContent=v; }
@@ -498,15 +496,6 @@ function updatePinScreen(){
   setText('pinLabel', hasPin(pendingUser)?T('pin_enter'):T('pin_new'));
   const skip=document.getElementById('pinSkip');
   if(skip){ skip.textContent=T('pin_skip'); skip.style.display=hasPin(pendingUser)?'none':'block'; }
-}
-function updateAccueilScreen(){
-  setText('ac_title', T('ac_title'));
-  setText('ac_sub', T('ac_sub'));
-  setText('ac_mon_lbl', T('ac_mon_lbl'));
-  setText('ac_dur_lbl', T('ac_dur_lbl'));
-  setText('ac_btn', T('ac_btn'));
-  setText('ac_logout', T('ac_logout'));
-  buildAcDur();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -653,40 +642,6 @@ function enterApp(name){
 // ═══════════════════════════════════════════════════════
 // ACCUEIL SCREEN
 // ═══════════════════════════════════════════════════════
-function showAccueil(){
-  updateAccueilScreen();
-  const sel=document.getElementById('acMon');
-  sel.innerHTML=TEAM.filter(m=>m.r==='monitor'||m.r==='chef').map(m=>`<option value="${m.n}">${m.n}</option>`).join('');
-  renderAcSessions();
-  document.getElementById('accueilScreen').style.display='flex';
-}
-
-function buildAcDur(){
-  const sel=document.getElementById('acDur');
-  if(!sel) return;
-  const keys=['dur_20','dur_30','dur_40','dur_60','dur_120'];
-  const vals=[20,30,40,60,120];
-  sel.innerHTML=keys.map((k,i)=>`<option value="${vals[i]}">${T(k)}</option>`).join('');
-}
-
-function acAdd(){
-  const mon=document.getElementById('acMon').value;
-  const dur=parseInt(document.getElementById('acDur').value);
-  const now=new Date();
-  const t=`${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`;
-  sessions.push({mon,dur,t,by:currentUser});
-  const c=getCumul(mon); c.s++; c.m+=dur; if(dur>=120) c.cv=(c.cv||0)+1; saveCumul(mon,c);
-  save(); renderAcSessions(); showToast(T('toast_session'));
-}
-
-function renderAcSessions(){
-  const el=document.getElementById('acList'); if(!el) return;
-  el.innerHTML=sessions.slice(-8).reverse().map(s=>{
-    const lbl=s.dur>=60?`${Math.floor(s.dur/60)}H${String(s.dur%60).padStart(2,'00')||'00'}`:`${s.dur}min`;
-    return `<div class="ac-session-row"><span style="font-weight:700;color:var(--blue-light)">${s.mon}</span><span style="color:var(--text2)">${lbl} · ${s.t}</span></div>`;
-  }).join('');
-}
-
 // ═══════════════════════════════════════════════════════
 // APP — REBUILD COMPLET (appelé à chaque changement de langue)
 // ═══════════════════════════════════════════════════════
