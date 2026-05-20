@@ -15,23 +15,17 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
-/* LOADING */
 #splash{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s;}
 #splash.hide{opacity:0;pointer-events:none;}
 .splash-logo{font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:4px;color:var(--accent);text-shadow:0 0 40px rgba(0,200,255,.4);}
 .splash-sub{color:var(--muted);font-size:14px;letter-spacing:6px;margin-top:4px;}
 .splash-wave{font-size:48px;margin-bottom:20px;animation:bob 1.5s ease-in-out infinite;}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
-/* SCREENS */
 .screen{display:none;min-height:100vh;}
 .screen.active{display:flex;flex-direction:column;}
-
-/* PROFILE SELECT */
 #screen-select{padding:20px;background:var(--bg);}
 .select-header{text-align:center;padding:30px 0 24px;}
 .select-header h1{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent);letter-spacing:3px;}
-.select-header p{color:var(--muted);font-size:13px;margin-top:4px;}
 .lang-bar{display:flex;justify-content:center;gap:8px;margin-bottom:24px;}
 .lang-btn{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);font-size:12px;cursor:pointer;transition:.2s;}
 .lang-btn.active{border-color:var(--accent);color:var(--accent);}
@@ -48,12 +42,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .chef-card .p-avatar{background:linear-gradient(135deg,var(--accent2),#ff3b6b);}
 .cabine-card .p-avatar{background:linear-gradient(135deg,var(--purple),#ec4899);}
 .monitor-card .p-avatar{background:linear-gradient(135deg,var(--green),var(--accent));}
-
-/* PIN */
 #screen-pin{padding:20px;align-items:center;justify-content:center;flex-direction:column;background:var(--bg);}
-.pin-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;box-shadow:0 0 30px rgba(0,200,255,.3);}
+.pin-avatar{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;box-shadow:0 0 30px rgba(0,200,255,.3);}
 .pin-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:4px;}
-.pin-hint{color:var(--muted);font-size:13px;margin-bottom:32px;}
+.pin-hint{color:var(--muted);font-size:13px;margin-bottom:32px;text-align:center;}
 .pin-dots{display:flex;gap:16px;margin-bottom:32px;}
 .pin-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);background:transparent;transition:.2s;}
 .pin-dot.filled{background:var(--accent);border-color:var(--accent);box-shadow:0 0 10px rgba(0,200,255,.5);}
@@ -63,158 +55,109 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .num-btn:hover{background:var(--bg3);border-color:var(--accent);}
 .num-btn.del{font-size:16px;color:var(--muted);}
 .back-btn{margin-top:20px;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:8px;}
-
-/* TOP NAV */
 .topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:2px;}
-.topbar-user{display:flex;align-items:center;gap:8px;cursor:pointer;}
-.topbar-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:14px;}
-.topbar-name{font-size:13px;font-weight:600;}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .lang-mini{display:flex;gap:4px;}
-.lang-mini button{background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;padding:2px 4px;}
-.lang-mini button.active{color:var(--accent);}
-
-/* BOTTOM NAV */
+.lang-mini button{background:none;border:1px solid transparent;border-radius:6px;font-size:11px;color:var(--muted);cursor:pointer;padding:3px 6px;}
+.lang-mini button.active{color:var(--accent);border-color:var(--accent);}
+.topbar-user{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.topbar-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;}
 .bottom-nav{background:var(--bg2);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 0 10px;position:sticky;bottom:0;z-index:100;}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 4px;border:none;background:none;color:var(--muted);transition:.2s;}
 .nav-item.active{color:var(--accent);}
 .nav-icon{font-size:20px;}
 .nav-label{font-size:9px;letter-spacing:.5px;}
-.nav-item.active .nav-icon{filter:drop-shadow(0 0 6px var(--accent));}
-
-/* CONTENT */
-.content{flex:1;overflow-y:auto;padding:16px;}
-
-/* DASHBOARD */
+.content{flex:1;overflow-y:auto;padding:16px 16px 24px;}
 .greeting{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;margin-bottom:4px;}
 .greeting span{color:var(--accent);}
 .date-bar{font-size:12px;color:var(--muted);margin-bottom:20px;}
-.weather-card{background:linear-gradient(135deg,#0f3460,#1a1e28);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
-.weather-main{display:flex;align-items:center;gap:12px;}
-.weather-icon{font-size:40px;}
-.weather-temp{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--accent);}
-.weather-info{font-size:12px;color:var(--muted);}
-.weather-city{font-size:14px;font-weight:600;color:var(--text);}
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
 .stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);}
 .stat-label{font-size:10px;color:var(--muted);margin-top:2px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px;}
 .card-title{font-size:12px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
-.tasks-list{}
-.task-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.task-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
 .task-item:last-child{border-bottom:none;}
-.task-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.2s;}
-.task-check.done{background:var(--green);border-color:var(--green);}
+.task-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.2s;font-size:12px;}
+.task-check.done{background:var(--green);border-color:var(--green);color:#fff;}
 .task-text{font-size:13px;flex:1;}
 .task-text.done{text-decoration:line-through;color:var(--muted);}
-.task-assign{font-size:10px;color:var(--accent);}
-
-/* HORAIRES */
-.sea-timeline{display:flex;flex-direction:column;gap:8px;}
-.sea-slot{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;justify-content:space-between;}
-.sea-slot.active{border-color:var(--accent);background:rgba(0,200,255,.05);}
-.sea-time{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);}
-.sea-info{flex:1;margin-left:12px;}
-.sea-type{font-size:13px;font-weight:600;}
-.sea-clients{font-size:11px;color:var(--muted);margin-top:2px;}
-.sea-status{font-size:10px;padding:3px 8px;border-radius:10px;background:rgba(34,197,94,.15);color:var(--green);}
-.sea-status.pending{background:rgba(255,107,53,.15);color:var(--accent2);}
-.add-btn{width:100%;padding:12px;border-radius:12px;border:1px dashed var(--border);background:none;color:var(--muted);font-size:13px;cursor:pointer;margin-top:10px;transition:.2s;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--accent);margin-bottom:4px;}
+.section-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.plan-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;}
+.plan-tab{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);font-size:12px;white-space:nowrap;cursor:pointer;flex-shrink:0;}
+.plan-tab.active{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;}
+.exc-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;}
+.exc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.exc-name{font-weight:700;font-size:15px;}
+.exc-time{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);}
+.exc-detail{font-size:12px;color:var(--muted);}
+.exc-duration{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,255,.1);border:1px solid rgba(0,200,255,.2);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--accent);margin-top:6px;}
+.add-btn{width:100%;padding:13px;border-radius:12px;border:1px dashed var(--border);background:none;color:var(--muted);font-size:13px;cursor:pointer;margin-top:10px;transition:.2s;}
 .add-btn:hover{border-color:var(--accent);color:var(--accent);}
-
-/* CHAT */
-.chat-container{display:flex;flex-direction:column;height:calc(100vh - 160px);}
+.chat-container{display:flex;flex-direction:column;height:calc(100vh - 130px);}
 .chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
-.msg{max-width:75%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.4;}
+.msg{max-width:78%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.4;}
 .msg.mine{background:var(--accent);color:var(--bg);align-self:flex-end;border-bottom-right-radius:4px;}
 .msg.theirs{background:var(--card);align-self:flex-start;border-bottom-left-radius:4px;}
-.msg-meta{font-size:10px;color:var(--muted);margin-top:3px;}
+.msg-meta{font-size:10px;opacity:.7;margin-top:4px;}
 .msg.mine .msg-meta{text-align:right;}
-.msg-sender{font-weight:700;font-size:11px;margin-bottom:3px;}
+.msg-sender{font-weight:700;font-size:11px;margin-bottom:3px;color:var(--accent);}
+.msg.mine .msg-sender{color:rgba(0,0,0,.6);}
 .chat-input-bar{padding:10px 12px;background:var(--bg2);border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;}
 .chat-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:10px 14px;color:var(--text);font-size:13px;resize:none;max-height:100px;font-family:'DM Sans',sans-serif;}
 .chat-input:focus{outline:none;border-color:var(--accent);}
 .send-btn{width:40px;height:40px;border-radius:50%;background:var(--accent);border:none;color:var(--bg);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .cam-btn{width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .msg-img{max-width:200px;border-radius:10px;margin-top:6px;}
-
-/* PLANNING */
-.planning-header{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;}
-.plan-tab{padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);font-size:12px;white-space:nowrap;cursor:pointer;}
-.plan-tab.active{background:var(--accent);color:var(--bg);border-color:var(--accent);}
-.resa-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;}
-.resa-top{display:flex;justify-content:space-between;align-items:flex-start;}
-.resa-name{font-weight:700;font-size:15px;}
-.resa-time{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);}
-.resa-details{font-size:12px;color:var(--muted);margin-top:6px;}
-.resa-badge{font-size:10px;padding:3px 10px;border-radius:10px;}
-.resa-badge.confirmed{background:rgba(34,197,94,.15);color:var(--green);}
-.resa-badge.pending{background:rgba(255,107,53,.15);color:var(--accent2);}
-.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;}
-.photo-thumb{aspect-ratio:1;border-radius:8px;object-fit:cover;width:100%;background:var(--bg3);cursor:pointer;}
-
-/* PROFIL */
-.profile-header{background:linear-gradient(135deg,var(--bg2),var(--bg3));border-radius:16px;padding:20px;margin-bottom:14px;text-align:center;}
-.profile-big-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;box-shadow:0 0 30px rgba(0,200,255,.3);}
+.profile-header{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;text-align:center;}
+.profile-big-avatar{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;}
 .profile-big-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;}
-.profile-big-role{color:var(--muted);font-size:13px;margin-top:2px;}
-.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
 .pstat{text-align:center;}
 .pstat-num{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent);}
 .pstat-label{font-size:10px;color:var(--muted);}
 .settings-list{display:flex;flex-direction:column;gap:6px;}
-.setting-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.setting-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:.2s;}
 .setting-row:hover{border-color:var(--accent);}
-.setting-label{font-size:14px;}
-.setting-arrow{color:var(--muted);font-size:16px;}
-.history-entry{padding:10px 0;border-bottom:1px solid var(--border);font-size:12px;}
-.history-entry:last-child{border-bottom:none;}
-.history-date{color:var(--accent);font-size:10px;margin-bottom:2px;}
-
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;align-items:flex-end;padding:0;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px;width:100%;max-height:85vh;overflow-y:auto;animation:slideUp .3s ease;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px 32px;width:100%;max-height:90vh;overflow-y:auto;animation:slideUp .3s ease;position:relative;}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal h3{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:16px;}
+.modal h3{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:16px;margin-right:30px;}
 .form-group{margin-bottom:14px;}
 .form-label{font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;display:block;}
 .form-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;}
 .form-input:focus{outline:none;border-color:var(--accent);}
-.form-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;appearance:none;}
-.btn-primary{width:100%;padding:14px;border-radius:12px;background:var(--accent);border:none;color:var(--bg);font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
-.btn-danger{width:100%;padding:14px;border-radius:12px;background:rgba(239,68,68,.15);border:1px solid var(--red);color:var(--red);font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
-.btn-secondary{width:100%;padding:14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:15px;cursor:pointer;margin-top:8px;}
-.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;}
-
-/* CAMERA */
+.form-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;}
+.btn-primary{width:100%;padding:14px;border-radius:12px;background:var(--accent);border:none;color:var(--bg);font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;}
+.btn-danger{width:100%;padding:14px;border-radius:12px;background:rgba(239,68,68,.1);border:1px solid var(--red);color:var(--red);font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;}
+.btn-secondary{width:100%;padding:14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:15px;cursor:pointer;margin-top:6px;}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--muted);font-size:28px;cursor:pointer;line-height:1;}
 #camera-modal{position:fixed;inset:0;background:#000;z-index:600;display:none;flex-direction:column;}
 #camera-modal.show{display:flex;}
 #camera-video{width:100%;flex:1;object-fit:cover;}
-.camera-bar{padding:20px;display:flex;justify-content:center;gap:24px;align-items:center;background:#000;}
-.cam-capture{width:64px;height:64px;border-radius:50%;border:3px solid #fff;background:rgba(255,255,255,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:28px;}
-.cam-cancel{width:44px;height:44px;border-radius:50%;border:2px solid var(--muted);background:none;color:var(--muted);font-size:18px;cursor:pointer;}
+.camera-bar{padding:20px;display:flex;justify-content:center;gap:28px;align-items:center;background:#000;}
+.cam-capture{width:68px;height:68px;border-radius:50%;border:4px solid #fff;background:rgba(255,255,255,.15);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:30px;}
+.cam-cancel{width:46px;height:46px;border-radius:50%;border:2px solid var(--muted);background:none;color:var(--muted);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 #camera-canvas{display:none;}
-
-/* TOAST */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--accent);border-radius:10px;padding:10px 20px;font-size:13px;z-index:1000;opacity:0;transition:.3s;pointer-events:none;}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--accent);border-radius:10px;padding:10px 20px;font-size:13px;z-index:1000;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
-
-/* ADMIN BADGE */
-.admin-crown{font-size:10px;background:rgba(255,201,71,.15);color:var(--gold);padding:2px 6px;border-radius:8px;margin-left:6px;}
-
-/* RESPONSIVE */
-@media(max-width:360px){
-  .profile-grid{grid-template-columns:repeat(2,1fr);}
-  .stats-row{grid-template-columns:repeat(3,1fr);}
-}
+.admin-crown{font-size:10px;background:rgba(255,201,71,.15);color:var(--gold);padding:2px 8px;border-radius:8px;margin-left:6px;vertical-align:middle;}
+.time-badge{background:rgba(0,200,255,.12);border:1px solid rgba(0,200,255,.25);color:var(--accent);border-radius:8px;padding:3px 10px;font-size:12px;font-weight:600;}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.photo-thumb{aspect-ratio:1;border-radius:8px;object-fit:cover;width:100%;background:var(--bg3);cursor:pointer;display:block;}
+.cartel-note{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;}
+.cartel-note textarea{width:100%;background:transparent;border:none;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;resize:none;outline:none;line-height:1.6;}
+.history-entry{padding:10px 0;border-bottom:1px solid var(--border);}
+.history-entry:last-child{border-bottom:none;}
+.history-date{color:var(--accent);font-size:10px;margin-bottom:3px;letter-spacing:1px;}
 </style>
 </head>
 <body>
 
-<!-- SPLASH -->
 <div id="splash">
   <div class="splash-wave">🌊</div>
   <div class="splash-logo">JST SALOU</div>
@@ -229,35 +172,30 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
       <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
       <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
     </div>
-    <div class="splash-wave" style="font-size:32px;margin-bottom:8px;">🌊</div>
+    <div class="splash-wave" style="font-size:32px;margin-bottom:8px">🌊</div>
     <h1>JST SALOU</h1>
-    <p data-t="select_profile">Sélectionne ton profil</p>
+    <p id="lbl-select-profile">Sélectionne ton profil</p>
   </div>
-
-  <div style="padding:0 16px 100px;">
-    <div class="section-label" data-t="patrons">Patrons</div>
+  <div style="padding:0 16px 100px">
+    <div class="section-label" id="lbl-sec-patron">Patrons</div>
     <div class="profile-grid" id="patrons-grid"></div>
-
-    <div class="section-label" data-t="chefs">Chefs d'équipe</div>
+    <div class="section-label" id="lbl-sec-chef">Chefs d'équipe</div>
     <div class="profile-grid" id="chefs-grid"></div>
-
-    <div class="section-label" data-t="moniteurs">Moniteurs</div>
+    <div class="section-label" id="lbl-sec-monitor">Moniteurs</div>
     <div class="profile-grid" id="moniteurs-grid"></div>
-
-    <div class="section-label" data-t="cabine">Cabine</div>
+    <div class="section-label" id="lbl-sec-cabine">Cabine</div>
     <div class="profile-grid" id="cabine-grid"></div>
-
-    <button class="btn-primary" id="select-confirm" style="display:none;" onclick="confirmProfile()" data-t="confirm">Confirmer</button>
+    <button class="btn-primary" id="select-confirm" style="display:none;margin-top:8px" onclick="confirmProfile()" id="lbl-confirm">Confirmer</button>
   </div>
 </div>
 
 <!-- PIN -->
 <div id="screen-pin" class="screen">
-  <div style="text-align:center;width:100%;max-width:320px;padding:20px;">
+  <div style="text-align:center;width:100%;max-width:320px;padding:20px">
     <div class="pin-avatar" id="pin-avatar">😊</div>
     <div class="pin-name" id="pin-name">-</div>
-    <div class="pin-hint" id="pin-hint" data-t="enter_pin">Entrez votre code PIN</div>
-    <div class="pin-dots" id="pin-dots">
+    <div class="pin-hint" id="pin-hint">-</div>
+    <div class="pin-dots" id="pin-dots" style="justify-content:center">
       <div class="pin-dot"></div><div class="pin-dot"></div>
       <div class="pin-dot"></div><div class="pin-dot"></div>
     </div>
@@ -271,53 +209,51 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
       <button class="num-btn" onclick="pinPress(7)">7</button>
       <button class="num-btn" onclick="pinPress(8)">8</button>
       <button class="num-btn" onclick="pinPress(9)">9</button>
-      <button class="num-btn" onclick="pinPress('')">＊</button>
+      <button class="num-btn">＊</button>
       <button class="num-btn" onclick="pinPress(0)">0</button>
       <button class="num-btn del" onclick="pinDel()">⌫</button>
     </div>
-    <button class="back-btn" onclick="goToSelect()" data-t="back">← Retour</button>
+    <button class="back-btn" onclick="goToSelect()" id="lbl-back">← Retour</button>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="screen-app" class="screen">
   <div class="topbar">
     <div class="topbar-logo">⛵ JST</div>
     <div class="topbar-right">
       <div class="lang-mini">
-        <button onclick="setLang('fr')" class="active" id="lbtn-fr">FR</button>
-        <button onclick="setLang('es')" id="lbtn-es">ES</button>
-        <button onclick="setLang('en')" id="lbtn-en">EN</button>
+        <button id="lbtn-fr" onclick="setLang('fr')" class="active">FR</button>
+        <button id="lbtn-es" onclick="setLang('es')">ES</button>
+        <button id="lbtn-en" onclick="setLang('en')">EN</button>
       </div>
       <div class="topbar-user" onclick="goTab('profil')">
-        <div class="topbar-avatar" id="top-avatar">😊</div>
-        <span class="topbar-name" id="top-name">-</span>
+        <div class="topbar-avatar" id="top-avatar" style="background:linear-gradient(135deg,var(--accent),var(--purple))">😊</div>
+        <span style="font-size:13px;font-weight:600" id="top-name">-</span>
       </div>
     </div>
   </div>
-
-  <div class="content" id="main-content"><!-- dynamic --></div>
-
+  <div class="content" id="main-content"></div>
   <div class="bottom-nav">
-    <button class="nav-item active" onclick="goTab('home')">
+    <button class="nav-item active" id="nav-home" onclick="goTab('home')">
       <div class="nav-icon">🏠</div>
-      <div class="nav-label" data-t="home">Home</div>
+      <div class="nav-label" id="lbl-nav-home">Home</div>
     </button>
-    <button class="nav-item" onclick="goTab('horaires')">
+    <button class="nav-item" id="nav-mer" onclick="goTab('mer')">
       <div class="nav-icon">🌊</div>
-      <div class="nav-label" data-t="sea">Mer</div>
+      <div class="nav-label" id="lbl-nav-mer">Mer</div>
     </button>
-    <button class="nav-item" onclick="goTab('planning')">
+    <button class="nav-item" id="nav-planning" onclick="goTab('planning')">
       <div class="nav-icon">📋</div>
-      <div class="nav-label" data-t="planning">Planning</div>
+      <div class="nav-label" id="lbl-nav-planning">Planning</div>
     </button>
-    <button class="nav-item" onclick="goTab('chat')">
+    <button class="nav-item" id="nav-chat" onclick="goTab('chat')">
       <div class="nav-icon">💬</div>
-      <div class="nav-label" data-t="chat">Chat</div>
+      <div class="nav-label" id="lbl-nav-chat">Chat</div>
     </button>
-    <button class="nav-item" onclick="goTab('profil')">
+    <button class="nav-item" id="nav-profil" onclick="goTab('profil')">
       <div class="nav-icon">👤</div>
-      <div class="nav-label" data-t="profile">Profil</div>
+      <div class="nav-label" id="lbl-nav-profil">Profil</div>
     </button>
   </div>
 </div>
@@ -333,716 +269,555 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </div>
 </div>
 
-<!-- MODAL GENERIC -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+<div class="modal-overlay" id="modal-overlay" onclick="overlayClick(event)">
   <div class="modal" id="modal-content">
     <button class="modal-close" onclick="closeModal()">×</button>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// =================== DATA ===================
-const PROFILES = [
-  {id:'lucas',name:'Lucas',emoji:'👑',role:'patron',category:'patron'},
-  {id:'ema',name:'Ema',emoji:'👑',role:'patron',category:'patron'},
-  {id:'nacho',name:'Nacho',emoji:'🧔',role:'chef',category:'chef',admin:true},
-  {id:'miha',name:'Miha',emoji:'🧔',role:'chef',category:'chef'},
-  {id:'tim',name:'Tim',emoji:'🤿',role:'monitor',category:'monitor',admin:true,badge:'⭐'},
-  {id:'llorens',name:'Llorens',emoji:'🤿',role:'monitor',category:'monitor',badge:'🔱'},
-  {id:'munir',name:'Munir',emoji:'🤿',role:'monitor',category:'monitor',badge:'🔱'},
-  {id:'nico',name:'Nico',emoji:'🤿',role:'monitor',category:'monitor'},
-  {id:'romane',name:'Romane',emoji:'💁‍♀️',role:'cabine',category:'cabine'},
-  {id:'enola',name:'Enola',emoji:'💁‍♀️',role:'cabine',category:'cabine'},
+// ─── PROFILES ───────────────────────────────────────────────
+const PROFILES=[
+  {id:'lucas',name:'Lucas',emoji:'👑',role:'patron',cat:'patron',avatarBg:'linear-gradient(135deg,#ffc947,#ff6b35)'},
+  {id:'ema',name:'Ema',emoji:'👑',role:'patron',cat:'patron',avatarBg:'linear-gradient(135deg,#ffc947,#ff6b35)'},
+  {id:'nacho',name:'Nacho',emoji:'🧔',role:'chef',cat:'chef',admin:true,avatarBg:'linear-gradient(135deg,#ff6b35,#ff3b6b)'},
+  {id:'miha',name:'Miha',emoji:'🧔',role:'chef',cat:'chef',avatarBg:'linear-gradient(135deg,#ff6b35,#ff3b6b)'},
+  {id:'tim',name:'Tim',emoji:'🤿',role:'monitor',cat:'monitor',admin:true,badge:'⭐',avatarBg:'linear-gradient(135deg,#22c55e,#00c8ff)'},
+  {id:'llorens',name:'Llorens',emoji:'🤿',role:'monitor',cat:'monitor',badge:'🔱',avatarBg:'linear-gradient(135deg,#22c55e,#00c8ff)'},
+  {id:'munir',name:'Munir',emoji:'🤿',role:'monitor',cat:'monitor',badge:'🔱',avatarBg:'linear-gradient(135deg,#22c55e,#00c8ff)'},
+  {id:'nico',name:'Nico',emoji:'🤿',role:'monitor',cat:'monitor',avatarBg:'linear-gradient(135deg,#22c55e,#00c8ff)'},
+  {id:'romane',name:'Romane',emoji:'💁‍♀️',role:'cabine',cat:'cabine',avatarBg:'linear-gradient(135deg,#a78bfa,#ec4899)'},
+  {id:'enola',name:'Enola',emoji:'💁‍♀️',role:'cabine',cat:'cabine',avatarBg:'linear-gradient(135deg,#a78bfa,#ec4899)'},
 ];
 
-const DAILY_TASKS = [
-  [
-    {id:'t1',text:'Vérifier le carburant des jets',assign:'tim'},
-    {id:'t2',text:'Contrôle des gilets de sauvetage',assign:'llorens'},
-    {id:'t3',text:'Check sécurité plage',assign:'munir'},
-    {id:'t4',text:'Préparer le matériel pédagogique',assign:'nico'},
-  ],
-  [
-    {id:'t1',text:'Nettoyage des jets après session',assign:'llorens'},
-    {id:'t2',text:'Vérification des harnais',assign:'tim'},
-    {id:'t3',text:'Balisage zone de navigation',assign:'nico'},
-    {id:'t4',text:'Rédiger rapport de session',assign:'munir'},
-  ],
-  [
-    {id:'t1',text:'Maintenance moteurs',assign:'munir'},
-    {id:'t2',text:'Test radio VHF',assign:'tim'},
-    {id:'t3',text:'Inventaire matériel',assign:'llorens'},
-    {id:'t4',text:'Briefing clients matin',assign:'nico'},
-  ],
-  [
-    {id:'t1',text:'Contrôle météo et courant',assign:'tim'},
-    {id:'t2',text:'Check coque et étrave',assign:'nico'},
-    {id:'t3',text:'Préparer excursion',assign:'llorens'},
-    {id:'t4',text:'Vérifier licences clients',assign:'munir'},
-  ],
-  [
-    {id:'t1',text:'Rangement et sécurisation des jets',assign:'nico'},
-    {id:'t2',text:'Contrôle trousse de secours',assign:'tim'},
-    {id:'t3',text:'Mise à jour planning',assign:'munir'},
-    {id:'t4',text:'Débriefing équipe',assign:'llorens'},
-  ],
-  [
-    {id:'t1',text:'Graissage et entretien',assign:'llorens'},
-    {id:'t2',text:'Test extinction incendie',assign:'munir'},
-    {id:'t3',text:'Photo recap semaine',assign:'tim'},
-    {id:'t4',text:'Rapport hebdomadaire',assign:'nico'},
-  ],
-  [
-    {id:'t1',text:'Inspection complète du parc',assign:'tim'},
-    {id:'t2',text:'Vérification assurances',assign:'llorens'},
-    {id:'t3',text:'Formation sécurité',assign:'nico'},
-    {id:'t4',text:'Mise à jour fiche clients',assign:'munir'},
-  ],
+// ─── TASKS (fixed) ──────────────────────────────────────────
+const FIXED_TASKS=[
+  {id:'task_circuit',key:'task_circuit'},
+  {id:'task_nettoyage',key:'task_nettoyage'},
+  {id:'task_ranger',key:'task_ranger'},
+  {id:'task_gasoil',key:'task_gasoil'},
 ];
 
-const TRANSLATIONS = {
+// ─── TRANSLATIONS ────────────────────────────────────────────
+const TR={
   fr:{
     select_profile:'Sélectionne ton profil',
-    patrons:'Patrons',chefs:"Chefs d'équipe",moniteurs:'Moniteurs',cabine:'Cabine',
-    confirm:'Confirmer',enter_pin:'Entre ton code PIN (4 chiffres)',
-    back:'← Retour',home:'Home',sea:'Mer',planning:'Planning',chat:'Chat',profile:'Profil',
+    sec_patron:'Patrons',sec_chef:"Chefs d'équipe",sec_monitor:'Moniteurs',sec_cabine:'Cabine',
+    confirm:'Confirmer',back:'← Retour',
+    pin_enter:'Entre ton code PIN',pin_create:'Crée ton code PIN (4 chiffres)',pin_confirm_step:'Confirme ton code PIN',
+    pin_set:'✅ PIN créé ! Bienvenue',pin_changed:'✅ PIN modifié',pin_wrong:'❌ Code incorrect',pin_mismatch:'❌ Les codes ne correspondent pas',
+    nav_home:'Home',nav_mer:'Mer',nav_planning:'Planning',nav_chat:'Chat',nav_profil:'Profil',
     good_morning:'Bonjour',good_afternoon:'Bonne après-midi',good_evening:'Bonsoir',
-    today_tasks:"Tâches du jour",sea_sessions:"Sorties en mer",add_session:"+ Ajouter une sortie",
-    reservations:'Réservations',photos:'Photos',excursions:'Excursions',
-    no_messages:'Aucun message pour le moment',type_message:'Écrire un message...',
-    my_stats:'Mes stats',settings:'Paramètres',logout:'Se déconnecter',
-    change_pin:'Changer le PIN',history:'Historique des sorties',
-    sessions_today:'Sorties',clients_today:'Clients',hours_today:'Heures',
-    add_reservation:'+ Ajouter réservation',name:'Nom',time:'Heure',
-    activity:'Activité',nb_people:'Nb personnes',notes:'Notes',
-    save:'Enregistrer',cancel:'Annuler',confirm_btn:'Confirmer',
-    new_pin:'Nouveau PIN (4 chiffres)',confirm_pin:'Confirmer le nouveau PIN',
-    pin_changed:'PIN modifié avec succès',pin_mismatch:'Les codes ne correspondent pas',
-    pin_wrong:'Code incorrect',pin_set:'Code PIN créé ! Bienvenue 🤿',
-    welcome:'Bienvenue',daily_reset:'Les sorties du jour ont été remises à zéro',
-    photo_sent:'📸 Photo envoyée dans Planning',
-    camera_error:'Caméra non disponible',
-    delete:'Supprimer',edit:'Modifier',
-    excursion:'Excursion',jet_initiation:'Initiation jet ski',jet_bapteme:'Baptême jet ski',
-    circuit:'Circuit découverte',
-    clients:'clients',jet:'jet',jets:'jets',
-    admin_label:'Admin',
-    no_tasks:'Pas de tâches',no_sessions:'Aucune sortie enregistrée',
-    no_reservations:'Aucune réservation',
+    today_tasks:'Tâches du jour',task_circuit:'Circuit des motos',task_nettoyage:'Nettoyage plateforme',task_ranger:'Ranger gilets & clefs jet ski',task_gasoil:'Regarder le gasoil',
+    sea_title:'Excursions en mer',sea_sub:'Temps en mer par moniteur aujourd\'hui',add_exc:'+ Ajouter une excursion',
+    monitor_label:'Moniteur',duration_label:'Durée',total_label:'Total',hours_label:'h',min_label:'min',
+    planning_title:'Planning',tab_cartel:'📸 Cartel',tab_photos:'Photos',tab_exc:'Excursions',
+    cartel_hint:'Prends une photo du cartel ou note des infos ici...',take_photo:'📷 Photo cartel',
+    chat_title:'Chat équipe',no_messages:'Aucun message',type_msg:'Message...',
+    profil_title:'Mon profil',my_time_sea:'Temps en mer total',my_sessions:'Excursions',my_days:'Jours actifs',
+    change_pin:'🔐 Changer le PIN',history_label:'📊 Historique',admin_panel:'👑 Panel Admin',logout:'🚪 Déconnexion',
+    save:'Enregistrer',cancel:'Annuler',delete:'Supprimer',
+    new_pin:'Nouveau PIN (4 chiffres)',confirm_pin_lbl:'Confirmer le nouveau PIN',
+    admin_reset:'🔄 Reset journée (excursions + tâches)',admin_clear_chat:'🗑 Effacer le chat',admin_clear_photos:'🗑 Effacer les photos',
+    photo_sent:'📸 Photo ajoutée au Planning',camera_err:'Caméra non disponible',
+    no_exc:'Aucune excursion aujourd\'hui',no_photos:'Aucune photo',
+    sessions_done:'Excursions',time_sea:'Temps mer',tasks_done_lbl:'Tâches',
+    exc_modal_title:'Nouvelle excursion',exc_monitor:'Moniteur',exc_duration:'Durée (minutes)',exc_note:'Note (optionnel)',
+    history_today:"Aujourd'hui",history_empty:'Aucun historique',
   },
   es:{
     select_profile:'Selecciona tu perfil',
-    patrons:'Patrones',chefs:'Jefes de equipo',moniteurs:'Monitores',cabine:'Cabina',
-    confirm:'Confirmar',enter_pin:'Introduce tu PIN (4 dígitos)',
-    back:'← Volver',home:'Inicio',sea:'Mar',planning:'Agenda',chat:'Chat',profile:'Perfil',
+    sec_patron:'Patrones',sec_chef:'Jefes de equipo',sec_monitor:'Monitores',sec_cabine:'Cabina',
+    confirm:'Confirmar',back:'← Volver',
+    pin_enter:'Introduce tu PIN',pin_create:'Crea tu PIN (4 dígitos)',pin_confirm_step:'Confirma tu PIN',
+    pin_set:'✅ PIN creado ! Bienvenido',pin_changed:'✅ PIN modificado',pin_wrong:'❌ Código incorrecto',pin_mismatch:'❌ Los códigos no coinciden',
+    nav_home:'Inicio',nav_mer:'Mar',nav_planning:'Agenda',nav_chat:'Chat',nav_profil:'Perfil',
     good_morning:'Buenos días',good_afternoon:'Buenas tardes',good_evening:'Buenas noches',
-    today_tasks:'Tareas del día',sea_sessions:'Salidas al mar',add_session:'+ Añadir salida',
-    reservations:'Reservas',photos:'Fotos',excursions:'Excursiones',
-    no_messages:'Sin mensajes todavía',type_message:'Escribe un mensaje...',
-    my_stats:'Mis stats',settings:'Ajustes',logout:'Desconectarse',
-    change_pin:'Cambiar PIN',history:'Historial de salidas',
-    sessions_today:'Salidas',clients_today:'Clientes',hours_today:'Horas',
-    add_reservation:'+ Añadir reserva',name:'Nombre',time:'Hora',
-    activity:'Actividad',nb_people:'Nº personas',notes:'Notas',
-    save:'Guardar',cancel:'Cancelar',confirm_btn:'Confirmar',
-    new_pin:'Nuevo PIN (4 dígitos)',confirm_pin:'Confirmar nuevo PIN',
-    pin_changed:'PIN cambiado con éxito',pin_mismatch:'Los códigos no coinciden',
-    pin_wrong:'Código incorrecto',pin_set:'¡PIN creado! Bienvenido 🤿',
-    welcome:'Bienvenido',daily_reset:'Las salidas del día se han reiniciado',
-    photo_sent:'📸 Foto enviada en Agenda',
-    camera_error:'Cámara no disponible',
-    delete:'Eliminar',edit:'Editar',
-    excursion:'Excursión',jet_initiation:'Iniciación moto acuática',jet_bapteme:'Bautizo moto acuática',
-    circuit:'Circuito descubrimiento',
-    clients:'clientes',jet:'moto',jets:'motos',
-    admin_label:'Admin',
-    no_tasks:'Sin tareas',no_sessions:'Sin salidas registradas',
-    no_reservations:'Sin reservas',
+    today_tasks:'Tareas del día',task_circuit:'Circuito de motos',task_nettoyage:'Limpieza plataforma',task_ranger:'Guardar chalecos y llaves',task_gasoil:'Revisar el gasóleo',
+    sea_title:'Excursiones en el mar',sea_sub:'Tiempo en el mar por monitor hoy',add_exc:'+ Añadir excursión',
+    monitor_label:'Monitor',duration_label:'Duración',total_label:'Total',hours_label:'h',min_label:'min',
+    planning_title:'Agenda',tab_cartel:'📸 Cartel',tab_photos:'Fotos',tab_exc:'Excursiones',
+    cartel_hint:'Haz una foto del cartel o escribe notas aquí...',take_photo:'📷 Foto del cartel',
+    chat_title:'Chat equipo',no_messages:'Sin mensajes',type_msg:'Mensaje...',
+    profil_title:'Mi perfil',my_time_sea:'Tiempo en el mar total',my_sessions:'Excursiones',my_days:'Días activos',
+    change_pin:'🔐 Cambiar PIN',history_label:'📊 Historial',admin_panel:'👑 Panel Admin',logout:'🚪 Desconectarse',
+    save:'Guardar',cancel:'Cancelar',delete:'Eliminar',
+    new_pin:'Nuevo PIN (4 dígitos)',confirm_pin_lbl:'Confirmar nuevo PIN',
+    admin_reset:'🔄 Reiniciar día (excursiones + tareas)',admin_clear_chat:'🗑 Borrar chat',admin_clear_photos:'🗑 Borrar fotos',
+    photo_sent:'📸 Foto añadida en Agenda',camera_err:'Cámara no disponible',
+    no_exc:'Sin excursiones hoy',no_photos:'Sin fotos',
+    sessions_done:'Excursiones',time_sea:'Tiempo mar',tasks_done_lbl:'Tareas',
+    exc_modal_title:'Nueva excursión',exc_monitor:'Monitor',exc_duration:'Duración (minutos)',exc_note:'Nota (opcional)',
+    history_today:'Hoy',history_empty:'Sin historial',
   },
   en:{
     select_profile:'Select your profile',
-    patrons:'Owners',chefs:'Team leaders',moniteurs:'Instructors',cabine:'Office',
-    confirm:'Confirm',enter_pin:'Enter your PIN (4 digits)',
-    back:'← Back',home:'Home',sea:'Sea',planning:'Planning',chat:'Chat',profile:'Profile',
+    sec_patron:'Owners',sec_chef:'Team leaders',sec_monitor:'Instructors',sec_cabine:'Office',
+    confirm:'Confirm',back:'← Back',
+    pin_enter:'Enter your PIN',pin_create:'Create your PIN (4 digits)',pin_confirm_step:'Confirm your PIN',
+    pin_set:'✅ PIN created! Welcome',pin_changed:'✅ PIN updated',pin_wrong:'❌ Wrong code',pin_mismatch:"❌ Codes don't match",
+    nav_home:'Home',nav_mer:'Sea',nav_planning:'Planning',nav_chat:'Chat',nav_profil:'Profile',
     good_morning:'Good morning',good_afternoon:'Good afternoon',good_evening:'Good evening',
-    today_tasks:"Today's tasks",sea_sessions:'Sea sessions',add_session:'+ Add session',
-    reservations:'Reservations',photos:'Photos',excursions:'Excursions',
-    no_messages:'No messages yet',type_message:'Type a message...',
-    my_stats:'My stats',settings:'Settings',logout:'Log out',
-    change_pin:'Change PIN',history:'Session history',
-    sessions_today:'Sessions',clients_today:'Clients',hours_today:'Hours',
-    add_reservation:'+ Add reservation',name:'Name',time:'Time',
-    activity:'Activity',nb_people:'People',notes:'Notes',
-    save:'Save',cancel:'Cancel',confirm_btn:'Confirm',
-    new_pin:'New PIN (4 digits)',confirm_pin:'Confirm new PIN',
-    pin_changed:'PIN changed successfully',pin_mismatch:"Codes don't match",
-    pin_wrong:'Wrong code',pin_set:'PIN created! Welcome 🤿',
-    welcome:'Welcome',daily_reset:"Today's sessions have been reset",
-    photo_sent:'📸 Photo sent to Planning',
-    camera_error:'Camera not available',
-    delete:'Delete',edit:'Edit',
-    excursion:'Excursion',jet_initiation:'Jet ski introduction',jet_bapteme:'Jet ski baptism',
-    circuit:'Discovery circuit',
-    clients:'clients',jet:'jet',jets:'jets',
-    admin_label:'Admin',
-    no_tasks:'No tasks',no_sessions:'No sessions recorded',
-    no_reservations:'No reservations',
+    today_tasks:"Today's tasks",task_circuit:'Boat circuit',task_nettoyage:'Platform cleaning',task_ranger:'Store vests & jet ski keys',task_gasoil:'Check fuel level',
+    sea_title:'Sea excursions',sea_sub:"Today's sea time per instructor",add_exc:'+ Add excursion',
+    monitor_label:'Instructor',duration_label:'Duration',total_label:'Total',hours_label:'h',min_label:'min',
+    planning_title:'Planning',tab_cartel:'📸 Board',tab_photos:'Photos',tab_exc:'Excursions',
+    cartel_hint:'Take a photo of the board or write notes here...',take_photo:'📷 Board photo',
+    chat_title:'Team chat',no_messages:'No messages yet',type_msg:'Message...',
+    profil_title:'My profile',my_time_sea:'Total sea time',my_sessions:'Excursions',my_days:'Active days',
+    change_pin:'🔐 Change PIN',history_label:'📊 History',admin_panel:'👑 Admin Panel',logout:'🚪 Log out',
+    save:'Save',cancel:'Cancel',delete:'Delete',
+    new_pin:'New PIN (4 digits)',confirm_pin_lbl:'Confirm new PIN',
+    admin_reset:'🔄 Reset day (excursions + tasks)',admin_clear_chat:'🗑 Clear chat',admin_clear_photos:'🗑 Clear photos',
+    photo_sent:'📸 Photo added to Planning',camera_err:'Camera unavailable',
+    no_exc:'No excursions today',no_photos:'No photos yet',
+    sessions_done:'Excursions',time_sea:'Sea time',tasks_done_lbl:'Tasks',
+    exc_modal_title:'New excursion',exc_monitor:'Instructor',exc_duration:'Duration (minutes)',exc_note:'Note (optional)',
+    history_today:'Today',history_empty:'No history yet',
   }
 };
 
-// =================== STATE ===================
-let currentLang = 'fr';
-let currentUser = null;
-let pinBuffer = '';
-let isSettingPin = false;
-let newPinTemp = '';
-let activeTab = 'home';
-let cameraStream = null;
-let facingMode = 'environment';
+// ─── STATE ────────────────────────────────────────────────────
+let lang='fr';
+let me=null;
+let pinBuf='';
+let pinNewTemp='';
+let pinStep=0; // 0=enter, 1=create1, 2=create2
+let activeTab='home';
+let planTab='cartel';
+let camTarget='planning';
+let camStream=null;
+let facingMode='environment';
 
-function t(key){return (TRANSLATIONS[currentLang]||TRANSLATIONS.fr)[key]||key;}
+const t=k=>(TR[lang]||TR.fr)[k]||k;
 
-// =================== STORAGE ===================
-function getStore(key,def=null){
-  try{const v=localStorage.getItem('jst_'+key);return v?JSON.parse(v):def;}catch{return def;}
+// ─── STORAGE ─────────────────────────────────────────────────
+const gs=(k,d=null)=>{try{const v=localStorage.getItem('jst_'+k);return v!=null?JSON.parse(v):d;}catch{return d;}};
+const ss=(k,v)=>{try{localStorage.setItem('jst_'+k,JSON.stringify(v));}catch{}};
+
+// Shared = visible to all
+const gsh=k=>gs('sh_'+k,[]);
+const ssh=(k,v)=>{ss('sh_'+k,v);};
+
+// ─── DAILY RESET ─────────────────────────────────────────────
+function checkReset(){
+  const today=new Date().toDateString();
+  if(gs('last_day','')!==today){
+    // archive
+    const exc=gsh('excursions');
+    if(exc.length){
+      const hist=gs('sh_exc_history',[]);
+      hist.push({date:gs('last_day',today)||today,exc});
+      ss('sh_exc_history',hist);
+    }
+    ssh('excursions',[]);
+    ssh('tasks_done',[]);
+    ss('last_day',today);
+  }
 }
-function setStore(key,val){
-  try{localStorage.setItem('jst_'+key,JSON.stringify(val));}catch{}
-}
 
-function getShared(key,def=null){return getStore('shared_'+key,def);}
-function setShared(key,val){
-  setStore('shared_'+key,val);
-  // broadcast to same tab
-  window.dispatchEvent(new CustomEvent('jst_update',{detail:{key}}));
-}
-
-// =================== INIT ===================
+// ─── BOOT ─────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
-  checkDailyReset();
+  checkReset();
   setTimeout(()=>{
     document.getElementById('splash').classList.add('hide');
     setTimeout(()=>{
       document.getElementById('splash').style.display='none';
       showScreen('screen-select');
-      renderProfileSelect();
-      applyLang();
+      buildProfiles();
+      applyLangUI();
     },600);
   },1800);
 });
 
-function checkDailyReset(){
-  const today = new Date().toDateString();
-  const last = getStore('last_day','');
-  if(last !== today){
-    // Archive today's data before reset
-    const sessions = getShared('sessions',[]);
-    const todayDate = last || today;
-    if(sessions.length>0){
-      const allHistory = getShared('sessions_history',[]);
-      allHistory.push({date:todayDate,sessions});
-      setShared('sessions_history',allHistory);
-    }
-    setShared('sessions',[]);
-    setShared('tasks_done',[]);
-    setStore('last_day',today);
-  }
+// ─── LANG ─────────────────────────────────────────────────────
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  const idx={fr:0,es:1,en:2}[l];
+  document.querySelectorAll('.lang-btn')[idx]?.classList.add('active');
+  ['fr','es','en'].forEach(x=>document.getElementById('lbtn-'+x)?.classList.remove('active'));
+  document.getElementById('lbtn-'+l)?.classList.add('active');
+  applyLangUI();
+  if(me) renderTab(activeTab);
 }
 
+function applyLangUI(){
+  // Select screen
+  const el=id=>document.getElementById(id);
+  if(el('lbl-select-profile')) el('lbl-select-profile').textContent=t('select_profile');
+  if(el('lbl-sec-patron')) el('lbl-sec-patron').textContent=t('sec_patron');
+  if(el('lbl-sec-chef')) el('lbl-sec-chef').textContent=t('sec_chef');
+  if(el('lbl-sec-monitor')) el('lbl-sec-monitor').textContent=t('sec_monitor');
+  if(el('lbl-sec-cabine')) el('lbl-sec-cabine').textContent=t('sec_cabine');
+  if(el('select-confirm')) el('select-confirm').textContent=t('confirm');
+  if(el('lbl-back')) el('lbl-back').textContent=t('back');
+  // Nav
+  ['home','mer','planning','chat','profil'].forEach(k=>{
+    const e=el('lbl-nav-'+k);
+    if(e) e.textContent=t('nav_'+k);
+  });
+}
+
+// ─── SCREEN ───────────────────────────────────────────────────
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-function setLang(lang){
-  currentLang=lang;
-  document.querySelectorAll('[data-t]').forEach(el=>{
-    const key=el.getAttribute('data-t');
-    el.textContent=t(key);
-  });
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.lang-mini button').forEach(b=>b.classList.remove('active'));
-  const sel=document.querySelector(`.lang-btn:nth-child(${lang==='fr'?1:lang==='es'?2:3})`);
-  if(sel)sel.classList.add('active');
-  document.getElementById(`lbtn-${lang}`)?.classList.add('active');
-  if(activeTab) renderTab(activeTab);
-}
-
-function applyLang(){
-  document.querySelectorAll('[data-t]').forEach(el=>{
-    el.textContent=t(el.getAttribute('data-t'));
-  });
-}
-
-// =================== PROFILE SELECT ===================
-function renderProfileSelect(){
-  const cats={patron:'patrons-grid',chef:'chefs-grid',monitor:'moniteurs-grid',cabine:'cabine-grid'};
-  Object.entries(cats).forEach(([cat,gridId])=>{
-    const grid=document.getElementById(gridId);
-    grid.innerHTML='';
-    PROFILES.filter(p=>p.category===cat).forEach(p=>{
-      const div=document.createElement('div');
-      div.className=`profile-card ${cat}-card`;
-      div.id=`pcard-${p.id}`;
-      div.onclick=()=>selectProfile(p.id);
-      div.innerHTML=`
+// ─── BUILD PROFILE GRID ───────────────────────────────────────
+function buildProfiles(){
+  const cats=['patron','chef','monitor','cabine'];
+  cats.forEach(cat=>{
+    const grid=document.getElementById(cat+'s-grid')||document.getElementById(cat==='monitor'?'moniteurs-grid':cat==='cabine'?'cabine-grid':cat+'s-grid');
+    const g=document.getElementById(
+      cat==='patron'?'patrons-grid':
+      cat==='chef'?'chefs-grid':
+      cat==='monitor'?'moniteurs-grid':'cabine-grid'
+    );
+    if(!g)return;
+    g.innerHTML='';
+    PROFILES.filter(p=>p.cat===cat).forEach(p=>{
+      const d=document.createElement('div');
+      d.className='profile-card '+cat+'-card';
+      d.id='pcard-'+p.id;
+      d.onclick=()=>pickProfile(p.id);
+      const roleLabel=t('sec_'+cat).replace(/s$/,'').replace(/es$/,'');
+      d.innerHTML=`
+        ${p.admin?'<div class="p-badge" style="right:auto;left:6px;font-size:10px">👑</div>':''}
         ${p.badge?`<div class="p-badge">${p.badge}</div>`:''}
-        ${p.admin?`<div class="p-badge" style="right:auto;left:6px;font-size:9px;background:rgba(255,201,71,.15);color:var(--gold);padding:2px 4px;border-radius:6px;">👑</div>`:''}
-        <div class="p-avatar">${p.emoji}</div>
+        <div class="p-avatar" style="background:${p.avatarBg}">${p.emoji}</div>
         <div class="p-name">${p.name}</div>
-        <div class="p-role">${t(cat==='patron'?'patrons':cat==='chef'?'chefs':cat==='monitor'?'moniteurs':'cabine').replace(/s$/,'')}</div>
+        <div class="p-role">${roleLabel}</div>
       `;
-      grid.appendChild(div);
+      g.appendChild(d);
     });
   });
 }
 
-let selectedProfileId=null;
-function selectProfile(id){
+let selId=null;
+function pickProfile(id){
   document.querySelectorAll('.profile-card').forEach(c=>c.classList.remove('selected'));
-  document.getElementById(`pcard-${id}`)?.classList.add('selected');
-  selectedProfileId=id;
+  document.getElementById('pcard-'+id)?.classList.add('selected');
+  selId=id;
   document.getElementById('select-confirm').style.display='block';
 }
 
 function confirmProfile(){
-  if(!selectedProfileId)return;
-  const profile=PROFILES.find(p=>p.id===selectedProfileId);
-  currentUser=profile;
-  // Check if user has a pin
-  const pin=getStore(`pin_${profile.id}`,null);
-  setupPinScreen(!!pin, pin ? 'enter' : 'set');
+  if(!selId)return;
+  me=PROFILES.find(p=>p.id===selId);
+  const hasPin=!!gs('pin_'+me.id);
+  pinBuf='';pinNewTemp='';
+  pinStep=hasPin?0:1;
+  document.getElementById('pin-avatar').style.background=me.avatarBg;
+  document.getElementById('pin-avatar').textContent=me.emoji;
+  document.getElementById('pin-name').textContent=me.name+(me.badge?' '+me.badge:'');
+  document.getElementById('pin-hint').textContent=hasPin?t('pin_enter'):t('pin_create');
+  updateDots();
   showScreen('screen-pin');
 }
 
-function setupPinScreen(hasPin, mode){
-  isSettingPin = !hasPin;
-  pinBuffer='';
-  newPinTemp='';
-  document.getElementById('pin-avatar').textContent=currentUser.emoji;
-  document.getElementById('pin-name').textContent=currentUser.name;
-  document.getElementById('pin-hint').textContent=hasPin?t('enter_pin'):t('pin_set').replace('PIN créé ! Bienvenue 🤿','Entre un code PIN à 4 chiffres').replace('¡PIN creado! Bienvenido 🤿','').replace('PIN created! Welcome 🤿','')+(hasPin?'':' — Nouveau code');
-  if(!hasPin)document.getElementById('pin-hint').textContent='Crée ton code PIN (4 chiffres)';
-  updateDots();
-}
+function goToSelect(){showScreen('screen-select');buildProfiles();}
 
-function goToSelect(){showScreen('screen-select');renderProfileSelect();}
-
-// =================== PIN ===================
+// ─── PIN ─────────────────────────────────────────────────────
 function pinPress(n){
-  if(pinBuffer.length>=4)return;
-  pinBuffer+=String(n);
-  updateDots();
-  if(pinBuffer.length===4) setTimeout(checkPin,200);
+  if(pinBuf.length>=4)return;
+  pinBuf+=String(n);updateDots();
+  if(pinBuf.length===4)setTimeout(handlePin,200);
 }
-function pinDel(){pinBuffer=pinBuffer.slice(0,-1);updateDots();}
+function pinDel(){pinBuf=pinBuf.slice(0,-1);updateDots();}
 function updateDots(err=false){
-  const dots=document.querySelectorAll('.pin-dot');
-  dots.forEach((d,i)=>{
+  document.querySelectorAll('.pin-dot').forEach((d,i)=>{
     d.classList.remove('filled','error');
-    if(i<pinBuffer.length) d.classList.add(err?'error':'filled');
+    if(i<pinBuf.length)d.classList.add(err?'error':'filled');
   });
 }
-function checkPin(){
-  const storedPin=getStore(`pin_${currentUser.id}`,null);
-  if(!storedPin){
-    // First time: set pin
-    if(!newPinTemp){
-      newPinTemp=pinBuffer;pinBuffer='';
-      document.getElementById('pin-hint').textContent='Confirme ton code PIN';
-      updateDots();return;
-    }
-    if(newPinTemp===pinBuffer){
-      setStore(`pin_${currentUser.id}`,pinBuffer);
-      showToast(t('pin_set'));
-      enterApp();
-    } else {
-      showToast(t('pin_mismatch'));
-      newPinTemp='';pinBuffer='';updateDots(true);
-      setTimeout(()=>updateDots(),600);
-      document.getElementById('pin-hint').textContent='Crée ton code PIN (4 chiffres)';
+function handlePin(){
+  const stored=gs('pin_'+me.id);
+  if(!stored){
+    // creating pin
+    if(pinStep===1){pinNewTemp=pinBuf;pinBuf='';pinStep=2;document.getElementById('pin-hint').textContent=t('pin_confirm_step');updateDots();}
+    else{
+      if(pinBuf===pinNewTemp){ss('pin_'+me.id,pinBuf);toast(t('pin_set'));enterApp();}
+      else{toast(t('pin_mismatch'));pinNewTemp='';pinBuf='';pinStep=1;updateDots(true);setTimeout(()=>{document.getElementById('pin-hint').textContent=t('pin_create');updateDots();},600);}
     }
   } else {
-    if(pinBuffer===storedPin){enterApp();}
-    else{
-      updateDots(true);
-      showToast(t('pin_wrong'));
-      setTimeout(()=>{pinBuffer='';updateDots();},600);
-    }
+    if(pinBuf===stored){enterApp();}
+    else{toast(t('pin_wrong'));pinBuf='';updateDots(true);setTimeout(()=>updateDots(),600);}
   }
 }
+
 function enterApp(){
-  document.getElementById('top-avatar').textContent=currentUser.emoji;
-  document.getElementById('top-name').textContent=currentUser.name+(currentUser.admin?'':'')+currentUser.badge||currentUser.name;
-  document.getElementById('top-name').textContent=currentUser.name;
+  document.getElementById('top-avatar').textContent=me.emoji;
+  document.getElementById('top-avatar').style.background=me.avatarBg;
+  document.getElementById('top-name').textContent=me.name+(me.badge?' '+me.badge:'');
   showScreen('screen-app');
+  applyLangUI();
   goTab('home');
-  // Apply lang mini buttons
-  document.getElementById(`lbtn-${currentLang}`)?.classList.add('active');
 }
 
-// =================== NAVIGATION ===================
+// ─── TABS ─────────────────────────────────────────────────────
 function goTab(tab){
   activeTab=tab;
-  document.querySelectorAll('.nav-item').forEach((b,i)=>{
-    const tabs=['home','horaires','planning','chat','profil'];
-    b.classList.toggle('active',tabs[i]===tab);
+  ['home','mer','planning','chat','profil'].forEach(k=>{
+    document.getElementById('nav-'+k)?.classList.toggle('active',k===tab);
   });
   renderTab(tab);
 }
 
 function renderTab(tab){
   const c=document.getElementById('main-content');
-  if(tab==='home') c.innerHTML=renderHome();
-  else if(tab==='horaires') c.innerHTML=renderHoraires();
-  else if(tab==='planning') c.innerHTML=renderPlanning();
-  else if(tab==='chat') renderChatTab();
-  else if(tab==='profil') c.innerHTML=renderProfil();
+  if(tab==='home')c.innerHTML=buildHome();
+  else if(tab==='mer')c.innerHTML=buildMer();
+  else if(tab==='planning')c.innerHTML=buildPlanning();
+  else if(tab==='chat'){buildChat(c);}
+  else if(tab==='profil')c.innerHTML=buildProfil();
 }
 
-// =================== HOME ===================
-function renderHome(){
-  const hour=new Date().getHours();
-  const greet=hour<12?t('good_morning'):hour<18?t('good_afternoon'):t('good_evening');
+// ─── HOME ─────────────────────────────────────────────────────
+function buildHome(){
+  const h=new Date().getHours();
+  const greet=h<12?t('good_morning'):h<18?t('good_afternoon'):t('good_evening');
   const now=new Date();
-  const dateStr=now.toLocaleDateString(currentLang==='fr'?'fr-FR':currentLang==='es'?'es-ES':'en-GB',{weekday:'long',day:'numeric',month:'long'});
-  const sessions=getShared('sessions',[]);
-  const totalClients=sessions.reduce((s,x)=>s+(x.clients||0),0);
-  const tasksDone=getShared('tasks_done',[]);
-  const dayIdx=now.getDay();
-  const tasks=DAILY_TASKS[dayIdx]||DAILY_TASKS[0];
-  const monitorIds=['tim','llorens','munir','nico'];
-  const isMonitor=monitorIds.includes(currentUser.id);
-  
-  let tasksHtml='';
-  if(isMonitor){
-    tasksHtml=`<div class="card">
-      <div class="card-title">${t('today_tasks')} <span style="color:var(--accent2)">${tasksDone.length}/${tasks.length}</span></div>
-      <div class="tasks-list">
-        ${tasks.map(task=>{
-          const done=tasksDone.includes(task.id);
-          const assignee=PROFILES.find(p=>p.id===task.assign);
-          return `<div class="task-item" onclick="toggleTask('${task.id}')">
-            <div class="task-check ${done?'done':''}">✓</div>
-            <div>
-              <div class="task-text ${done?'done':''}">${task.text}</div>
-              <div class="task-assign">${assignee?assignee.emoji+' '+assignee.name:''}</div>
-            </div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-  }
+  const dloc=now.toLocaleDateString(lang==='fr'?'fr-FR':lang==='es'?'es-ES':'en-GB',{weekday:'long',day:'numeric',month:'long'});
+  const exc=gsh('excursions');
+  const done=gsh('tasks_done');
+  const totalMin=exc.reduce((s,e)=>s+(e.duration||0),0);
+  const h2=Math.floor(totalMin/60);const m2=totalMin%60;
+  const isMonitor=['tim','llorens','munir','nico'].includes(me.id);
 
-  // Weather placeholder (Salou coordinates)
-  const weathers=['☀️','⛅','🌤️'];
-  const wIcon=weathers[dayIdx%3];
+  const taskHtml=isMonitor?`
+  <div class="card">
+    <div class="card-title">${t('today_tasks')} <span style="color:var(--accent2)">${done.length}/${FIXED_TASKS.length}</span></div>
+    ${FIXED_TASKS.map(tk=>{
+      const isDone=done.includes(tk.id);
+      return `<div class="task-item" onclick="toggleTask('${tk.id}')">
+        <div class="task-check ${isDone?'done':''}">${isDone?'✓':''}</div>
+        <div class="task-text ${isDone?'done':''}">${t(tk.key)}</div>
+      </div>`;
+    }).join('')}
+  </div>`:'';
 
   return `
-    <div class="greeting">${greet}, <span>${currentUser.name}</span>
-      ${currentUser.badge?`<span style="font-size:20px">${currentUser.badge}</span>`:''}
-      ${currentUser.admin?`<span class="admin-crown">👑 ${t('admin_label')}</span>`:''}
-    </div>
-    <div class="date-bar">${dateStr} — Salou, España</div>
-
-    <div class="weather-card">
-      <div class="weather-main">
-        <div class="weather-icon">${wIcon}</div>
-        <div>
-          <div class="weather-city">Salou</div>
-          <div class="weather-info">Costa Daurada</div>
-        </div>
-      </div>
-      <div class="weather-temp">${26+dayIdx%4}°</div>
-    </div>
-
+    <div class="greeting">${greet}, <span>${me.name}</span>${me.admin?`<span class="admin-crown">👑 Admin</span>`:''}</div>
+    <div class="date-bar">${dloc} — Salou</div>
     <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-num">${sessions.length}</div>
-        <div class="stat-label">${t('sessions_today')}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">${totalClients}</div>
-        <div class="stat-label">${t('clients_today')}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">${sessions.length*2}</div>
-        <div class="stat-label">${t('hours_today')}</div>
-      </div>
+      <div class="stat-card"><div class="stat-num">${exc.length}</div><div class="stat-label">${t('sessions_done')}</div></div>
+      <div class="stat-card"><div class="stat-num">${h2}${t('hours_label')}${m2?m2+t('min_label'):''}</div><div class="stat-label">${t('time_sea')}</div></div>
+      <div class="stat-card"><div class="stat-num">${done.length}/${FIXED_TASKS.length}</div><div class="stat-label">${t('tasks_done_lbl')}</div></div>
     </div>
-
-    ${tasksHtml}
-
+    ${taskHtml}
     <div class="card">
-      <div class="card-title">${t('sea_sessions')}</div>
-      ${sessions.slice(-3).map(s=>`
-        <div class="sea-slot">
-          <div class="sea-time">${s.time}</div>
-          <div class="sea-info">
-            <div class="sea-type">${s.type}</div>
-            <div class="sea-clients">${s.clients} ${t('clients')} · ${s.jets||1} ${t('jets')}</div>
-          </div>
-          <div class="sea-status">${s.status||'OK'}</div>
-        </div>
-      `).join('')}
-      ${sessions.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">${t('no_sessions')}</div>`:''}
+      <div class="card-title">${t('sea_title')}</div>
+      ${exc.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">${t('no_exc')}</div>`:''}
+      ${exc.slice(-3).map(e=>{
+        const p=PROFILES.find(x=>x.id===e.monitorId);
+        const dh=Math.floor(e.duration/60);const dm=e.duration%60;
+        return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+          <div style="font-size:22px">${p?p.emoji:'🤿'}</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600">${p?p.name:'?'}</div><div style="font-size:11px;color:var(--muted)">${e.time}</div></div>
+          <div class="time-badge">${dh?dh+t('hours_label'):''}${dm?dm+t('min_label'):''}</div>
+        </div>`;
+      }).join('')}
     </div>
   `;
 }
 
 function toggleTask(id){
-  const done=getShared('tasks_done',[]);
-  const idx=done.indexOf(id);
-  if(idx>=0) done.splice(idx,1); else done.push(id);
-  setShared('tasks_done',done);
-  renderTab('home');
+  const d=gsh('tasks_done');
+  const i=d.indexOf(id);if(i>=0)d.splice(i,1);else d.push(id);
+  ssh('tasks_done',d);renderTab('home');
 }
 
-// =================== HORAIRES ===================
-function renderHoraires(){
-  const sessions=getShared('sessions',[]);
-  const isAdmin=currentUser.admin||['lucas','ema','nacho','miha'].includes(currentUser.id);
-  
+// ─── MER ─────────────────────────────────────────────────────
+function buildMer(){
+  const exc=gsh('excursions');
+  const monitors=PROFILES.filter(p=>p.cat==='monitor');
+  const canAdd=['tim','llorens','munir','nico','lucas','ema','nacho','miha'].includes(me.id);
+
+  // total per monitor
+  const totals={};
+  exc.forEach(e=>{totals[e.monitorId]=(totals[e.monitorId]||0)+(e.duration||0);});
+
   return `
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:4px;color:var(--accent)">${t('sea_sessions')}</div>
-    <div style="color:var(--muted);font-size:12px;margin-bottom:16px">${new Date().toLocaleDateString(currentLang==='fr'?'fr-FR':currentLang==='es'?'es-ES':'en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>
-    
-    <div class="sea-timeline" id="sessions-list">
-      ${sessions.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">${t('no_sessions')}</div>`:''}
-      ${sessions.map((s,i)=>`
-        <div class="sea-slot ${s.status==='active'?'active':''}">
-          <div class="sea-time">${s.time}</div>
-          <div class="sea-info">
-            <div class="sea-type">${s.type}</div>
-            <div class="sea-clients">${s.clients} ${t('clients')} · ${s.jets||1} ${t('jets')}</div>
-            ${s.notes?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${s.notes}</div>`:''}
+    <div class="section-title">${t('sea_title')}</div>
+    <div class="section-sub">${t('sea_sub')}</div>
+    <div class="card" style="margin-bottom:14px">
+      ${monitors.map(m=>{
+        const total=totals[m.id]||0;
+        const th=Math.floor(total/60);const tm=total%60;
+        const myExc=exc.filter(e=>e.monitorId===m.id);
+        return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="width:40px;height:40px;border-radius:50%;background:${m.avatarBg};display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${m.emoji}</div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:700">${m.name} ${m.badge||''}</div>
+            <div style="font-size:11px;color:var(--muted)">${myExc.length} sortie${myExc.length>1?'s':''}</div>
           </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-            <div class="sea-status ${s.status==='pending'?'pending':''}">${s.status==='pending'?t('pending_label')||'⏳':'✓'}</div>
-            ${isAdmin?`<button onclick="deleteSession(${i})" style="background:none;border:none;color:var(--red);font-size:16px;cursor:pointer;">🗑</button>`:''}
-          </div>
-        </div>
-      `).join('')}
+          <div class="time-badge" style="${total===0?'opacity:.4':''}">${total===0?'—':''} ${th?th+t('hours_label'):''}${tm?tm+t('min_label'):''}</div>
+        </div>`;
+      }).join('')}
     </div>
-    
-    ${isAdmin||currentUser.category==='monitor'?`<button class="add-btn" onclick="openAddSession()">${t('add_session')}</button>`:''}
+
+    <div class="section-title" style="font-size:20px;margin-bottom:10px">Détail</div>
+    ${exc.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px">${t('no_exc')}</div>`:''}
+    ${exc.map((e,i)=>{
+      const p=PROFILES.find(x=>x.id===e.monitorId);
+      const dh=Math.floor(e.duration/60);const dm=e.duration%60;
+      const canDel=me.admin||e.monitorId===me.id;
+      return `<div class="exc-card">
+        <div class="exc-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:38px;height:38px;border-radius:50%;background:${p?p.avatarBg:'#333'};display:flex;align-items:center;justify-content:center;font-size:16px">${p?p.emoji:'🤿'}</div>
+            <div>
+              <div class="exc-name">${p?p.name:'?'}</div>
+              <div class="exc-detail">${e.time}${e.note?' · '+e.note:''}</div>
+            </div>
+          </div>
+          ${canDel?`<button onclick="delExc(${i})" style="background:none;border:none;color:var(--red);font-size:18px;cursor:pointer">🗑</button>`:''}
+        </div>
+        <div class="exc-duration">⏱ ${dh?dh+t('hours_label'):''}${dm?dm+t('min_label'):''}</div>
+      </div>`;
+    }).join('')}
+    ${canAdd?`<button class="add-btn" onclick="openAddExc()">${t('add_exc')}</button>`:''}
   `;
 }
 
-function deleteSession(i){
-  const sessions=getShared('sessions',[]);
-  sessions.splice(i,1);setShared('sessions',sessions);
-  renderTab('horaires');
-}
-
-function openAddSession(){
-  const activities=[t('jet_initiation'),t('jet_bapteme'),t('circuit'),t('excursion')];
+function openAddExc(){
+  const monitors=PROFILES.filter(p=>p.cat==='monitor');
   showModal(`
-    <h3>${t('add_session')}</h3>
-    <div class="form-group"><label class="form-label">${t('time')}</label>
-      <input class="form-input" type="time" id="m-time" value="${new Date().toTimeString().slice(0,5)}"></div>
-    <div class="form-group"><label class="form-label">${t('activity')}</label>
-      <select class="form-select" id="m-type">${activities.map(a=>`<option>${a}</option>`).join('')}</select></div>
-    <div class="form-group"><label class="form-label">${t('nb_people')}</label>
-      <input class="form-input" type="number" id="m-clients" min="1" max="20" value="2"></div>
-    <div class="form-group"><label class="form-label">${t('jets')}</label>
-      <input class="form-input" type="number" id="m-jets" min="1" max="10" value="2"></div>
-    <div class="form-group"><label class="form-label">${t('notes')}</label>
-      <input class="form-input" type="text" id="m-notes" placeholder="..."></div>
-    <button class="btn-primary" onclick="saveSession()">${t('save')}</button>
+    <h3>${t('exc_modal_title')}</h3>
+    <div class="form-group"><label class="form-label">${t('exc_monitor')}</label>
+      <select class="form-select" id="m-monitor">
+        ${monitors.map(m=>`<option value="${m.id}" ${m.id===me.id?'selected':''}>${m.emoji} ${m.name} ${m.badge||''}</option>`).join('')}
+      </select></div>
+    <div class="form-group"><label class="form-label">${t('exc_duration')}</label>
+      <select class="form-select" id="m-dur">
+        <option value="30">30 min</option>
+        <option value="45">45 min</option>
+        <option value="60" selected>1h</option>
+        <option value="90">1h30</option>
+        <option value="120">2h</option>
+        <option value="150">2h30</option>
+        <option value="180">3h</option>
+      </select></div>
+    <div class="form-group"><label class="form-label">${t('exc_note')}</label>
+      <input class="form-input" id="m-note" type="text" placeholder="..."></div>
+    <button class="btn-primary" onclick="saveExc()">${t('save')}</button>
     <button class="btn-secondary" onclick="closeModal()">${t('cancel')}</button>
   `);
 }
 
-function saveSession(){
-  const time=document.getElementById('m-time').value;
-  const type=document.getElementById('m-type').value;
-  const clients=parseInt(document.getElementById('m-clients').value)||1;
-  const jets=parseInt(document.getElementById('m-jets').value)||1;
-  const notes=document.getElementById('m-notes').value;
-  const sessions=getShared('sessions',[]);
-  sessions.push({time,type,clients,jets,notes,status:'active',by:currentUser.id,date:new Date().toISOString()});
-  sessions.sort((a,b)=>a.time.localeCompare(b.time));
-  setShared('sessions',sessions);
-  closeModal();
-  renderTab('horaires');
-  showToast('✅ Session ajoutée');
+function saveExc(){
+  const monitorId=document.getElementById('m-monitor').value;
+  const duration=parseInt(document.getElementById('m-dur').value);
+  const note=document.getElementById('m-note').value;
+  const exc=gsh('excursions');
+  exc.push({monitorId,duration,note,time:new Date().toLocaleTimeString().slice(0,5),date:new Date().toISOString(),by:me.id});
+  ssh('excursions',exc);
+  closeModal();renderTab('mer');toast('✅ Excursion ajoutée');
 }
 
-// =================== PLANNING ===================
-let planTab='reservations';
-function renderPlanning(){
-  const photos=getShared('photos',[]);
-  const resas=getShared('reservations',[]);
-  
+function delExc(i){
+  const exc=gsh('excursions');exc.splice(i,1);ssh('excursions',exc);renderTab('mer');
+}
+
+// ─── PLANNING ────────────────────────────────────────────────
+function buildPlanning(){
+  const photos=gsh('photos');
+  const tabs=[
+    {id:'cartel',label:t('tab_cartel')},
+    {id:'photos',label:t('tab_photos')+(photos.length?` (${photos.length})`:' ')},
+    {id:'exc',label:t('tab_exc')},
+  ];
   return `
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:12px;color:var(--accent)">${t('planning')}</div>
-    <div class="planning-header">
-      <button class="plan-tab ${planTab==='reservations'?'active':''}" onclick="setPlanTab('reservations')">${t('reservations')}</button>
-      <button class="plan-tab ${planTab==='photos'?'active':''}" onclick="setPlanTab('photos')">${t('photos')} ${photos.length?`(${photos.length})`:''}</button>
-      <button class="plan-tab ${planTab==='excursions'?'active':''}" onclick="setPlanTab('excursions')">${t('excursions')}</button>
+    <div class="section-title">${t('planning_title')}</div>
+    <div class="plan-tabs">
+      ${tabs.map(tb=>`<button class="plan-tab ${planTab===tb.id?'active':''}" onclick="setPlanTab('${tb.id}')">${tb.label}</button>`).join('')}
     </div>
-    <div id="plan-body">${renderPlanBody()}</div>
+    <div id="plan-body">${buildPlanBody()}</div>
   `;
 }
 
-function setPlanTab(tab){planTab=tab;document.getElementById('plan-body').innerHTML=renderPlanBody();}
+function setPlanTab(tab){planTab=tab;document.getElementById('plan-body').innerHTML=buildPlanBody();}
 
-function renderPlanBody(){
-  if(planTab==='reservations'){
-    const resas=getShared('reservations',[]);
-    const isAdmin=currentUser.admin||['lucas','ema','nacho','miha'].includes(currentUser.id);
+function buildPlanBody(){
+  if(planTab==='cartel'){
+    const note=gs('cartel_note','');
     return `
-      ${resas.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">${t('no_reservations')}</div>`:''}
-      ${resas.map((r,i)=>`
-        <div class="resa-card">
-          <div class="resa-top">
-            <div>
-              <div class="resa-name">${r.name}</div>
-              <div class="resa-details">${r.activity} · ${r.people} ${t('clients')}</div>
-              ${r.notes?`<div class="resa-details">${r.notes}</div>`:''}
-            </div>
-            <div style="text-align:right">
-              <div class="resa-time">${r.time}</div>
-              <div class="resa-badge ${r.confirmed?'confirmed':'pending'}">${r.confirmed?'✓ OK':'⏳'}</div>
-            </div>
-          </div>
-          ${isAdmin?`
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <button onclick="toggleResa(${i})" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:12px;cursor:pointer">${r.confirmed?'Annuler':'✓ Confirmer'}</button>
-            <button onclick="deleteResa(${i})" style="padding:8px 12px;border-radius:8px;border:1px solid var(--red);background:none;color:var(--red);font-size:12px;cursor:pointer">🗑</button>
-          </div>`:''}
-        </div>
-      `).join('')}
-      <button class="add-btn" onclick="openAddResa()">${t('add_reservation')}</button>
+      <div style="margin-bottom:12px">
+        <button class="btn-primary" style="margin-bottom:10px" onclick="openCamera('planning')">${t('take_photo')}</button>
+      </div>
+      <div class="cartel-note">
+        <textarea rows="8" id="cartel-text" placeholder="${t('cartel_hint')}" oninput="saveCartelNote(this.value)">${note}</textarea>
+      </div>
     `;
   }
   if(planTab==='photos'){
-    const photos=getShared('photos',[]);
+    const photos=gsh('photos');
     return `
-      ${photos.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">📸 Aucune photo</div>`:''}
+      ${photos.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">${t('no_photos')}</div>`:''}
       <div class="photo-grid">
         ${photos.map((p,i)=>`
           <div style="position:relative">
             <img src="${p.data}" class="photo-thumb" onclick="viewPhoto(${i})">
-            <div style="position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.7);border-radius:4px;padding:2px 4px;font-size:9px;color:#fff">${p.by} ${p.time}</div>
+            <div style="position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.75);border-radius:4px;padding:2px 5px;font-size:9px;color:#fff">${p.by} ${p.time}</div>
           </div>
         `).join('')}
       </div>
     `;
   }
-  if(planTab==='excursions'){
-    const excs=getShared('excursions',[]);
-    const isAdmin=currentUser.admin||['lucas','ema','nacho','miha'].includes(currentUser.id);
+  if(planTab==='exc'){
+    const exc=gsh('excursions');
     return `
-      ${excs.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Aucune excursion</div>`:''}
-      ${excs.map((e,i)=>`
-        <div class="resa-card">
-          <div class="resa-top">
-            <div>
-              <div class="resa-name">${e.name}</div>
-              <div class="resa-details">${e.destination||'—'} · ${e.people||0} ${t('clients')}</div>
+      ${exc.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">${t('no_exc')}</div>`:''}
+      ${exc.map((e,i)=>{
+        const p=PROFILES.find(x=>x.id===e.monitorId);
+        const dh=Math.floor(e.duration/60);const dm=e.duration%60;
+        const canDel=me.admin||e.monitorId===me.id;
+        return `<div class="exc-card">
+          <div class="exc-header">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:36px;height:36px;border-radius:50%;background:${p?p.avatarBg:'#333'};display:flex;align-items:center;justify-content:center;font-size:16px">${p?p.emoji:'🤿'}</div>
+              <div><div class="exc-name">${p?p.name:'?'}</div><div class="exc-detail">${e.time}${e.note?' · '+e.note:''}</div></div>
             </div>
-            <div style="text-align:right"><div class="resa-time">${e.time}</div></div>
+            ${canDel?`<button onclick="delExcPlanning(${i})" style="background:none;border:none;color:var(--red);font-size:18px;cursor:pointer">🗑</button>`:''}
           </div>
-        </div>
-      `).join('')}
-      ${isAdmin?`<button class="add-btn" onclick="openAddExc()">+ ${t('excursion')}</button>`:''}
+          <div class="exc-duration">⏱ ${dh?dh+t('hours_label'):''}${dm?dm+t('min_label'):''}</div>
+        </div>`;
+      }).join('')}
     `;
   }
 }
 
-function toggleResa(i){
-  const r=getShared('reservations',[]);r[i].confirmed=!r[i].confirmed;
-  setShared('reservations',r);renderTab('planning');
-}
-function deleteResa(i){
-  const r=getShared('reservations',[]);r.splice(i,1);
-  setShared('reservations',r);renderTab('planning');
-}
-
-function openAddResa(){
-  const activities=[t('jet_initiation'),t('jet_bapteme'),t('circuit'),t('excursion')];
-  showModal(`
-    <h3>${t('add_reservation')}</h3>
-    <div class="form-group"><label class="form-label">${t('name')}</label>
-      <input class="form-input" type="text" id="r-name" placeholder="Nom du client"></div>
-    <div class="form-group"><label class="form-label">${t('time')}</label>
-      <input class="form-input" type="time" id="r-time" value="${new Date().toTimeString().slice(0,5)}"></div>
-    <div class="form-group"><label class="form-label">${t('activity')}</label>
-      <select class="form-select" id="r-activity">${activities.map(a=>`<option>${a}</option>`).join('')}</select></div>
-    <div class="form-group"><label class="form-label">${t('nb_people')}</label>
-      <input class="form-input" type="number" id="r-people" min="1" value="2"></div>
-    <div class="form-group"><label class="form-label">${t('notes')}</label>
-      <input class="form-input" type="text" id="r-notes" placeholder="..."></div>
-    <button class="btn-primary" onclick="saveResa()">${t('save')}</button>
-    <button class="btn-secondary" onclick="closeModal()">${t('cancel')}</button>
-  `);
-}
-
-function saveResa(){
-  const name=document.getElementById('r-name').value||'Client';
-  const time=document.getElementById('r-time').value;
-  const activity=document.getElementById('r-activity').value;
-  const people=parseInt(document.getElementById('r-people').value)||1;
-  const notes=document.getElementById('r-notes').value;
-  const resas=getShared('reservations',[]);
-  resas.push({name,time,activity,people,notes,confirmed:false,by:currentUser.id});
-  resas.sort((a,b)=>a.time.localeCompare(b.time));
-  setShared('reservations',resas);
-  closeModal();renderTab('planning');
-}
-
-function openAddExc(){
-  showModal(`
-    <h3>+ ${t('excursion')}</h3>
-    <div class="form-group"><label class="form-label">${t('name')}</label>
-      <input class="form-input" type="text" id="e-name" placeholder="Nom"></div>
-    <div class="form-group"><label class="form-label">${t('time')}</label>
-      <input class="form-input" type="time" id="e-time" value="${new Date().toTimeString().slice(0,5)}"></div>
-    <div class="form-group"><label class="form-label">Destination</label>
-      <input class="form-input" type="text" id="e-dest" placeholder="Destination"></div>
-    <div class="form-group"><label class="form-label">${t('nb_people')}</label>
-      <input class="form-input" type="number" id="e-people" min="1" value="6"></div>
-    <button class="btn-primary" onclick="saveExc()">${t('save')}</button>
-    <button class="btn-secondary" onclick="closeModal()">${t('cancel')}</button>
-  `);
-}
-function saveExc(){
-  const excs=getShared('excursions',[]);
-  excs.push({name:document.getElementById('e-name').value||'Excursion',time:document.getElementById('e-time').value,destination:document.getElementById('e-dest').value,people:parseInt(document.getElementById('e-people').value)||1,by:currentUser.id});
-  setShared('excursions',excs);closeModal();renderTab('planning');
-}
+function saveCartelNote(v){ss('cartel_note',v);}
+function delExcPlanning(i){delExc(i);setPlanTab('exc');}
 
 function viewPhoto(i){
-  const p=getShared('photos',[])[i];
-  if(!p)return;
-  showModal(`<img src="${p.data}" style="width:100%;border-radius:10px"><div style="font-size:12px;color:var(--muted);margin-top:8px">${p.by} — ${p.date}</div>`);
+  const p=gsh('photos')[i];if(!p)return;
+  showModal(`<img src="${p.data}" style="width:100%;border-radius:10px"><div style="font-size:12px;color:var(--muted);margin-top:8px">📸 ${p.by} — ${p.date}</div>`);
 }
 
-// =================== CHAT ===================
-function renderChatTab(){
-  const c=document.getElementById('main-content');
-  const msgs=getShared('messages',[]);
+// ─── CHAT ─────────────────────────────────────────────────────
+function buildChat(c){
+  const msgs=gsh('messages');
   c.innerHTML=`
     <div class="chat-container">
       <div class="chat-messages" id="chat-msgs">
-        ${msgs.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">${t('no_messages')}</div>`:''}
+        ${msgs.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px;margin-top:30px">💬 ${t('no_messages')}</div>`:''}
         ${msgs.map(m=>{
-          const isMine=m.userId===currentUser.id;
-          const sender=PROFILES.find(p=>p.id===m.userId);
+          const mine=m.uid===me.id;
+          const sender=PROFILES.find(p=>p.id===m.uid);
           if(m.type==='photo'){
-            return `<div class="msg ${isMine?'mine':'theirs'}">
-              ${!isMine?`<div class="msg-sender">${sender?.emoji||''} ${m.user}</div>`:''}
+            return `<div class="msg ${mine?'mine':'theirs'}">
+              ${!mine?`<div class="msg-sender">${sender?.emoji||''} ${m.user}</div>`:''}
               <img src="${m.data}" class="msg-img">
               <div class="msg-meta">${m.time}</div>
             </div>`;
           }
-          return `<div class="msg ${isMine?'mine':'theirs'}">
-            ${!isMine?`<div class="msg-sender">${sender?.emoji||''} ${m.user}</div>`:''}
+          return `<div class="msg ${mine?'mine':'theirs'}">
+            ${!mine?`<div class="msg-sender">${sender?.emoji||''} ${m.user}</div>`:''}
             <div>${m.text}</div>
             <div class="msg-meta">${m.time}</div>
           </div>`;
@@ -1050,255 +825,172 @@ function renderChatTab(){
       </div>
       <div class="chat-input-bar">
         <button class="cam-btn" onclick="openCamera('chat')">📷</button>
-        <textarea class="chat-input" id="chat-input" placeholder="${t('type_message')}" rows="1" onkeydown="chatKey(event)"></textarea>
+        <textarea class="chat-input" id="chat-input" placeholder="${t('type_msg')}" rows="1" onkeydown="chatKey(event)"></textarea>
         <button class="send-btn" onclick="sendMsg()">↑</button>
       </div>
     </div>
   `;
-  const msgs_el=document.getElementById('chat-msgs');
-  if(msgs_el) msgs_el.scrollTop=msgs_el.scrollHeight;
+  const el=document.getElementById('chat-msgs');
+  if(el)el.scrollTop=el.scrollHeight;
 }
 
 function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
 
 function sendMsg(){
-  const input=document.getElementById('chat-input');
-  const text=input.value.trim();
-  if(!text)return;
-  const msgs=getShared('messages',[]);
-  msgs.push({userId:currentUser.id,user:currentUser.name,text,time:new Date().toLocaleTimeString().slice(0,5),date:new Date().toISOString()});
-  setShared('messages',msgs);
-  input.value='';
-  renderChatTab();
+  const inp=document.getElementById('chat-input');
+  const text=(inp.value||'').trim();if(!text)return;
+  const msgs=gsh('messages');
+  msgs.push({uid:me.id,user:me.name,text,time:new Date().toLocaleTimeString().slice(0,5),date:new Date().toISOString()});
+  ssh('messages',msgs);inp.value='';
+  buildChat(document.getElementById('main-content'));
 }
 
-// =================== PROFIL ===================
-function renderProfil(){
-  const sessions=getShared('sessions',[]);
-  const history=getShared('sessions_history',[]);
-  const totalSessions=history.reduce((s,d)=>s+d.sessions.length,0)+sessions.length;
-  const totalClients=history.reduce((s,d)=>s+d.sessions.reduce((a,x)=>a+(x.clients||0),0),0)+sessions.reduce((s,x)=>s+(x.clients||0),0);
-  
-  const isAdmin=currentUser.admin;
-  const p=currentUser;
-  
+// ─── PROFIL ───────────────────────────────────────────────────
+function buildProfil(){
+  const exc=gsh('excursions');
+  const hist=gs('sh_exc_history',[]);
+  const myExcToday=exc.filter(e=>e.monitorId===me.id);
+  const myMinToday=myExcToday.reduce((s,e)=>s+(e.duration||0),0);
+  const allMyMin=hist.reduce((s,d)=>s+d.exc.filter(e=>e.monitorId===me.id).reduce((a,e)=>a+(e.duration||0),0),0)+myMinToday;
+  const allMyExc=hist.reduce((s,d)=>s+d.exc.filter(e=>e.monitorId===me.id).length,0)+myExcToday.length;
+  const th=Math.floor(allMyMin/60);const tm=allMyMin%60;
+  const isAdmin=me.admin;
+
   return `
     <div class="profile-header">
-      <div class="profile-big-avatar">${p.emoji}</div>
-      <div class="profile-big-name">${p.name} ${p.badge||''}</div>
-      <div class="profile-big-role">${p.role} ${p.admin?`<span class="admin-crown">👑 Admin</span>`:''}</div>
+      <div class="profile-big-avatar" style="background:${me.avatarBg}">${me.emoji}</div>
+      <div class="profile-big-name">${me.name} ${me.badge||''}</div>
+      <div style="color:var(--muted);font-size:13px;margin-top:4px">${me.role}${me.admin?` <span class="admin-crown">👑 Admin</span>`:''}</div>
       <div class="profile-stats">
-        <div class="pstat"><div class="pstat-num">${totalSessions}</div><div class="pstat-label">${t('sessions_today')}</div></div>
-        <div class="pstat"><div class="pstat-num">${totalClients}</div><div class="pstat-label">${t('clients_today')}</div></div>
-        <div class="pstat"><div class="pstat-num">${history.length}</div><div class="pstat-label">Jours</div></div>
+        <div class="pstat"><div class="pstat-num">${th?th+'h':'0h'}${tm?tm+'m':''}</div><div class="pstat-label">${t('my_time_sea')}</div></div>
+        <div class="pstat"><div class="pstat-num">${allMyExc}</div><div class="pstat-label">${t('my_sessions')}</div></div>
+        <div class="pstat"><div class="pstat-num">${hist.length}</div><div class="pstat-label">${t('my_days')}</div></div>
       </div>
     </div>
-
     <div class="settings-list">
-      <div class="setting-row" onclick="openChangePIN()">
-        <span class="setting-label">🔐 ${t('change_pin')}</span>
-        <span class="setting-arrow">›</span>
-      </div>
-      ${isAdmin?`
-      <div class="setting-row" onclick="openAdminPanel()">
-        <span class="setting-label">👑 Panel Admin</span>
-        <span class="setting-arrow">›</span>
-      </div>
-      `:''}
-      <div class="setting-row" onclick="openHistory()">
-        <span class="setting-label">📊 ${t('history')}</span>
-        <span class="setting-arrow">›</span>
-      </div>
-      <div class="setting-row" style="color:var(--red)" onclick="logout()">
-        <span class="setting-label">🚪 ${t('logout')}</span>
-        <span class="setting-arrow">›</span>
-      </div>
+      <div class="setting-row" onclick="openChangePIN()"><span>${t('change_pin')}</span><span style="color:var(--muted)">›</span></div>
+      ${isAdmin?`<div class="setting-row" onclick="openAdmin()"><span>${t('admin_panel')}</span><span style="color:var(--muted)">›</span></div>`:''}
+      <div class="setting-row" onclick="openHistory()"><span>${t('history_label')}</span><span style="color:var(--muted)">›</span></div>
+      <div class="setting-row" style="color:var(--red)" onclick="doLogout()"><span>${t('logout')}</span><span style="color:var(--red)">›</span></div>
     </div>
-
-    ${history.length>0?`
-    <div class="card" style="margin-top:14px">
-      <div class="card-title">${t('history')}</div>
-      ${history.slice(-5).reverse().map(d=>`
-        <div class="history-entry">
-          <div class="history-date">${d.date}</div>
-          <div>${d.sessions.length} sessions — ${d.sessions.reduce((s,x)=>s+(x.clients||0),0)} clients</div>
-        </div>
-      `).join('')}
-    </div>`:''}
   `;
 }
 
-function logout(){
-  currentUser=null;
-  showScreen('screen-select');
-  renderProfileSelect();
-}
-
-function openChangePIN(){
-  let step=1,pin1='';
-  showModal(`
-    <h3>🔐 ${t('change_pin')}</h3>
-    <div id="pin-modal-hint" style="color:var(--muted);font-size:13px;margin-bottom:16px">${t('new_pin')}</div>
-    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px" id="pin-modal-dots">
-      <div class="pin-dot" id="pmd0"></div><div class="pin-dot" id="pmd1"></div>
-      <div class="pin-dot" id="pmd2"></div><div class="pin-dot" id="pmd3"></div>
-    </div>
-    <div class="numpad" style="margin:0 auto">
-      ${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>`<button class="num-btn ${n==='⌫'?'del':''}" onclick="pinModalPress('${n}')">${n}</button>`).join('')}
-    </div>
-  `);
-  window._pinModal={step,buf:'',pin1};
-  window._pinModalCb=(buf)=>{
-    const s=window._pinModal;
-    if(!s)return;
-    if(s.step===1){s.pin1=buf;s.step=2;s.buf='';
-      document.getElementById('pin-modal-hint').textContent=t('confirm_pin');
-      for(let i=0;i<4;i++){const d=document.getElementById(`pmd${i}`);if(d){d.classList.remove('filled');}}
-    }else{
-      if(buf===s.pin1){
-        setStore(`pin_${currentUser.id}`,buf);
-        closeModal();showToast(t('pin_changed'));
-      }else{showToast(t('pin_mismatch'));s.step=1;s.buf='';s.pin1='';
-        document.getElementById('pin-modal-hint').textContent=t('new_pin');
-        for(let i=0;i<4;i++){const d=document.getElementById(`pmd${i}`);if(d){d.classList.remove('filled','error');d.classList.add('error');}}
-        setTimeout(()=>{for(let i=0;i<4;i++){const d=document.getElementById(`pmd${i}`);if(d){d.classList.remove('error');}}},600);
-      }
-    }
-  };
-}
-
-function pinModalPress(n){
-  const s=window._pinModal;if(!s)return;
-  if(n==='⌫'){s.buf=s.buf.slice(0,-1);}
-  else if(s.buf.length<4){s.buf+=String(n);}
-  for(let i=0;i<4;i++){const d=document.getElementById(`pmd${i}`);if(d){d.classList.toggle('filled',i<s.buf.length);}}
-  if(s.buf.length===4)setTimeout(()=>window._pinModalCb&&window._pinModalCb(s.buf),200);
-}
+function doLogout(){me=null;showScreen('screen-select');buildProfiles();}
 
 function openHistory(){
-  const history=getShared('sessions_history',[]);
-  const all=getShared('sessions',[]);
-  showModal(`
-    <h3>📊 ${t('history')}</h3>
-    ${[{date:'Aujourd\'hui',sessions:all},...history.slice(-10).reverse()].map(d=>`
-      <div class="history-entry" style="padding:12px 0">
-        <div class="history-date" style="font-size:12px;margin-bottom:4px">${d.date}</div>
-        <div style="font-size:13px">${d.sessions.length} sorties — ${d.sessions.reduce((s,x)=>s+(x.clients||0),0)} clients</div>
-        ${d.sessions.map(s=>`<div style="font-size:11px;color:var(--muted);margin-top:3px">• ${s.time} — ${s.type} (${s.clients} clients)</div>`).join('')}
-      </div>
-    `).join('')}
+  const exc=gsh('excursions');
+  const hist=gs('sh_exc_history',[]);
+  const all=[{date:t('history_today'),exc},...hist.slice(-10).reverse()];
+  showModal(`<h3>${t('history_label')}</h3>
+    ${all.filter(d=>d.exc.length>0).map(d=>{
+      const totalMin=d.exc.reduce((s,e)=>s+(e.duration||0),0);
+      const th=Math.floor(totalMin/60);const tm=totalMin%60;
+      return `<div class="history-entry">
+        <div class="history-date">${d.date}</div>
+        <div style="font-size:13px">${d.exc.length} excursions — ${th?th+'h':''}${tm?tm+'min':''} total</div>
+        ${d.exc.map(e=>{const p=PROFILES.find(x=>x.id===e.monitorId);const dh=Math.floor(e.duration/60);const dm=e.duration%60;return `<div style="font-size:11px;color:var(--muted);margin-top:2px">• ${e.time} — ${p?p.name:'?'} (${dh?dh+'h':''}${dm?dm+'min':''})</div>`;}).join('')}
+      </div>`;
+    }).join('')||`<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px">${t('history_empty')}</div>`}
   `);
 }
 
-function openAdminPanel(){
-  showModal(`
-    <h3>👑 Admin Panel</h3>
-    <div style="color:var(--muted);font-size:13px;margin-bottom:16px">Actions réservées aux admins</div>
-    <button class="btn-danger" onclick="adminResetDay()">🔄 Reset journée (sorties+tâches)</button>
-    <button class="btn-secondary" onclick="adminClearMessages()">🗑 Effacer le chat</button>
-    <button class="btn-secondary" onclick="adminClearPhotos()">🗑 Effacer les photos</button>
+function openAdmin(){
+  showModal(`<h3>${t('admin_panel')}</h3>
+    <button class="btn-danger" onclick="adminReset()">${t('admin_reset')}</button>
+    <button class="btn-secondary" onclick="adminClearChat()">${t('admin_clear_chat')}</button>
+    <button class="btn-secondary" onclick="adminClearPhotos()">${t('admin_clear_photos')}</button>
     <button class="btn-secondary" onclick="closeModal()">${t('cancel')}</button>
   `);
 }
-function adminResetDay(){
-  const sessions=getShared('sessions',[]);
-  const today=new Date().toDateString();
-  if(sessions.length>0){
-    const allHistory=getShared('sessions_history',[]);
-    allHistory.push({date:today,sessions});setShared('sessions_history',allHistory);
-  }
-  setShared('sessions',[]);setShared('tasks_done',[]);
-  closeModal();renderTab('home');showToast('✅ Journée remise à zéro');
+function adminReset(){
+  const exc=gsh('excursions');const today=new Date().toDateString();
+  if(exc.length){const h=gs('sh_exc_history',[]);h.push({date:today,exc});ss('sh_exc_history',h);}
+  ssh('excursions',[]);ssh('tasks_done',[]);
+  closeModal();renderTab('home');toast('✅ Reset effectué');
 }
-function adminClearMessages(){setShared('messages',[]);closeModal();showToast('✅ Chat effacé');}
-function adminClearPhotos(){setShared('photos',[]);closeModal();showToast('✅ Photos effacées');}
+function adminClearChat(){ssh('messages',[]);closeModal();toast('✅ Chat effacé');}
+function adminClearPhotos(){ssh('photos',[]);closeModal();toast('✅ Photos effacées');}
 
-// =================== CAMERA ===================
-let cameraTarget='chat';
+function openChangePIN(){
+  let step=1,first='';
+  showModal(`<h3>${t('change_pin')}</h3>
+    <div id="cp-hint" style="color:var(--muted);font-size:13px;margin-bottom:16px">${t('new_pin')}</div>
+    <div style="display:flex;gap:14px;justify-content:center;margin-bottom:20px">
+      <div class="pin-dot" id="cpd0"></div><div class="pin-dot" id="cpd1"></div>
+      <div class="pin-dot" id="cpd2"></div><div class="pin-dot" id="cpd3"></div>
+    </div>
+    <div class="numpad" style="margin:0 auto">
+      ${[1,2,3,4,5,6,7,8,9,'＊',0,'⌫'].map(n=>`<button class="num-btn" onclick="cpPress('${n}')">${n}</button>`).join('')}
+    </div>
+  `);
+  window._cp={step,buf:'',first};
+}
+function cpPress(n){
+  const s=window._cp;if(!s)return;
+  if(n==='⌫'){s.buf=s.buf.slice(0,-1);}
+  else if(n!=='＊'&&s.buf.length<4){s.buf+=String(n);}
+  for(let i=0;i<4;i++){const d=document.getElementById('cpd'+i);if(d)d.classList.toggle('filled',i<s.buf.length);}
+  if(s.buf.length===4){
+    setTimeout(()=>{
+      if(s.step===1){s.first=s.buf;s.buf='';s.step=2;document.getElementById('cp-hint').textContent=t('confirm_pin_lbl');for(let i=0;i<4;i++){const d=document.getElementById('cpd'+i);if(d)d.classList.remove('filled');}}
+      else{
+        if(s.buf===s.first){ss('pin_'+me.id,s.buf);closeModal();toast(t('pin_changed'));}
+        else{toast(t('pin_mismatch'));s.step=1;s.buf='';s.first='';document.getElementById('cp-hint').textContent=t('new_pin');for(let i=0;i<4;i++){const d=document.getElementById('cpd'+i);if(d)d.classList.remove('filled');}}
+      }
+    },200);
+  }
+}
+
+// ─── CAMERA ───────────────────────────────────────────────────
 async function openCamera(target){
-  cameraTarget=target;
+  camTarget=target;
   const modal=document.getElementById('camera-modal');
   modal.classList.add('show');
   try{
-    if(cameraStream)cameraStream.getTracks().forEach(t=>t.stop());
-    cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode},audio:false});
-    document.getElementById('camera-video').srcObject=cameraStream;
-  }catch(e){
-    modal.classList.remove('show');
-    showToast(t('camera_error'));
-  }
+    if(camStream)camStream.getTracks().forEach(t=>t.stop());
+    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode},audio:false});
+    document.getElementById('camera-video').srcObject=camStream;
+  }catch(e){modal.classList.remove('show');toast(t('camera_err'));}
 }
-function closeCamera(){
-  if(cameraStream)cameraStream.getTracks().forEach(t=>t.stop());
-  cameraStream=null;
-  document.getElementById('camera-modal').classList.remove('show');
-}
-function switchCamera(){
-  facingMode=facingMode==='environment'?'user':'environment';
-  openCamera(cameraTarget);
-}
+function closeCamera(){if(camStream)camStream.getTracks().forEach(t=>t.stop());camStream=null;document.getElementById('camera-modal').classList.remove('show');}
+function switchCamera(){facingMode=facingMode==='environment'?'user':'environment';openCamera(camTarget);}
 function capturePhoto(){
-  const video=document.getElementById('camera-video');
-  const canvas=document.getElementById('camera-canvas');
-  canvas.width=video.videoWidth;canvas.height=video.videoHeight;
-  canvas.getContext('2d').drawImage(video,0,0);
-  const data=canvas.toDataURL('image/jpeg',0.7);
+  const v=document.getElementById('camera-video'),cv=document.getElementById('camera-canvas');
+  cv.width=v.videoWidth;cv.height=v.videoHeight;
+  cv.getContext('2d').drawImage(v,0,0);
+  const data=cv.toDataURL('image/jpeg',0.75);
   const now=new Date();
   const timeStr=now.toLocaleTimeString().slice(0,5);
   const dateStr=now.toLocaleDateString();
-  
-  // Save to photos (shared)
-  const photos=getShared('photos',[]);
-  photos.unshift({data,by:currentUser.name,time:timeStr,date:dateStr,userId:currentUser.id});
-  setShared('photos',photos);
-  
-  if(cameraTarget==='chat'){
-    const msgs=getShared('messages',[]);
-    msgs.push({userId:currentUser.id,user:currentUser.name,type:'photo',data,time:timeStr,date:now.toISOString()});
-    setShared('messages',msgs);
+  const photos=gsh('photos');
+  photos.unshift({data,by:me.name,time:timeStr,date:dateStr,uid:me.id});
+  ssh('photos',photos);
+  if(camTarget==='chat'){
+    const msgs=gsh('messages');
+    msgs.push({uid:me.id,user:me.name,type:'photo',data,time:timeStr,date:now.toISOString()});
+    ssh('messages',msgs);
   }
-  
   closeCamera();
-  showToast(t('photo_sent'));
-  
-  if(cameraTarget==='chat') renderChatTab();
+  toast(t('photo_sent'));
+  if(camTarget==='chat'){buildChat(document.getElementById('main-content'));}
   else{planTab='photos';renderTab('planning');}
 }
 
-// =================== MODAL ===================
+// ─── MODAL ────────────────────────────────────────────────────
 function showModal(html){
-  const overlay=document.getElementById('modal-overlay');
-  const content=document.getElementById('modal-content');
-  content.innerHTML=`<button class="modal-close" onclick="closeModal()">×</button>${html}`;
-  overlay.classList.add('show');
+  document.getElementById('modal-content').innerHTML=`<button class="modal-close" onclick="closeModal()">×</button>${html}`;
+  document.getElementById('modal-overlay').classList.add('show');
 }
-function closeModal(e){
-  if(e&&e.target!==document.getElementById('modal-overlay'))return;
-  document.getElementById('modal-overlay').classList.remove('show');
-  window._pinModal=null;window._pinModalCb=null;
-}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('show');window._cp=null;}
+function overlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
 
-// =================== TOAST ===================
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
+// ─── TOAST ────────────────────────────────────────────────────
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
 
-// =================== SYNC ===================
-window.addEventListener('storage',e=>{
-  if(e.key&&e.key.startsWith('jst_shared_')){
-    if(activeTab) renderTab(activeTab);
-  }
-});
-window.addEventListener('jst_update',()=>{
-  if(activeTab) renderTab(activeTab);
-});
-
-// Poll for updates every 5s (same device multi-tab simulation)
-setInterval(()=>{
-  if(currentUser&&activeTab) renderTab(activeTab);
-},5000);
+// ─── SYNC (polling) ───────────────────────────────────────────
+window.addEventListener('storage',e=>{if(e.key&&e.key.startsWith('jst_sh_')&&me)renderTab(activeTab);});
+setInterval(()=>{if(me)renderTab(activeTab);},4000);
 </script>
 </body>
 </html>
