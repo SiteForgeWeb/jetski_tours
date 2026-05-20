@@ -3,1269 +3,1302 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>JST SALOU</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>JST Salou</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#070f1c;--bg2:#0c1829;--bg3:#112033;--card:#0f1e30;--card2:#142540;--border:#1e3a5a;--blue:#1e90ff;--blue-light:#4db8ff;--blue-dark:#1060cc;--cyan:#00d4ff;--green:#22c55e;--red:#ef4444;--orange:#f59e0b;--gold:#fbbf24;--text:#e8f4ff;--text2:#7ba8cc;--text3:#4a7090;}
+:root{
+  --bg:#0a0c10;--bg2:#12151c;--bg3:#1a1e28;--card:#1e2330;
+  --accent:#00c8ff;--accent2:#ff6b35;--gold:#ffc947;
+  --text:#e8eaf0;--muted:#6b7280;--border:#2a2f3d;
+  --green:#22c55e;--red:#ef4444;--purple:#a78bfa;
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:'Barlow',sans-serif;color:var(--text);}
-.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#0a1f3c 0%,#070f1c 70%);z-index:50;}
-#loginScreen{z-index:100;display:flex;}
-#profileScreen{z-index:99;overflow-y:auto;justify-content:flex-start;padding:2rem 1rem 3rem;}
-#pinScreen{z-index:98;}
-#accueilScreen{z-index:97;padding:1.5rem;}
-#app{display:none;flex-direction:column;height:100vh;}
-/* TYPOGRAPHY */
-.bc{font-family:'Barlow Condensed',sans-serif;}
-/* LOGIN */
-.login-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(2.2rem,9vw,3.5rem);text-align:center;line-height:1.1;color:var(--blue-light);letter-spacing:2px;text-shadow:0 0 40px rgba(30,144,255,.5);margin-bottom:.4rem;}
-.login-sub{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:4px;color:var(--text3);margin-bottom:2rem;}
-.login-divider{width:140px;height:2px;margin:0 auto 1.5rem;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
-.login-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;width:min(340px,90vw);}
-.form-label{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:3px;color:var(--blue-light);margin-bottom:.5rem;display:block;}
-.form-input{width:100%;background:#1a2f47;border:1px solid var(--border);border-radius:10px;padding:.9rem 1.1rem;font-size:1rem;color:var(--text);margin-bottom:.9rem;outline:none;transition:border-color .2s;font-family:'Barlow',sans-serif;}
-.form-input:focus{border-color:var(--blue);}
-.btn-primary{width:100%;background:linear-gradient(135deg,var(--blue),var(--blue-dark));border:none;border-radius:10px;padding:.9rem;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;letter-spacing:3px;font-weight:700;color:#fff;cursor:pointer;transition:.2s;}
-.btn-primary:active{opacity:.85;transform:scale(.99);}
-.btn-secondary{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:.85rem;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;color:var(--blue-light);cursor:pointer;}
-.err-msg{color:var(--red);font-size:.82rem;text-align:center;margin-top:.4rem;display:none;}
-.lang-row{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.2rem;}
-.lang-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:transparent;font-family:'Barlow Condensed',sans-serif;font-size:.76rem;font-weight:700;color:var(--text2);cursor:pointer;transition:.2s;}
-.lang-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
-/* PROFILE */
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;width:min(380px,92vw);margin-top:.5rem;}
-.profile-section-label{grid-column:1/-1;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:3px;color:var(--text3);padding-bottom:.3rem;border-bottom:1px solid var(--border);margin-top:.8rem;}
-.profile-btn{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;cursor:pointer;transition:.2s;position:relative;}
-.profile-btn:active{border-color:var(--blue);background:var(--card2);}
-.pb-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;}
-.pb-badge{position:absolute;top:.4rem;right:.5rem;font-size:.8rem;}
-.pb-name{font-weight:700;font-size:.95rem;}
-.pb-role{font-size:.7rem;color:var(--text3);}
-.ps-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.4rem;color:var(--blue-light);letter-spacing:3px;text-align:center;margin-top:1.5rem;}
-.ps-sub{font-size:.78rem;color:var(--text3);letter-spacing:2px;text-align:center;margin:.3rem 0 .5rem;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+/* LOADING */
+#splash{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s;}
+#splash.hide{opacity:0;pointer-events:none;}
+.splash-logo{font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:4px;color:var(--accent);text-shadow:0 0 40px rgba(0,200,255,.4);}
+.splash-sub{color:var(--muted);font-size:14px;letter-spacing:6px;margin-top:4px;}
+.splash-wave{font-size:48px;margin-bottom:20px;animation:bob 1.5s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* SCREENS */
+.screen{display:none;min-height:100vh;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* PROFILE SELECT */
+#screen-select{padding:20px;background:var(--bg);}
+.select-header{text-align:center;padding:30px 0 24px;}
+.select-header h1{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent);letter-spacing:3px;}
+.select-header p{color:var(--muted);font-size:13px;margin-top:4px;}
+.lang-bar{display:flex;justify-content:center;gap:8px;margin-bottom:24px;}
+.lang-btn{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);font-size:12px;cursor:pointer;transition:.2s;}
+.lang-btn.active{border-color:var(--accent);color:var(--accent);}
+.section-label{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:16px 0 10px;}
+.profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;}
+.profile-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:.2s;position:relative;}
+.profile-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.profile-card.selected{border-color:var(--accent);background:rgba(0,200,255,.08);}
+.p-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 8px;}
+.p-name{font-size:13px;font-weight:600;}
+.p-role{font-size:10px;color:var(--muted);margin-top:2px;}
+.p-badge{position:absolute;top:6px;right:6px;font-size:12px;}
+.patron-card .p-avatar{background:linear-gradient(135deg,var(--gold),var(--accent2));}
+.chef-card .p-avatar{background:linear-gradient(135deg,var(--accent2),#ff3b6b);}
+.cabine-card .p-avatar{background:linear-gradient(135deg,var(--purple),#ec4899);}
+.monitor-card .p-avatar{background:linear-gradient(135deg,var(--green),var(--accent));}
+
 /* PIN */
-.pin-avatar{width:70px;height:70px;border-radius:50%;border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;margin-bottom:.5rem;}
-.pin-name{font-family:'Barlow Condensed',sans-serif;font-size:1.7rem;font-weight:800;letter-spacing:2px;}
-.pin-role{font-size:.82rem;color:var(--text2);margin:.2rem 0 1.2rem;}
-.pin-label{font-size:.82rem;color:var(--text3);margin-bottom:.4rem;text-align:center;}
-.pin-dots{display:flex;gap:.9rem;justify-content:center;margin:.5rem 0 1.1rem;}
-.pin-dot{width:17px;height:17px;border-radius:50%;border:2px solid var(--border);}
-.pin-dot.on{border-color:var(--blue);background:var(--blue);}
-.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;width:min(255px,78vw);}
-.pin-key{background:var(--card2);border:1px solid var(--border);border-radius:50%;aspect-ratio:1;font-size:1.15rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;color:var(--text);}
-.pin-key:active{background:var(--blue);border-color:var(--blue);}
-.pin-skip{margin-top:.9rem;background:transparent;border:1px solid var(--border);border-radius:10px;padding:.45rem 1.1rem;color:var(--text3);font-size:.78rem;cursor:pointer;font-family:'Barlow',sans-serif;display:none;}
-/* ACCUEIL */
-.ac-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;color:var(--blue-light);letter-spacing:3px;text-align:center;margin-bottom:.3rem;}
-.ac-sub{font-size:.78rem;color:var(--text3);letter-spacing:2px;text-align:center;margin-bottom:1.3rem;}
-.ac-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;width:min(370px,92vw);}
-.ac-label{font-family:'Barlow Condensed',sans-serif;font-size:.73rem;letter-spacing:3px;color:var(--blue-light);margin-bottom:.5rem;display:block;}
-.ac-select{width:100%;background:#1a2f47;border:1.5px solid var(--border);border-radius:10px;padding:.85rem 1rem;font-size:.95rem;color:var(--text);margin-bottom:.9rem;outline:none;font-family:'Barlow',sans-serif;appearance:none;}
-.ac-btn{width:100%;background:linear-gradient(135deg,var(--green),#16a34a);border:none;border-radius:10px;padding:.95rem;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;letter-spacing:3px;font-weight:700;color:#fff;cursor:pointer;margin-bottom:.5rem;}
-.ac-sessions{max-height:160px;overflow-y:auto;margin-top:.4rem;}
-.ac-session-row{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:.45rem .8rem;margin-bottom:.3rem;display:flex;justify-content:space-between;font-size:.82rem;}
-.ac-logout{margin-top:1.1rem;background:transparent;border:1px solid var(--border);border-radius:10px;padding:.55rem 1.3rem;color:var(--text3);font-size:.8rem;cursor:pointer;font-family:'Barlow',sans-serif;}
-/* APP */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:.65rem .9rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
-.topbar-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.2rem;color:var(--blue-light);letter-spacing:2px;}
-.topbar-user{display:flex;align-items:center;gap:.35rem;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:.28rem .65rem;font-size:.75rem;font-weight:600;}
-.topbar-dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
-.topbar-date{text-align:right;}
-.topbar-day{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;color:var(--blue-light);}
-.topbar-date-str{font-size:.7rem;color:var(--text2);}
-.tabs-wrap{overflow-x:auto;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
-.tabs-wrap::-webkit-scrollbar{display:none;}
-.tabs{display:flex;padding:.35rem .45rem;gap:.25rem;min-width:max-content;}
-.tab{display:flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--text2);cursor:pointer;white-space:nowrap;border:none;background:transparent;transition:.2s;}
-.tab.active{background:var(--bg3);color:var(--text);border:1px solid var(--border);}
-.content{flex:1;overflow-y:auto;padding:.9rem;}
-.content::-webkit-scrollbar{display:none;}
-.page{display:none;}.page.active{display:block;}
-.page-title{display:flex;align-items:center;gap:.55rem;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.45rem;letter-spacing:2px;margin-bottom:.9rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
-.card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:.9rem;margin-bottom:.9rem;}
-.card-label{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;color:var(--text2);margin-bottom:.75rem;}
-/* MÉTÉO */
-.meteo-loc{font-size:.72rem;letter-spacing:2px;color:var(--text2);margin-bottom:.75rem;font-family:'Barlow Condensed',sans-serif;}
-.meteo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:.75rem;}
-.meteo-box{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:.75rem;text-align:center;}
-.meteo-val{font-family:'Barlow Condensed',sans-serif;font-size:1.45rem;font-weight:700;color:var(--blue-light);}
-.meteo-unit{font-size:.66rem;color:var(--blue-light);margin-bottom:.15rem;}
-.meteo-key{font-size:.6rem;letter-spacing:2px;color:var(--text3);font-family:'Barlow Condensed',sans-serif;}
-.meteo-status{border-radius:9px;padding:.75rem 1rem;text-align:center;font-weight:600;font-size:.88rem;margin-bottom:.55rem;}
-.meteo-status.good{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:var(--green);}
-.meteo-status.bad{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--red);}
-.meteo-status.warn{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--orange);}
-.meteo-extra-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:.55rem;}
-.meteo-extra-box{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:.65rem;text-align:center;}
-.meteo-extra-val{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--cyan);}
-.meteo-extra-key{font-size:.6rem;letter-spacing:2px;color:var(--text3);font-family:'Barlow Condensed',sans-serif;margin-top:.15rem;}
-.temp-big{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:800;color:var(--orange);text-align:center;padding:.9rem 0;}
-/* ÉQUIPE */
-.member-card{border-radius:11px;padding:.75rem .9rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.75rem;}
-.member-card.mon{background:var(--card2);border:1px solid var(--border);}
-.member-card.pat{background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(30,144,255,.05));border:1px solid rgba(251,191,36,.3);}
-.avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:800;}
-.member-info{flex:1;}
-.member-name{font-weight:700;font-size:.95rem;}
-.member-role{font-size:.76rem;color:var(--text2);}
-.badge{display:inline-block;font-size:.67rem;padding:.18rem .55rem;border-radius:20px;margin-top:.25rem;}
-.badge.on{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:var(--green);}
-.badge.off{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red);}
-.badge.gold{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.4);color:var(--gold);}
-.member-stats{text-align:right;}
-.member-time{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--blue-light);}
-.member-excursions{font-size:.6rem;color:var(--text3);}
-/* HORAS */
-.sel-row{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.75rem;}
-.styled-select{background:var(--card2);border:1.5px solid var(--blue);border-radius:9px;padding:.75rem .9rem;color:var(--text);font-size:.95rem;font-family:'Barlow',sans-serif;appearance:none;cursor:pointer;outline:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234db8ff' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;background-size:1.1rem;}
-.timer-card{background:var(--card2);border:1px solid var(--blue);border-radius:13px;padding:1.1rem;text-align:center;margin-bottom:.9rem;}
-.timer-display{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:800;color:var(--cyan);letter-spacing:4px;}
-.timer-sub{font-size:.72rem;color:var(--text3);margin-bottom:.9rem;}
-.timer-btns{display:flex;gap:.55rem;}
-.timer-btn{flex:1;border:none;border-radius:9px;padding:.75rem;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:2px;font-weight:700;cursor:pointer;}
-.timer-btn.start{background:linear-gradient(135deg,var(--green),#16a34a);color:#fff;}
-.timer-btn.stop{background:linear-gradient(135deg,var(--red),#b91c1c);color:#fff;}
-.timer-btn.reset{background:var(--bg3);border:1px solid var(--border);color:var(--text2);}
-.session-row{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:.65rem .9rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem;}
-.session-name{font-weight:700;font-size:.9rem;}
-.session-meta{font-size:.7rem;color:var(--text3);}
-.session-dur{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--blue-light);}
-.session-del{color:var(--text3);cursor:pointer;margin-left:.4rem;font-size:.85rem;}
-/* TÂCHES */
-.task-card{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:.75rem .9rem;display:flex;align-items:flex-start;gap:.75rem;margin-bottom:.55rem;}
-.task-icon{font-size:1.35rem;margin-top:.08rem;}
-.task-info{flex:1;}
-.task-name{font-size:.9rem;font-weight:600;}
-.task-sub{font-size:.7rem;color:var(--text3);margin-top:.15rem;}
-.task-right{text-align:right;}
-.task-assigned{font-size:.7rem;color:var(--blue-light);margin-bottom:.35rem;}
-.task-btn{border-radius:20px;padding:.3rem .75rem;font-size:.72rem;font-weight:600;border:1.5px solid;cursor:pointer;font-family:'Barlow',sans-serif;}
-.task-btn.done{background:rgba(34,197,94,.15);border-color:var(--green);color:var(--green);}
-.task-btn.todo{background:transparent;border-color:var(--border);color:var(--text3);}
-.date-badge{display:inline-block;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--cyan);font-size:.68rem;padding:.18rem .55rem;border-radius:20px;margin-bottom:.75rem;}
-/* RÉSERVATIONS */
-.media-btns{display:flex;gap:.55rem;margin-bottom:.75rem;}
-.media-btn{flex:1;border:none;border-radius:9px;padding:.8rem;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:2px;font-weight:700;cursor:pointer;}
-.media-btn.photo{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;}
-.media-btn.video{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;}
-.media-gallery{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;}
-.media-thumb{border-radius:9px;overflow:hidden;position:relative;aspect-ratio:4/3;background:var(--card2);border:1px solid var(--border);}
-.media-thumb img,.media-thumb video{width:100%;height:100%;object-fit:cover;}
-.media-badge{position:absolute;bottom:.25rem;left:.25rem;background:rgba(0,0,0,.65);border-radius:4px;padding:.08rem .35rem;font-size:.58rem;color:#fff;}
-.media-del{position:absolute;top:.25rem;right:.25rem;background:rgba(0,0,0,.65);border:none;border-radius:50%;width:21px;height:21px;color:#fff;font-size:.62rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.media-empty{color:var(--text3);text-align:center;padding:1.8rem;font-size:.82rem;}
-/* REPOS */
-.rest-card{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:.75rem .9rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.75rem;}
-.rest-name{font-weight:700;font-size:.95rem;min-width:66px;}
-.rest-day{font-size:.68rem;color:var(--text3);}
-.days-row{display:flex;gap:.28rem;flex-wrap:nowrap;}
-.day-pill{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:transparent;font-size:.58rem;font-weight:700;color:var(--text3);cursor:pointer;font-family:'Barlow Condensed',sans-serif;}
-.day-pill.on{background:rgba(239,68,68,.2);border-color:var(--red);color:var(--red);}
+#screen-pin{padding:20px;align-items:center;justify-content:center;flex-direction:column;background:var(--bg);}
+.pin-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;box-shadow:0 0 30px rgba(0,200,255,.3);}
+.pin-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:4px;}
+.pin-hint{color:var(--muted);font-size:13px;margin-bottom:32px;}
+.pin-dots{display:flex;gap:16px;margin-bottom:32px;}
+.pin-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);background:transparent;transition:.2s;}
+.pin-dot.filled{background:var(--accent);border-color:var(--accent);box-shadow:0 0 10px rgba(0,200,255,.5);}
+.pin-dot.error{background:var(--red);border-color:var(--red);}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:240px;}
+.num-btn{height:60px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:22px;font-weight:600;cursor:pointer;transition:.2s;}
+.num-btn:hover{background:var(--bg3);border-color:var(--accent);}
+.num-btn.del{font-size:16px;color:var(--muted);}
+.back-btn{margin-top:20px;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:8px;}
+
+/* TOP NAV */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:2px;}
+.topbar-user{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.topbar-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:14px;}
+.topbar-name{font-size:13px;font-weight:600;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.lang-mini{display:flex;gap:4px;}
+.lang-mini button{background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;padding:2px 4px;}
+.lang-mini button.active{color:var(--accent);}
+
+/* BOTTOM NAV */
+.bottom-nav{background:var(--bg2);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 0 10px;position:sticky;bottom:0;z-index:100;}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 4px;border:none;background:none;color:var(--muted);transition:.2s;}
+.nav-item.active{color:var(--accent);}
+.nav-icon{font-size:20px;}
+.nav-label{font-size:9px;letter-spacing:.5px;}
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 6px var(--accent));}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:16px;}
+
+/* DASHBOARD */
+.greeting{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;margin-bottom:4px;}
+.greeting span{color:var(--accent);}
+.date-bar{font-size:12px;color:var(--muted);margin-bottom:20px;}
+.weather-card{background:linear-gradient(135deg,#0f3460,#1a1e28);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.weather-main{display:flex;align-items:center;gap:12px;}
+.weather-icon{font-size:40px;}
+.weather-temp{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--accent);}
+.weather-info{font-size:12px;color:var(--muted);}
+.weather-city{font-size:14px;font-weight:600;color:var(--text);}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);}
+.stat-label{font-size:10px;color:var(--muted);margin-top:2px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px;}
+.card-title{font-size:12px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.tasks-list{}
+.task-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.task-item:last-child{border-bottom:none;}
+.task-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.2s;}
+.task-check.done{background:var(--green);border-color:var(--green);}
+.task-text{font-size:13px;flex:1;}
+.task-text.done{text-decoration:line-through;color:var(--muted);}
+.task-assign{font-size:10px;color:var(--accent);}
+
+/* HORAIRES */
+.sea-timeline{display:flex;flex-direction:column;gap:8px;}
+.sea-slot{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;justify-content:space-between;}
+.sea-slot.active{border-color:var(--accent);background:rgba(0,200,255,.05);}
+.sea-time{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);}
+.sea-info{flex:1;margin-left:12px;}
+.sea-type{font-size:13px;font-weight:600;}
+.sea-clients{font-size:11px;color:var(--muted);margin-top:2px;}
+.sea-status{font-size:10px;padding:3px 8px;border-radius:10px;background:rgba(34,197,94,.15);color:var(--green);}
+.sea-status.pending{background:rgba(255,107,53,.15);color:var(--accent2);}
+.add-btn{width:100%;padding:12px;border-radius:12px;border:1px dashed var(--border);background:none;color:var(--muted);font-size:13px;cursor:pointer;margin-top:10px;transition:.2s;}
+.add-btn:hover{border-color:var(--accent);color:var(--accent);}
+
 /* CHAT */
-.chat-input{width:100%;background:var(--card2);border:1.5px solid var(--border);border-radius:9px;padding:.75rem .9rem;color:var(--text);font-size:.9rem;font-family:'Barlow',sans-serif;outline:none;margin-bottom:.55rem;transition:.2s;resize:none;}
-.chat-input:focus{border-color:var(--blue);}
-.chat-msg{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:.75rem .9rem;margin-bottom:.55rem;position:relative;}
-.chat-header{display:flex;align-items:center;gap:.45rem;margin-bottom:.35rem;}
-.chat-av{width:26px;height:26px;border-radius:50%;background:#1e3a5a;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;font-family:'Barlow Condensed',sans-serif;color:var(--blue-light);}
-.chat-sender{font-weight:700;font-size:.87rem;}
-.chat-time{font-size:.7rem;color:var(--text3);}
-.chat-text{font-size:.87rem;color:var(--text2);padding-left:2.1rem;}
-.chat-del{position:absolute;top:.55rem;right:.65rem;color:var(--text3);cursor:pointer;font-size:.82rem;opacity:.6;}
+.chat-container{display:flex;flex-direction:column;height:calc(100vh - 160px);}
+.chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
+.msg{max-width:75%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.4;}
+.msg.mine{background:var(--accent);color:var(--bg);align-self:flex-end;border-bottom-right-radius:4px;}
+.msg.theirs{background:var(--card);align-self:flex-start;border-bottom-left-radius:4px;}
+.msg-meta{font-size:10px;color:var(--muted);margin-top:3px;}
+.msg.mine .msg-meta{text-align:right;}
+.msg-sender{font-weight:700;font-size:11px;margin-bottom:3px;}
+.chat-input-bar{padding:10px 12px;background:var(--bg2);border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;}
+.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:10px 14px;color:var(--text);font-size:13px;resize:none;max-height:100px;font-family:'DM Sans',sans-serif;}
+.chat-input:focus{outline:none;border-color:var(--accent);}
+.send-btn{width:40px;height:40px;border-radius:50%;background:var(--accent);border:none;color:var(--bg);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cam-btn{width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.msg-img{max-width:200px;border-radius:10px;margin-top:6px;}
+
+/* PLANNING */
+.planning-header{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;}
+.plan-tab{padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);font-size:12px;white-space:nowrap;cursor:pointer;}
+.plan-tab.active{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+.resa-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;}
+.resa-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.resa-name{font-weight:700;font-size:15px;}
+.resa-time{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);}
+.resa-details{font-size:12px;color:var(--muted);margin-top:6px;}
+.resa-badge{font-size:10px;padding:3px 10px;border-radius:10px;}
+.resa-badge.confirmed{background:rgba(34,197,94,.15);color:var(--green);}
+.resa-badge.pending{background:rgba(255,107,53,.15);color:var(--accent2);}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;}
+.photo-thumb{aspect-ratio:1;border-radius:8px;object-fit:cover;width:100%;background:var(--bg3);cursor:pointer;}
+
 /* PROFIL */
-.prof-hero{text-align:center;padding:1.3rem 0 .9rem;border-bottom:1px solid var(--border);margin-bottom:.9rem;}
-.prof-avatar{width:68px;height:68px;border-radius:50%;border:2px solid var(--blue);display:inline-flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:800;margin-bottom:.55rem;}
-.prof-name{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:800;letter-spacing:2px;}
-.prof-role{font-size:.87rem;color:var(--text2);margin-bottom:.55rem;}
-.pin-warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--orange);font-size:.75rem;padding:.35rem .75rem;border-radius:20px;display:inline-block;}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.55rem;}
-.stat-box{background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:.9rem;text-align:center;}
-.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:2.1rem;font-weight:800;}
-.stat-lbl{font-size:.62rem;letter-spacing:2px;color:var(--text3);font-family:'Barlow Condensed',sans-serif;margin-top:.18rem;}
-.stat-box.blue .stat-val{color:var(--blue-light);}
-.stat-box.orange .stat-val{color:var(--orange);}
-.cumul-section{background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);border-radius:11px;padding:.9rem;margin-bottom:.9rem;}
-.cumul-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;color:var(--cyan);margin-bottom:.55rem;}
-.cumul-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.45rem;}
-.cumul-box{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.65rem;text-align:center;}
-.cumul-val{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:800;color:var(--cyan);}
-.cumul-lbl{font-size:.58rem;letter-spacing:1.5px;color:var(--text3);margin-top:.18rem;}
-.excursion-display{text-align:center;padding:.55rem 0 .15rem;}
-.excursion-count{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;color:var(--blue-light);}
-.excursion-sub{font-size:.67rem;color:var(--text3);margin-top:.15rem;letter-spacing:1.5px;}
-.progress-dots{display:flex;gap:.35rem;justify-content:center;margin:.45rem 0;}
-.dot{width:13px;height:13px;border-radius:50%;background:var(--border);}
-.dot.on{background:var(--orange);}
-.progress-lbl{text-align:center;font-size:.7rem;color:var(--text3);margin-bottom:.9rem;}
-.quote-box{background:var(--card2);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:11px;padding:.9rem;margin-bottom:.75rem;font-size:.9rem;font-style:italic;line-height:1.5;}
-.quote-attr{font-size:.7rem;color:var(--blue-light);margin-top:.45rem;font-style:normal;}
-.pin-change-section .pin-dots{display:flex;gap:.9rem;justify-content:center;margin:.55rem 0;}
-.pin-change-section .pin-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--border);}
-.pin-change-section .pin-dot.on{border-color:var(--blue);background:var(--blue);}
-.pin-change-section .pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-top:.75rem;}
-.pin-change-section .pin-key{background:var(--card2);border:1px solid var(--border);border-radius:50%;aspect-ratio:1;font-size:1.15rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);}
-.pin-change-section .pin-key:active{background:var(--blue);border-color:var(--blue);}
-/* ADMIN */
-.admin-tag{display:inline-block;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--red);font-size:.68rem;letter-spacing:2px;padding:.18rem .55rem;border-radius:4px;margin-bottom:.75rem;font-family:'Barlow Condensed',sans-serif;}
-.adm-row{display:flex;align-items:center;gap:.55rem;padding:.55rem 0;border-bottom:1px solid var(--border);}
-.adm-row:last-child{border-bottom:none;}
-.adm-name{flex:1;font-weight:600;}
-.adm-total{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;color:var(--orange);}
-.add-row{display:flex;gap:.45rem;margin-top:.55rem;}
-.text-input{flex:1;background:var(--card2);border:1.5px solid var(--border);border-radius:7px;padding:.65rem .85rem;color:var(--text);font-family:'Barlow',sans-serif;font-size:.87rem;outline:none;}
-.text-input:focus{border-color:var(--blue);}
-.btn-sm{background:var(--blue);border:none;border-radius:7px;padding:.65rem .9rem;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:2px;font-weight:700;cursor:pointer;}
-.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:.55rem 1.3rem;border-radius:20px;font-weight:600;font-size:.82rem;z-index:999;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;}
+.profile-header{background:linear-gradient(135deg,var(--bg2),var(--bg3));border-radius:16px;padding:20px;margin-bottom:14px;text-align:center;}
+.profile-big-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;box-shadow:0 0 30px rgba(0,200,255,.3);}
+.profile-big-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;}
+.profile-big-role{color:var(--muted);font-size:13px;margin-top:2px;}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;}
+.pstat{text-align:center;}
+.pstat-num{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent);}
+.pstat-label{font-size:10px;color:var(--muted);}
+.settings-list{display:flex;flex-direction:column;gap:6px;}
+.setting-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.setting-row:hover{border-color:var(--accent);}
+.setting-label{font-size:14px;}
+.setting-arrow{color:var(--muted);font-size:16px;}
+.history-entry{padding:10px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.history-entry:last-child{border-bottom:none;}
+.history-date{color:var(--accent);font-size:10px;margin-bottom:2px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;align-items:flex-end;padding:0;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px;width:100%;max-height:85vh;overflow-y:auto;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal h3{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:16px;}
+.form-group{margin-bottom:14px;}
+.form-label{font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;display:block;}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;}
+.form-input:focus{outline:none;border-color:var(--accent);}
+.form-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;appearance:none;}
+.btn-primary{width:100%;padding:14px;border-radius:12px;background:var(--accent);border:none;color:var(--bg);font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.btn-danger{width:100%;padding:14px;border-radius:12px;background:rgba(239,68,68,.15);border:1px solid var(--red);color:var(--red);font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.btn-secondary{width:100%;padding:14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:15px;cursor:pointer;margin-top:8px;}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;}
+
+/* CAMERA */
+#camera-modal{position:fixed;inset:0;background:#000;z-index:600;display:none;flex-direction:column;}
+#camera-modal.show{display:flex;}
+#camera-video{width:100%;flex:1;object-fit:cover;}
+.camera-bar{padding:20px;display:flex;justify-content:center;gap:24px;align-items:center;background:#000;}
+.cam-capture{width:64px;height:64px;border-radius:50%;border:3px solid #fff;background:rgba(255,255,255,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.cam-cancel{width:44px;height:44px;border-radius:50%;border:2px solid var(--muted);background:none;color:var(--muted);font-size:18px;cursor:pointer;}
+#camera-canvas{display:none;}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--accent);border-radius:10px;padding:10px 20px;font-size:13px;z-index:1000;opacity:0;transition:.3s;pointer-events:none;}
 .toast.show{opacity:1;}
-@media(min-width:480px){.content{max-width:440px;margin:0 auto;}}
+
+/* ADMIN BADGE */
+.admin-crown{font-size:10px;background:rgba(255,201,71,.15);color:var(--gold);padding:2px 6px;border-radius:8px;margin-left:6px;}
+
+/* RESPONSIVE */
+@media(max-width:360px){
+  .profile-grid{grid-template-columns:repeat(2,1fr);}
+  .stats-row{grid-template-columns:repeat(3,1fr);}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ PROFILE SELECT ═══ -->
-<!-- ═══ LOGIN ═══ -->
-<div id="loginScreen" class="screen" style="display:flex">
-  <div class="login-title">JET SKI TOUR<br>SALOU</div>
-  <div class="login-sub" id="l_sub">ESPACE INTERNE ÉQUIPE</div>
-  <div class="login-divider"></div>
-  <div class="lang-row">
-    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
-    <button class="lang-btn" onclick="setLang('es')">ES</button>
-    <button class="lang-btn" onclick="setLang('ca')">CA</button>
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-wave">🌊</div>
+  <div class="splash-logo">JST SALOU</div>
+  <div class="splash-sub">JET SKI TEAM</div>
+</div>
+
+<!-- PROFILE SELECT -->
+<div id="screen-select" class="screen">
+  <div class="select-header">
+    <div class="lang-bar">
+      <button class="lang-btn active" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+      <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+    </div>
+    <div class="splash-wave" style="font-size:32px;margin-bottom:8px;">🌊</div>
+    <h1>JST SALOU</h1>
+    <p data-t="select_profile">Sélectionne ton profil</p>
   </div>
-  <div class="login-card">
-    <label class="form-label" id="l_lbl">MOT DE PASSE</label>
-    <input class="form-input" type="password" id="loginInput" placeholder="••••••••" autocomplete="off">
-    <button class="btn-primary" id="l_btn" onclick="doLogin()">ENTRER</button>
-    <div class="err-msg" id="l_err">Mot de passe incorrect</div>
+
+  <div style="padding:0 16px 100px;">
+    <div class="section-label" data-t="patrons">Patrons</div>
+    <div class="profile-grid" id="patrons-grid"></div>
+
+    <div class="section-label" data-t="chefs">Chefs d'équipe</div>
+    <div class="profile-grid" id="chefs-grid"></div>
+
+    <div class="section-label" data-t="moniteurs">Moniteurs</div>
+    <div class="profile-grid" id="moniteurs-grid"></div>
+
+    <div class="section-label" data-t="cabine">Cabine</div>
+    <div class="profile-grid" id="cabine-grid"></div>
+
+    <button class="btn-primary" id="select-confirm" style="display:none;" onclick="confirmProfile()" data-t="confirm">Confirmer</button>
   </div>
 </div>
 
-<div id="profileScreen" class="screen">
-  <div class="ps-title" id="ps_title">QUI ES-TU ?</div>
-  <div class="ps-sub" id="ps_sub">SÉLECTIONNE TON PROFIL</div>
-  <div class="profile-grid" id="profileGrid"></div>
+<!-- PIN -->
+<div id="screen-pin" class="screen">
+  <div style="text-align:center;width:100%;max-width:320px;padding:20px;">
+    <div class="pin-avatar" id="pin-avatar">😊</div>
+    <div class="pin-name" id="pin-name">-</div>
+    <div class="pin-hint" id="pin-hint" data-t="enter_pin">Entrez votre code PIN</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot"></div><div class="pin-dot"></div>
+      <div class="pin-dot"></div><div class="pin-dot"></div>
+    </div>
+    <div class="numpad">
+      <button class="num-btn" onclick="pinPress(1)">1</button>
+      <button class="num-btn" onclick="pinPress(2)">2</button>
+      <button class="num-btn" onclick="pinPress(3)">3</button>
+      <button class="num-btn" onclick="pinPress(4)">4</button>
+      <button class="num-btn" onclick="pinPress(5)">5</button>
+      <button class="num-btn" onclick="pinPress(6)">6</button>
+      <button class="num-btn" onclick="pinPress(7)">7</button>
+      <button class="num-btn" onclick="pinPress(8)">8</button>
+      <button class="num-btn" onclick="pinPress(9)">9</button>
+      <button class="num-btn" onclick="pinPress('')">＊</button>
+      <button class="num-btn" onclick="pinPress(0)">0</button>
+      <button class="num-btn del" onclick="pinDel()">⌫</button>
+    </div>
+    <button class="back-btn" onclick="goToSelect()" data-t="back">← Retour</button>
+  </div>
 </div>
 
-<!-- ═══ PIN ═══ -->
-<div id="pinScreen" class="screen">
-  <div class="pin-avatar" id="pinAvatar" style="background:#1e3a5a;color:var(--blue-light)">?</div>
-  <div class="pin-name" id="pinName">—</div>
-  <div class="pin-role" id="pinRole">—</div>
-  <div class="pin-label" id="pinLabel">Entrez votre code PIN</div>
-  <div class="pin-dots">
-    <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
-    <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
-  </div>
-  <div class="pin-pad">
-    <button class="pin-key" onclick="PK(1)">1</button><button class="pin-key" onclick="PK(2)">2</button><button class="pin-key" onclick="PK(3)">3</button>
-    <button class="pin-key" onclick="PK(4)">4</button><button class="pin-key" onclick="PK(5)">5</button><button class="pin-key" onclick="PK(6)">6</button>
-    <button class="pin-key" onclick="PK(7)">7</button><button class="pin-key" onclick="PK(8)">8</button><button class="pin-key" onclick="PK(9)">9</button>
-    <button class="pin-key" onclick="PK('d')">⌫</button><button class="pin-key" onclick="PK(0)">0</button><button class="pin-key" onclick="PK('ok')">OK</button>
-  </div>
-  <button class="pin-skip" id="pinSkip" onclick="pinFirst()">—</button>
-</div>
-
-
-
-<!-- ═══ APP ═══ -->
-<div id="app">
+<!-- MAIN APP -->
+<div id="screen-app" class="screen">
   <div class="topbar">
-    <div style="display:flex;align-items:center;gap:.5rem">
-      <div class="topbar-logo">JST SALOU</div>
-      <div class="topbar-user"><div class="topbar-dot"></div><span id="topbarName">—</span></div>
+    <div class="topbar-logo">⛵ JST</div>
+    <div class="topbar-right">
+      <div class="lang-mini">
+        <button onclick="setLang('fr')" class="active" id="lbtn-fr">FR</button>
+        <button onclick="setLang('es')" id="lbtn-es">ES</button>
+        <button onclick="setLang('en')" id="lbtn-en">EN</button>
+      </div>
+      <div class="topbar-user" onclick="goTab('profil')">
+        <div class="topbar-avatar" id="top-avatar">😊</div>
+        <span class="topbar-name" id="top-name">-</span>
+      </div>
     </div>
-    <div style="display:flex;gap:.35rem">
-      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
-      <button class="lang-btn" onclick="setLang('es')">ES</button>
-      <button class="lang-btn" onclick="setLang('ca')">CA</button>
-    </div>
-    <div class="topbar-date"><div class="topbar-day" id="topDay"></div><div class="topbar-date-str" id="topDate"></div></div>
   </div>
-  <div class="tabs-wrap"><div class="tabs" id="tabsBar"></div></div>
-  <div class="content" id="mainContent"></div>
+
+  <div class="content" id="main-content"><!-- dynamic --></div>
+
+  <div class="bottom-nav">
+    <button class="nav-item active" onclick="goTab('home')">
+      <div class="nav-icon">🏠</div>
+      <div class="nav-label" data-t="home">Home</div>
+    </button>
+    <button class="nav-item" onclick="goTab('horaires')">
+      <div class="nav-icon">🌊</div>
+      <div class="nav-label" data-t="sea">Mer</div>
+    </button>
+    <button class="nav-item" onclick="goTab('planning')">
+      <div class="nav-icon">📋</div>
+      <div class="nav-label" data-t="planning">Planning</div>
+    </button>
+    <button class="nav-item" onclick="goTab('chat')">
+      <div class="nav-icon">💬</div>
+      <div class="nav-label" data-t="chat">Chat</div>
+    </button>
+    <button class="nav-item" onclick="goTab('profil')">
+      <div class="nav-icon">👤</div>
+      <div class="nav-label" data-t="profile">Profil</div>
+    </button>
+  </div>
 </div>
+
+<!-- CAMERA -->
+<div id="camera-modal">
+  <video id="camera-video" autoplay playsinline></video>
+  <canvas id="camera-canvas"></canvas>
+  <div class="camera-bar">
+    <button class="cam-cancel" onclick="closeCamera()">✕</button>
+    <button class="cam-capture" onclick="capturePhoto()">📸</button>
+    <button class="cam-cancel" onclick="switchCamera()">🔄</button>
+  </div>
+</div>
+
+<!-- MODAL GENERIC -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="closeModal()">×</button>
+  </div>
+</div>
+
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
-<input type="file" id="inputPhoto" accept="image/*" capture="environment" style="display:none" onchange="addMedia(this,'photo')">
-<input type="file" id="inputVideo" accept="video/*" capture="camcorder" style="display:none" onchange="addMedia(this,'video')">
 
 <script>
-// ═══════════════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════════════
-const PASS = 'JTS2026';
-const ADMINS = ['Tim','Nacho'];
-const ACCUEIL_ROLES = ['accueil'];
-const COLORS = ['#3a2800','#2a1a3a','#7c3d00','#1a2a5a','#1e3a5a','#1a3d20','#4a1a4a','#2a1e3a','#1a2a1a','#2a2a1a'];
-
-let TEAM = [
-  {n:'Lukas',  r:'patron',  c:'#3a2800', rest:''},
-  {n:'Ema',    r:'patron',  c:'#2a1a3a', rest:''},
-  {n:'Nacho',  r:'chef',    c:'#7c3d00', rest:'Lun', senior:false},
-  {n:'Miha',   r:'chef',    c:'#1a2a5a', rest:'Mar', senior:false},
-  {n:'Tim',    r:'monitor', c:'#1e3a5a', rest:'Mer', senior:true},
-  {n:'Llorens',r:'monitor', c:'#1a3d20', rest:'Ven'},
-  {n:'Munir',  r:'monitor', c:'#4a1a4a', rest:'Jue'},
-  {n:'Nico',   r:'monitor', c:'#2a1e3a', rest:''},
-  {n:'Romane', r:'accueil', c:'#1a2a1a', rest:''},
-  {n:'Enola',  r:'accueil', c:'#2a2a1a', rest:'', aout:true},
+// =================== DATA ===================
+const PROFILES = [
+  {id:'lucas',name:'Lucas',emoji:'👑',role:'patron',category:'patron'},
+  {id:'ema',name:'Ema',emoji:'👑',role:'patron',category:'patron'},
+  {id:'nacho',name:'Nacho',emoji:'🧔',role:'chef',category:'chef',admin:true},
+  {id:'miha',name:'Miha',emoji:'🧔',role:'chef',category:'chef'},
+  {id:'tim',name:'Tim',emoji:'🤿',role:'monitor',category:'monitor',admin:true,badge:'⭐'},
+  {id:'llorens',name:'Llorens',emoji:'🤿',role:'monitor',category:'monitor',badge:'🔱'},
+  {id:'munir',name:'Munir',emoji:'🤿',role:'monitor',category:'monitor',badge:'🔱'},
+  {id:'nico',name:'Nico',emoji:'🤿',role:'monitor',category:'monitor'},
+  {id:'romane',name:'Romane',emoji:'💁‍♀️',role:'cabine',category:'cabine'},
+  {id:'enola',name:'Enola',emoji:'💁‍♀️',role:'cabine',category:'cabine'},
 ];
 
-// ═══════════════════════════════════════════════════════
-// I18N — dictionnaire complet FR / ES / CA
-// ═══════════════════════════════════════════════════════
-const DICT = {
+const DAILY_TASKS = [
+  [
+    {id:'t1',text:'Vérifier le carburant des jets',assign:'tim'},
+    {id:'t2',text:'Contrôle des gilets de sauvetage',assign:'llorens'},
+    {id:'t3',text:'Check sécurité plage',assign:'munir'},
+    {id:'t4',text:'Préparer le matériel pédagogique',assign:'nico'},
+  ],
+  [
+    {id:'t1',text:'Nettoyage des jets après session',assign:'llorens'},
+    {id:'t2',text:'Vérification des harnais',assign:'tim'},
+    {id:'t3',text:'Balisage zone de navigation',assign:'nico'},
+    {id:'t4',text:'Rédiger rapport de session',assign:'munir'},
+  ],
+  [
+    {id:'t1',text:'Maintenance moteurs',assign:'munir'},
+    {id:'t2',text:'Test radio VHF',assign:'tim'},
+    {id:'t3',text:'Inventaire matériel',assign:'llorens'},
+    {id:'t4',text:'Briefing clients matin',assign:'nico'},
+  ],
+  [
+    {id:'t1',text:'Contrôle météo et courant',assign:'tim'},
+    {id:'t2',text:'Check coque et étrave',assign:'nico'},
+    {id:'t3',text:'Préparer excursion',assign:'llorens'},
+    {id:'t4',text:'Vérifier licences clients',assign:'munir'},
+  ],
+  [
+    {id:'t1',text:'Rangement et sécurisation des jets',assign:'nico'},
+    {id:'t2',text:'Contrôle trousse de secours',assign:'tim'},
+    {id:'t3',text:'Mise à jour planning',assign:'munir'},
+    {id:'t4',text:'Débriefing équipe',assign:'llorens'},
+  ],
+  [
+    {id:'t1',text:'Graissage et entretien',assign:'llorens'},
+    {id:'t2',text:'Test extinction incendie',assign:'munir'},
+    {id:'t3',text:'Photo recap semaine',assign:'tim'},
+    {id:'t4',text:'Rapport hebdomadaire',assign:'nico'},
+  ],
+  [
+    {id:'t1',text:'Inspection complète du parc',assign:'tim'},
+    {id:'t2',text:'Vérification assurances',assign:'llorens'},
+    {id:'t3',text:'Formation sécurité',assign:'nico'},
+    {id:'t4',text:'Mise à jour fiche clients',assign:'munir'},
+  ],
+];
+
+const TRANSLATIONS = {
   fr:{
-    /* login */ l_sub:'ESPACE INTERNE ÉQUIPE', l_lbl:'MOT DE PASSE', l_btn:'ENTRER', l_err:'Mot de passe incorrect',
-    /* profile */ ps_title:'QUI ES-TU ?', ps_sub:'SÉLECTIONNE TON PROFIL',
-    /* pin */ pin_enter:'Entrez votre code PIN', pin_new:'Définissez votre PIN (4 chiffres)', pin_wrong:'❌ PIN incorrect', pin_ok:'✅ PIN défini !', pin_changed:'✅ PIN changé !', pin_skip:'Première connexion — définir PIN', pin_current:'PIN actuel', pin_new2:'Nouveau PIN', pin_confirm:'Confirmer PIN',
-    /* accueil */ ac_title:'ENREGISTRER UNE SESSION', ac_sub:'MONITEUR + DURÉE', ac_mon_lbl:'MONITEUR', ac_dur_lbl:'DURÉE', ac_btn:'✅ VALIDER SESSION', ac_logout:'↩ Changer de profil',
-    /* rôles */ role_patron:'Patron', role_chef:'Chef', role_monitor:'Moniteur', role_accueil:'Accueil',
-    /* tabs */ tab0:'Météo', tab1:'Équipe', tab2:'Horas', tab3:'Tâches', tab4:'Réservations', tab5:'Repos', tab6:'Chat', tab7:'Profil', tab8:'Admin',
-    /* météo */ met_loc:'📍 SALOU · MER MÉDITERRANÉE',
-      met_vent:'VENT', met_vagues:'VAGUES', met_ressenti:'RESSENTI', met_dir:'DIR. VENT', met_uv:'UV', met_humid:'HUMIDITÉ', met_mer:'ÉTAT MER', met_temp:'TEMPÉRATURE AIR',
-      met_refresh:'🔄 Actualiser', met_update:'Mise à jour',
-      met_good:'🟢 MER CALME — Conditions favorables', met_warn:'🟡 MER MODÉRÉE — Vigilance', met_bad:'🔴 MER AGITÉE — Danger', met_err:'⚠️ Données indisponibles',
-    /* équipe */ eq_patrons:'👑 PATRONS', eq_chefs:'🎖️ CHEFS DE SAISON', eq_monitors:'🤿 MONITEURS',
-      badge_on:'✅ En service', badge_off:'🏖️ Repos', badge_patron:'👑 Patron',
-      today:'Aujourd\'hui', excursions_lbl:'excursion',
-    /* horas */ hor_title:'HORAS EN MER', hor_chrono:'⏱️ CHRONO EN MER', hor_reset_lbl:'Remis à zéro chaque matin',
-      hor_start:'▶ START', hor_stop:'⏸ STOP', hor_reset:'↺',
-      hor_session_lbl:'SESSION MANUELLE', hor_valider:'+ VALIDER SESSION', hor_sessions_today:'SESSIONS DU JOUR', hor_empty:'Aucune session',
-      dur_20:'20 min', dur_30:'30 min', dur_40:'40 min', dur_60:'1h', dur_120:'2h 🪨 Grotte',
-    /* tâches */ tar_title:'TÂCHES DU JOUR', tar_rotation:'ROTATION AUTOMATIQUE QUOTIDIENNE', tar_redistrib:'🔄 Redistribuer',
-      tar_ok:'✅ OK', tar_todo:'○ À faire',
-      task0:'Vider les poubelles', task1:'Ranger plateforme & gilets', task2:'Vérifier essence & amarres',
-      task3:'Circuits (dédié)', task3b:'⚡ 1 moniteur dédié aux circuits',
-    /* réservations */ res_title:'RÉSERVATIONS', res_media:'PHOTOS & VIDÉOS', res_photo:'📷 PHOTO', res_video:'🎥 VIDÉO', res_empty:'Aucun média — appuie sur Photo ou Vidéo',
-    /* repos */ des_title:'JOURS DE REPOS', des_lbl:'REPOS PAR MONITEUR',
-    /* chat */ chat_title:'CHAT ÉQUIPE', chat_new:'NOUVEAU MESSAGE', chat_send:'💬 ENVOYER', chat_msgs:'MESSAGES', chat_empty:'Aucun message',
-    /* profil */ prof_title:'MON PROFIL', prof_sessions_lbl:"SESSIONS AUJOURD'HUI", prof_horas_lbl:'TEMPS EN MER',
-      prof_cumul:'📊 CUMUL SAISON', prof_cs:'SESSIONS', prof_ch:'HEURES MER', prof_cc:'CUEVAS',
-      prof_excursions:"EXCURSIONS AUJOURD'HUI", prof_excursions_sub:'calculé depuis les sessions',
-      prof_objectif:'Objectif: 10 excursions', prof_quote:'✨ Nouvelle citation',
-      prof_pin_lbl:'🔒 CHANGER MON CODE PIN', prof_pin_warn:'PIN par défaut — changez-le', prof_change:'🔄 Changer de profil',
-    /* admin */ adm_title:'ADMIN', adm_tag:'ACCÈS RESTREINT — TIM & NACHO', adm_stats:'STATS ÉQUIPE', adm_total:'TOTAL HEURES SAISON', adm_add:'AJOUTER UN MEMBRE', adm_reset_pin:'RÉINITIALISER PIN',
-    /* toasts */ toast_session:'✅ Session ajoutée', toast_redist:'🔄 Redistribution OK', toast_denied:'🔒 Accès refusé', toast_pin_reset:'🔄 PIN réinitialisé',
-    days:['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
-    months:['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
-    days_short:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+    select_profile:'Sélectionne ton profil',
+    patrons:'Patrons',chefs:"Chefs d'équipe",moniteurs:'Moniteurs',cabine:'Cabine',
+    confirm:'Confirmer',enter_pin:'Entre ton code PIN (4 chiffres)',
+    back:'← Retour',home:'Home',sea:'Mer',planning:'Planning',chat:'Chat',profile:'Profil',
+    good_morning:'Bonjour',good_afternoon:'Bonne après-midi',good_evening:'Bonsoir',
+    today_tasks:"Tâches du jour",sea_sessions:"Sorties en mer",add_session:"+ Ajouter une sortie",
+    reservations:'Réservations',photos:'Photos',excursions:'Excursions',
+    no_messages:'Aucun message pour le moment',type_message:'Écrire un message...',
+    my_stats:'Mes stats',settings:'Paramètres',logout:'Se déconnecter',
+    change_pin:'Changer le PIN',history:'Historique des sorties',
+    sessions_today:'Sorties',clients_today:'Clients',hours_today:'Heures',
+    add_reservation:'+ Ajouter réservation',name:'Nom',time:'Heure',
+    activity:'Activité',nb_people:'Nb personnes',notes:'Notes',
+    save:'Enregistrer',cancel:'Annuler',confirm_btn:'Confirmer',
+    new_pin:'Nouveau PIN (4 chiffres)',confirm_pin:'Confirmer le nouveau PIN',
+    pin_changed:'PIN modifié avec succès',pin_mismatch:'Les codes ne correspondent pas',
+    pin_wrong:'Code incorrect',pin_set:'Code PIN créé ! Bienvenue 🤿',
+    welcome:'Bienvenue',daily_reset:'Les sorties du jour ont été remises à zéro',
+    photo_sent:'📸 Photo envoyée dans Planning',
+    camera_error:'Caméra non disponible',
+    delete:'Supprimer',edit:'Modifier',
+    excursion:'Excursion',jet_initiation:'Initiation jet ski',jet_bapteme:'Baptême jet ski',
+    circuit:'Circuit découverte',
+    clients:'clients',jet:'jet',jets:'jets',
+    admin_label:'Admin',
+    no_tasks:'Pas de tâches',no_sessions:'Aucune sortie enregistrée',
+    no_reservations:'Aucune réservation',
   },
   es:{
-    l_sub:'ESPACIO INTERNO EQUIPO', l_lbl:'CONTRASEÑA', l_btn:'ENTRAR', l_err:'Contraseña incorrecta',
-    ps_title:'¿QUIÉN ERES?', ps_sub:'SELECCIONA TU PERFIL',
-    pin_enter:'Introduce tu código PIN', pin_new:'Define tu PIN (4 dígitos)', pin_wrong:'❌ PIN incorrecto', pin_ok:'✅ PIN definido!', pin_changed:'✅ PIN cambiado!', pin_skip:'Primera vez — definir PIN', pin_current:'PIN actual', pin_new2:'Nuevo PIN', pin_confirm:'Confirmar PIN',
-    ac_title:'REGISTRAR SESIÓN', ac_sub:'MONITOR + DURACIÓN', ac_mon_lbl:'MONITOR', ac_dur_lbl:'DURACIÓN', ac_btn:'✅ VALIDAR SESIÓN', ac_logout:'↩ Cambiar perfil',
-    role_patron:'Patrón', role_chef:'Jefe', role_monitor:'Monitor', role_accueil:'Recepción',
-    tab0:'Tiempo', tab1:'Equipo', tab2:'Horas', tab3:'Tareas', tab4:'Reservas', tab5:'Descanso', tab6:'Chat', tab7:'Perfil', tab8:'Admin',
-    met_loc:'📍 SALOU · MAR MEDITERRÁNEO',
-      met_vent:'VIENTO', met_vagues:'OLAS', met_ressenti:'SENSACIÓN', met_dir:'DIR. VIENTO', met_uv:'UV', met_humid:'HUMEDAD', met_mer:'ESTADO MAR', met_temp:'TEMPERATURA AIRE',
-      met_refresh:'🔄 Actualizar', met_update:'Actualizado',
-      met_good:'🟢 MAR TRANQUILO — Condiciones favorables', met_warn:'🟡 MAR MODERADO — Precaución', met_bad:'🔴 MAR AGITADO — Peligro', met_err:'⚠️ Datos no disponibles',
-    eq_patrons:'👑 PATRONES', eq_chefs:'🎖️ JEFES DE TEMPORADA', eq_monitors:'🤿 MONITORES',
-      badge_on:'✅ En servicio', badge_off:'🏖️ Descanso', badge_patron:'👑 Patrón',
-      today:'Hoy', excursions_lbl:'excursión',
-    hor_title:'HORAS EN EL AGUA', hor_chrono:'⏱️ CRONÓMETRO', hor_reset_lbl:'Reiniciado cada mañana',
-      hor_start:'▶ INICIAR', hor_stop:'⏸ PARAR', hor_reset:'↺',
-      hor_session_lbl:'SESIÓN MANUAL', hor_valider:'+ VALIDAR SESIÓN', hor_sessions_today:'SESIONES DEL DÍA', hor_empty:'Sin sesiones',
-      dur_20:'20 min', dur_30:'30 min', dur_40:'40 min', dur_60:'1h', dur_120:'2h 🪨 Cueva',
-    tar_title:'TAREAS DEL DÍA', tar_rotation:'ROTACIÓN AUTOMÁTICA DIARIA', tar_redistrib:'🔄 Redistribuir',
-      tar_ok:'✅ OK', tar_todo:'○ Por hacer',
-      task0:'Vaciar la basura', task1:'Ordenar plataforma & chalecos', task2:'Verificar gasolina & amarres',
-      task3:'Circuitos (dedicado)', task3b:'⚡ 1 monitor dedicado a los circuitos',
-    res_title:'RESERVAS', res_media:'FOTOS & VÍDEOS', res_photo:'📷 FOTO', res_video:'🎥 VÍDEO', res_empty:'Sin medios — pulsa Foto o Vídeo',
-    des_title:'DÍAS DE DESCANSO', des_lbl:'DESCANSO POR MONITOR',
-    chat_title:'CHAT EQUIPO', chat_new:'NUEVO MENSAJE', chat_send:'💬 ENVIAR', chat_msgs:'MENSAJES', chat_empty:'Sin mensajes',
-    prof_title:'MI PERFIL', prof_sessions_lbl:'SESIONES HOY', prof_horas_lbl:'TIEMPO EN EL AGUA',
-      prof_cumul:'📊 ACUMULADO TEMPORADA', prof_cs:'SESIONES', prof_ch:'HORAS AGUA', prof_cc:'CUEVAS',
-      prof_excursions:'EXCURSIONES HOY', prof_excursions_sub:'calculado desde las sesiones',
-      prof_objectif:'Objetivo: 10 excursiones', prof_quote:'✨ Nueva cita',
-      prof_pin_lbl:'🔒 CAMBIAR MI CÓDIGO PIN', prof_pin_warn:'PIN por defecto — cámbialo', prof_change:'🔄 Cambiar de perfil',
-    adm_title:'ADMIN', adm_tag:'ACCESO RESTRINGIDO — TIM & NACHO', adm_stats:'ESTADÍSTICAS EQUIPO', adm_total:'TOTAL HORAS TEMPORADA', adm_add:'AÑADIR MIEMBRO', adm_reset_pin:'RESETEAR PIN',
-    toast_session:'✅ Sesión añadida', toast_redist:'🔄 Redistribución OK', toast_denied:'🔒 Acceso denegado', toast_pin_reset:'🔄 PIN reiniciado',
-    days:['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
-    months:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-    days_short:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+    select_profile:'Selecciona tu perfil',
+    patrons:'Patrones',chefs:'Jefes de equipo',moniteurs:'Monitores',cabine:'Cabina',
+    confirm:'Confirmar',enter_pin:'Introduce tu PIN (4 dígitos)',
+    back:'← Volver',home:'Inicio',sea:'Mar',planning:'Agenda',chat:'Chat',profile:'Perfil',
+    good_morning:'Buenos días',good_afternoon:'Buenas tardes',good_evening:'Buenas noches',
+    today_tasks:'Tareas del día',sea_sessions:'Salidas al mar',add_session:'+ Añadir salida',
+    reservations:'Reservas',photos:'Fotos',excursions:'Excursiones',
+    no_messages:'Sin mensajes todavía',type_message:'Escribe un mensaje...',
+    my_stats:'Mis stats',settings:'Ajustes',logout:'Desconectarse',
+    change_pin:'Cambiar PIN',history:'Historial de salidas',
+    sessions_today:'Salidas',clients_today:'Clientes',hours_today:'Horas',
+    add_reservation:'+ Añadir reserva',name:'Nombre',time:'Hora',
+    activity:'Actividad',nb_people:'Nº personas',notes:'Notas',
+    save:'Guardar',cancel:'Cancelar',confirm_btn:'Confirmar',
+    new_pin:'Nuevo PIN (4 dígitos)',confirm_pin:'Confirmar nuevo PIN',
+    pin_changed:'PIN cambiado con éxito',pin_mismatch:'Los códigos no coinciden',
+    pin_wrong:'Código incorrecto',pin_set:'¡PIN creado! Bienvenido 🤿',
+    welcome:'Bienvenido',daily_reset:'Las salidas del día se han reiniciado',
+    photo_sent:'📸 Foto enviada en Agenda',
+    camera_error:'Cámara no disponible',
+    delete:'Eliminar',edit:'Editar',
+    excursion:'Excursión',jet_initiation:'Iniciación moto acuática',jet_bapteme:'Bautizo moto acuática',
+    circuit:'Circuito descubrimiento',
+    clients:'clientes',jet:'moto',jets:'motos',
+    admin_label:'Admin',
+    no_tasks:'Sin tareas',no_sessions:'Sin salidas registradas',
+    no_reservations:'Sin reservas',
   },
-  ca:{
-    l_sub:'ESPAI INTERN EQUIP', l_lbl:'CONTRASENYA', l_btn:'ENTRAR', l_err:'Contrasenya incorrecta',
-    ps_title:'QUI ETS?', ps_sub:'SELECCIONA EL TEU PERFIL',
-    pin_enter:'Introdueix el teu codi PIN', pin_new:'Defineix el teu PIN (4 dígits)', pin_wrong:'❌ PIN incorrecte', pin_ok:'✅ PIN definit!', pin_changed:'✅ PIN canviat!', pin_skip:'Primera connexió — definir PIN', pin_current:'PIN actual', pin_new2:'Nou PIN', pin_confirm:'Confirmar PIN',
-    ac_title:'REGISTRAR SESSIÓ', ac_sub:'MONITOR + DURADA', ac_mon_lbl:'MONITOR', ac_dur_lbl:'DURADA', ac_btn:'✅ VALIDAR SESSIÓ', ac_logout:'↩ Canviar perfil',
-    role_patron:'Patró', role_chef:'Cap', role_monitor:'Monitor', role_accueil:'Recepció',
-    tab0:'Temps', tab1:'Equip', tab2:'Hores', tab3:'Tasques', tab4:'Reserves', tab5:'Descans', tab6:'Xat', tab7:'Perfil', tab8:'Admin',
-    met_loc:"📍 SALOU · MAR MEDITERRANI",
-      met_vent:'VENT', met_vagues:'ONES', met_ressenti:'SENSACIÓ', met_dir:'DIR. VENT', met_uv:'UV', met_humid:'HUMITAT', met_mer:'ESTAT MAR', met_temp:'TEMPERATURA AIRE',
-      met_refresh:'🔄 Actualitzar', met_update:'Actualitzat',
-      met_good:'🟢 MAR TRANQUIL — Condicions favorables', met_warn:'🟡 MAR MODERAT — Vigilància', met_bad:'🔴 MAR AGITAT — Perill', met_err:"⚠️ Dades no disponibles",
-    eq_patrons:'👑 PATRONS', eq_chefs:'🎖️ CAPS DE TEMPORADA', eq_monitors:'🤿 MONITORS',
-      badge_on:'✅ En servei', badge_off:'🏖️ Descans', badge_patron:'👑 Patró',
-      today:'Avui', excursions_lbl:'excursió',
-    hor_title:"HORES A L'AIGUA", hor_chrono:"⏱️ CRONÒMETRE", hor_reset_lbl:'Reiniciat cada matí',
-      hor_start:'▶ INICIAR', hor_stop:'⏸ ATURAR', hor_reset:'↺',
-      hor_session_lbl:'SESSIÓ MANUAL', hor_valider:'+ VALIDAR SESSIÓ', hor_sessions_today:'SESSIONS DEL DIA', hor_empty:'Sense sessions',
-      dur_20:'20 min', dur_30:'30 min', dur_40:'40 min', dur_60:'1h', dur_120:'2h 🪨 Cova',
-    tar_title:'TASQUES DEL DIA', tar_rotation:'ROTACIÓ AUTOMÀTICA DIÀRIA', tar_redistrib:'🔄 Redistribuir',
-      tar_ok:'✅ OK', tar_todo:'○ Per fer',
-      task0:'Buidar les escombraries', task1:"Ordenar plataforma & armilles", task2:'Verificar gasolina & amarraments',
-      task3:'Circuits (dedicat)', task3b:'⚡ 1 monitor dedicat als circuits',
-    res_title:'RESERVES', res_media:'FOTOS & VÍDEOS', res_photo:'📷 FOTO', res_video:'🎥 VÍDEO', res_empty:'Sense contingut — prem Foto o Vídeo',
-    des_title:'DIES DE DESCANS', des_lbl:'DESCANS PER MONITOR',
-    chat_title:'XAT EQUIP', chat_new:'NOU MISSATGE', chat_send:'💬 ENVIAR', chat_msgs:'MISSATGES', chat_empty:'Sense missatges',
-    prof_title:'EL MEU PERFIL', prof_sessions_lbl:'SESSIONS AVUI', prof_horas_lbl:"TEMPS A L'AIGUA",
-      prof_cumul:'📊 ACUMULAT TEMPORADA', prof_cs:'SESSIONS', prof_ch:"HORES AIGUA", prof_cc:'COVES',
-      prof_excursions:'EXCURSIONS AVUI', prof_excursions_sub:'calculat des de les sessions',
-      prof_objectif:'Objectiu: 10 excursions', prof_quote:'✨ Nova cita',
-      prof_pin_lbl:'🔒 CANVIAR EL MEU CODI PIN', prof_pin_warn:'PIN per defecte — recorda canviar-lo', prof_change:'🔄 Canviar de perfil',
-    adm_title:'ADMIN', adm_tag:'ACCÉS RESTRINGIT — TIM & NACHO', adm_stats:"ESTADÍSTIQUES EQUIP", adm_total:'TOTAL HORES TEMPORADA', adm_add:'AFEGIR MEMBRE', adm_reset_pin:'REINICIAR PIN',
-    toast_session:'✅ Sessió afegida', toast_redist:'🔄 Redistribució OK', toast_denied:'🔒 Accés denegat', toast_pin_reset:'🔄 PIN reiniciat',
-    days:['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte'],
-    months:['Gen','Feb','Mar','Abr','Mai','Jun','Jul','Ago','Set','Oct','Nov','Des'],
-    days_short:['Dg','Dl','Dm','Dc','Dj','Dv','Ds'],
+  en:{
+    select_profile:'Select your profile',
+    patrons:'Owners',chefs:'Team leaders',moniteurs:'Instructors',cabine:'Office',
+    confirm:'Confirm',enter_pin:'Enter your PIN (4 digits)',
+    back:'← Back',home:'Home',sea:'Sea',planning:'Planning',chat:'Chat',profile:'Profile',
+    good_morning:'Good morning',good_afternoon:'Good afternoon',good_evening:'Good evening',
+    today_tasks:"Today's tasks",sea_sessions:'Sea sessions',add_session:'+ Add session',
+    reservations:'Reservations',photos:'Photos',excursions:'Excursions',
+    no_messages:'No messages yet',type_message:'Type a message...',
+    my_stats:'My stats',settings:'Settings',logout:'Log out',
+    change_pin:'Change PIN',history:'Session history',
+    sessions_today:'Sessions',clients_today:'Clients',hours_today:'Hours',
+    add_reservation:'+ Add reservation',name:'Name',time:'Time',
+    activity:'Activity',nb_people:'People',notes:'Notes',
+    save:'Save',cancel:'Cancel',confirm_btn:'Confirm',
+    new_pin:'New PIN (4 digits)',confirm_pin:'Confirm new PIN',
+    pin_changed:'PIN changed successfully',pin_mismatch:"Codes don't match",
+    pin_wrong:'Wrong code',pin_set:'PIN created! Welcome 🤿',
+    welcome:'Welcome',daily_reset:"Today's sessions have been reset",
+    photo_sent:'📸 Photo sent to Planning',
+    camera_error:'Camera not available',
+    delete:'Delete',edit:'Edit',
+    excursion:'Excursion',jet_initiation:'Jet ski introduction',jet_bapteme:'Jet ski baptism',
+    circuit:'Discovery circuit',
+    clients:'clients',jet:'jet',jets:'jets',
+    admin_label:'Admin',
+    no_tasks:'No tasks',no_sessions:'No sessions recorded',
+    no_reservations:'No reservations',
   }
 };
 
-let lang = 'fr';
-function T(k){ return (DICT[lang]||DICT.fr)[k] ?? (DICT.fr[k] ?? k); }
+// =================== STATE ===================
+let currentLang = 'fr';
+let currentUser = null;
+let pinBuffer = '';
+let isSettingPin = false;
+let newPinTemp = '';
+let activeTab = 'home';
+let cameraStream = null;
+let facingMode = 'environment';
 
-// ═══════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════
-let currentUser = null, pendingUser = null;
-let sessions = [], chatMsgs = [], tasksDone = {}, mediaItems = [];
+function t(key){return (TRANSLATIONS[currentLang]||TRANSLATIONS.fr)[key]||key;}
 
-function lk(k){ return 'jst26_'+k; }
-function today(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-
-function save(){
-  const td=today();
-  try{
-    localStorage.setItem(lk('s_'+td), JSON.stringify(sessions));
-    localStorage.setItem(lk('t_'+td), JSON.stringify(tasksDone));
-    localStorage.setItem(lk('chat'), JSON.stringify(chatMsgs));
-    localStorage.setItem(lk('m_'+td), JSON.stringify(mediaItems));
-  }catch(e){}
+// =================== STORAGE ===================
+function getStore(key,def=null){
+  try{const v=localStorage.getItem('jst_'+key);return v?JSON.parse(v):def;}catch{return def;}
 }
-function load(){
-  const td=today();
-  try{
-    sessions  = JSON.parse(localStorage.getItem(lk('s_'+td))||'[]');
-    tasksDone = JSON.parse(localStorage.getItem(lk('t_'+td))||'{}');
-    chatMsgs  = JSON.parse(localStorage.getItem(lk('chat'))||'[]');
-    mediaItems= JSON.parse(localStorage.getItem(lk('m_'+td))||'[]');
-  }catch(e){ sessions=[];tasksDone={};chatMsgs=[];mediaItems=[]; }
-}
-function getCumul(n){ try{ return JSON.parse(localStorage.getItem(lk('c_'+n))||'{"s":0,"m":0,"cv":0}'); }catch(e){ return {s:0,m:0,cv:0}; } }
-function saveCumul(n,c){ try{ localStorage.setItem(lk('c_'+n),JSON.stringify(c)); }catch(e){} }
-function getPin(n){ return localStorage.getItem(lk('p_'+n))||'1234'; }
-function setPin(n,p){ localStorage.setItem(lk('p_'+n),p); }
-function hasPin(n){ return !!localStorage.getItem(lk('p_'+n)); }
-function getDevice(){ return localStorage.getItem('jst_dev'); }
-function saveDevice(n){ localStorage.setItem('jst_dev',n); }
-function clearDevice(){ localStorage.removeItem('jst_dev'); }
-function isAdmin(){ return ADMINS.includes(currentUser); }
-function isRestToday(m){
-  const ds=T('days_short');
-  const d=ds[new Date().getDay()];
-  return m.rest && m.rest===d;
+function setStore(key,val){
+  try{localStorage.setItem('jst_'+key,JSON.stringify(val));}catch{}
 }
 
-// ═══════════════════════════════════════════════════════
-// LANG — tout re-render à chaque changement
-// ═══════════════════════════════════════════════════════
-function setLang(l){
-  lang = l;
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===l));
-  updateLoginScreen();
-  updateProfileScreen();
-  updatePinScreen();
-  updateDate();
-  if(currentUser) rebuildApp();
+function getShared(key,def=null){return getStore('shared_'+key,def);}
+function setShared(key,val){
+  setStore('shared_'+key,val);
+  // broadcast to same tab
+  window.dispatchEvent(new CustomEvent('jst_update',{detail:{key}}));
 }
 
-function setText(id,v){ const e=document.getElementById(id); if(e) e.textContent=v; }
-function setVal(id,v){ const e=document.getElementById(id); if(e) e.value=v; }
+// =================== INIT ===================
+window.addEventListener('load',()=>{
+  checkDailyReset();
+  setTimeout(()=>{
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(()=>{
+      document.getElementById('splash').style.display='none';
+      showScreen('screen-select');
+      renderProfileSelect();
+      applyLang();
+    },600);
+  },1800);
+});
 
-function updateProfileScreen(){
-  setText('ps_title', T('ps_title'));
-  setText('ps_sub', T('ps_sub'));
-  buildProfileGrid();
+function checkDailyReset(){
+  const today = new Date().toDateString();
+  const last = getStore('last_day','');
+  if(last !== today){
+    // Archive today's data before reset
+    const sessions = getShared('sessions',[]);
+    const todayDate = last || today;
+    if(sessions.length>0){
+      const allHistory = getShared('sessions_history',[]);
+      allHistory.push({date:todayDate,sessions});
+      setShared('sessions_history',allHistory);
+    }
+    setShared('sessions',[]);
+    setShared('tasks_done',[]);
+    setStore('last_day',today);
+  }
 }
-function updatePinScreen(){
-  if(!pendingUser) return;
-  setText('pinLabel', hasPin(pendingUser)?T('pin_enter'):T('pin_new'));
-  const skip=document.getElementById('pinSkip');
-  if(skip){ skip.textContent=T('pin_skip'); skip.style.display=hasPin(pendingUser)?'none':'block'; }
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-// ═══════════════════════════════════════════════════════
-// DATE
-// ═══════════════════════════════════════════════════════
-function updateDate(){
-  const now=new Date();
-  const dn=T('days'); const mn=T('months');
-  if(document.getElementById('topDay'))
-    setText('topDay', Array.isArray(dn)?dn[now.getDay()]:'');
-  if(document.getElementById('topDate'))
-    setText('topDate', `${now.getDate()} ${Array.isArray(mn)?mn[now.getMonth()]:''} ${now.getFullYear()}`);
-}
-
-// ═══════════════════════════════════════════════════════
-// LOGIN
-// ═══════════════════════════════════════════════════════
-
-}
-
-// ═══════════════════════════════════════════════════════
-// PROFILES
-// ═══════════════════════════════════════════════════════
-function showProfiles(){
-  // Hide all screens
-  ['pinScreen','app'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.style.display='none';
+function setLang(lang){
+  currentLang=lang;
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const key=el.getAttribute('data-t');
+    el.textContent=t(key);
   });
-  buildProfileGrid();
-  updateProfileScreen();
-  document.getElementById('profileScreen').style.display='flex';
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.lang-mini button').forEach(b=>b.classList.remove('active'));
+  const sel=document.querySelector(`.lang-btn:nth-child(${lang==='fr'?1:lang==='es'?2:3})`);
+  if(sel)sel.classList.add('active');
+  document.getElementById(`lbtn-${lang}`)?.classList.add('active');
+  if(activeTab) renderTab(activeTab);
 }
 
-function buildProfileGrid(){
-  const grid=document.getElementById('profileGrid');
-  if(!grid) return;
-  const groups=[
-    {r:'patron', lbl:'eq_patrons'},
-    {r:'chef',   lbl:'eq_chefs'},
-    {r:'monitor',lbl:'eq_monitors'},
-    {r:'accueil',lbl:'eq_monitors', customLbl:null},
-  ];
-  let html='';
-  groups.forEach(g=>{
-    const list=TEAM.filter(m=>m.r===g.r);
-    if(!list.length) return;
-    const lbl=g.lbl?T(g.lbl):g.customLbl;
-    html+=`<div class="profile-section-label">${lbl}</div>`;
-    list.forEach(m=>{
-      const idx=TEAM.indexOf(m);
-      const col=m.c||COLORS[idx%COLORS.length];
-      const rLabel=T('role_'+m.r)||m.r;
-      const badge=m.r==='patron'?'👑':m.r==='chef'?'🎖️':m.aout?'🌟':'';
-      html+=`<button class="profile-btn" onclick="selectProfile('${m.n}')">
-        ${badge?`<span class="pb-badge">${badge}</span>`:''}
-        <div class="pb-avatar" style="background:${col};color:var(--blue-light)">${m.n[0]}</div>
-        <div class="pb-name">${m.n}</div>
-        <div class="pb-role">${rLabel}${m.aout?' · Août':''}</div>
-      </button>`;
+function applyLang(){
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    el.textContent=t(el.getAttribute('data-t'));
+  });
+}
+
+// =================== PROFILE SELECT ===================
+function renderProfileSelect(){
+  const cats={patron:'patrons-grid',chef:'chefs-grid',monitor:'moniteurs-grid',cabine:'cabine-grid'};
+  Object.entries(cats).forEach(([cat,gridId])=>{
+    const grid=document.getElementById(gridId);
+    grid.innerHTML='';
+    PROFILES.filter(p=>p.category===cat).forEach(p=>{
+      const div=document.createElement('div');
+      div.className=`profile-card ${cat}-card`;
+      div.id=`pcard-${p.id}`;
+      div.onclick=()=>selectProfile(p.id);
+      div.innerHTML=`
+        ${p.badge?`<div class="p-badge">${p.badge}</div>`:''}
+        ${p.admin?`<div class="p-badge" style="right:auto;left:6px;font-size:9px;background:rgba(255,201,71,.15);color:var(--gold);padding:2px 4px;border-radius:6px;">👑</div>`:''}
+        <div class="p-avatar">${p.emoji}</div>
+        <div class="p-name">${p.name}</div>
+        <div class="p-role">${t(cat==='patron'?'patrons':cat==='chef'?'chefs':cat==='monitor'?'moniteurs':'cabine').replace(/s$/,'')}</div>
+      `;
+      grid.appendChild(div);
     });
   });
-  grid.innerHTML=html;
 }
 
-function selectProfile(name){
-  pendingUser=name;
-  document.getElementById('profileScreen').style.display='none';
-  showPin(name);
+let selectedProfileId=null;
+function selectProfile(id){
+  document.querySelectorAll('.profile-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById(`pcard-${id}`)?.classList.add('selected');
+  selectedProfileId=id;
+  document.getElementById('select-confirm').style.display='block';
 }
 
-// ═══════════════════════════════════════════════════════
-// PIN
-// ═══════════════════════════════════════════════════════
-let pinBuf='', pinState='enter'; // enter | setnew | confirm
-let newPinTmp='';
-
-function showPin(name){
-  pendingUser=name;
-  const m=TEAM.find(x=>x.n===name)||{};
-  const idx=TEAM.indexOf(m);
-  const col=m.c||COLORS[idx%COLORS.length];
-  document.getElementById('pinAvatar').style.background=col;
-  document.getElementById('pinAvatar').textContent=name[0];
-  setText('pinName',name.toUpperCase());
-  setText('pinRole',(T('role_'+m.r)||m.r));
-  pinBuf=''; pinState='enter'; newPinTmp='';
-  updatePinScreen();
-  updatePinDots('pd',pinBuf);
-  document.getElementById('pinScreen').style.display='flex';
+function confirmProfile(){
+  if(!selectedProfileId)return;
+  const profile=PROFILES.find(p=>p.id===selectedProfileId);
+  currentUser=profile;
+  // Check if user has a pin
+  const pin=getStore(`pin_${profile.id}`,null);
+  setupPinScreen(!!pin, pin ? 'enter' : 'set');
+  showScreen('screen-pin');
 }
 
-function PK(k){
-  if(k==='d'){ pinBuf=pinBuf.slice(0,-1); updatePinDots('pd',pinBuf); return; }
-  if(k==='ok'){ processPIN(); return; }
-  if(pinBuf.length<4){ pinBuf+=String(k); updatePinDots('pd',pinBuf); }
-  if(pinBuf.length===4) setTimeout(processPIN,200);
+function setupPinScreen(hasPin, mode){
+  isSettingPin = !hasPin;
+  pinBuffer='';
+  newPinTemp='';
+  document.getElementById('pin-avatar').textContent=currentUser.emoji;
+  document.getElementById('pin-name').textContent=currentUser.name;
+  document.getElementById('pin-hint').textContent=hasPin?t('enter_pin'):t('pin_set').replace('PIN créé ! Bienvenue 🤿','Entre un code PIN à 4 chiffres').replace('¡PIN creado! Bienvenido 🤿','').replace('PIN created! Welcome 🤿','')+(hasPin?'':' — Nouveau code');
+  if(!hasPin)document.getElementById('pin-hint').textContent='Crée ton code PIN (4 chiffres)';
+  updateDots();
 }
 
-function updatePinDots(prefix,buf){
-  for(let i=0;i<4;i++) document.getElementById(prefix+i)?.classList.toggle('on',i<buf.length);
+function goToSelect(){showScreen('screen-select');renderProfileSelect();}
+
+// =================== PIN ===================
+function pinPress(n){
+  if(pinBuffer.length>=4)return;
+  pinBuffer+=String(n);
+  updateDots();
+  if(pinBuffer.length===4) setTimeout(checkPin,200);
 }
-
-function processPIN(){
-  const name=pendingUser;
-  if(!hasPin(name)){
-    // set new PIN
-    if(pinBuf.length===4){
-      setPin(name,pinBuf);
-      document.getElementById('pinScreen').style.display='none';
-      enterApp(name);
-      showToast(T('pin_ok'));
-    }
-    return;
-  }
-  if(pinBuf===getPin(name)){
-    document.getElementById('pinScreen').style.display='none';
-    enterApp(name);
-  } else {
-    setText('pinLabel',T('pin_wrong'));
-    pinBuf=''; updatePinDots('pd',pinBuf);
-    setTimeout(()=>{ setText('pinLabel',T('pin_enter')); },1500);
-  }
-}
-
-function pinFirst(){ /* already in set-new mode, just hint */ showToast(T('pin_new')); }
-
-// ═══════════════════════════════════════════════════════
-// ENTER APP
-// ═══════════════════════════════════════════════════════
-function enterApp(name){
-  currentUser=name;
-  saveDevice(name);
-  load();
-  setText('topbarName',name);
-  document.getElementById('app').style.display='flex';
-  rebuildApp();
-  fetchMeteo();
-  setInterval(fetchMeteo,5*60*1000);
-  updateDate();
-  setInterval(updateDate,60000);
-}
-
-// ═══════════════════════════════════════════════════════
-// ACCUEIL SCREEN
-// ═══════════════════════════════════════════════════════
-// ═══════════════════════════════════════════════════════
-// APP — REBUILD COMPLET (appelé à chaque changement de langue)
-// ═══════════════════════════════════════════════════════
-let currentTab = 'meteo';
-
-function rebuildApp(){
-  buildTabs();
-  renderPage(currentTab);
-  const admin=document.querySelector('[data-tab="admin"]');
-  if(admin) admin.style.display=isAdmin()?'flex':'none';
-}
-
-function buildTabs(){
-  const bar=document.getElementById('tabsBar');
-  const tabs=[
-    {id:'meteo',  icon:'🌊', lbl:'tab0'},
-    {id:'equipe', icon:'👥', lbl:'tab1'},
-    {id:'horas',  icon:'⏱️', lbl:'tab2'},
-    {id:'taches', icon:'✅', lbl:'tab3'},
-    {id:'reservas',icon:'📸',lbl:'tab4'},
-    {id:'repos',  icon:'🏖️', lbl:'tab5'},
-    {id:'chat',   icon:'💬', lbl:'tab6'},
-    {id:'profil', icon:'🏄', lbl:'tab7'},
-    {id:'admin',  icon:'🔧', lbl:'tab8'},
-  ];
-  bar.innerHTML=tabs.map(tb=>`
-    <button class="tab${currentTab===tb.id?' active':''}" data-tab="${tb.id}" onclick="switchTab('${tb.id}')"
-      style="${tb.id==='admin'?(isAdmin()?'':'display:none'):''}">
-      ${tb.icon} ${T(tb.lbl)}
-    </button>`).join('');
-}
-
-function switchTab(id){
-  currentTab=id;
-  buildTabs();
-  renderPage(id);
-}
-
-let renderPageArg=null;
-function renderPage(id,arg){
-  renderPageArg=arg||null;
-  const mc=document.getElementById('mainContent');
-  const pages={
-    meteo:  pageMeteo,
-    equipe: pageEquipe,
-    horas:  pageHoras,
-    taches: pageTaches,
-    reservas:pageReservas,
-    repos:  pageRepos,
-    chat:   pageChat,
-    profil: ()=>pageProfil(renderPageArg),
-    admin:  pageAdmin,
-  };
-  mc.innerHTML=(pages[id]||pageMeteo)();
-  // post-render hooks
-  if(id==='profil'){ renderPinChangeSection(); renderProgressDots(); }
-}
-
-// ─── MÉTÉO ───
-function pageMeteo(){
-  return `<div class="page-title">🌊 ${T('tab0')}</div>
-  <div class="card">
-    <div class="meteo-loc">${T('met_loc')}</div>
-    <div class="meteo-grid">
-      <div class="meteo-box"><div class="meteo-val" id="mWind">--</div><div class="meteo-unit">km/h</div><div class="meteo-key">${T('met_vent')}</div></div>
-      <div class="meteo-box"><div class="meteo-val" id="mWave">--</div><div class="meteo-unit">m</div><div class="meteo-key">${T('met_vagues')}</div></div>
-      <div class="meteo-box"><div class="meteo-val" id="mFeel">--</div><div class="meteo-unit">°C</div><div class="meteo-key">${T('met_ressenti')}</div></div>
-    </div>
-    <div class="meteo-status good" id="mStatus">🟢 ...</div>
-    <div class="meteo-extra-grid">
-      <div class="meteo-extra-box"><div class="meteo-extra-val" id="mDir">--</div><div class="meteo-extra-key">${T('met_dir')}</div></div>
-      <div class="meteo-extra-box"><div class="meteo-extra-val" id="mUv">--</div><div class="meteo-extra-key">${T('met_uv')}</div></div>
-      <div class="meteo-extra-box"><div class="meteo-extra-val" id="mHumid">--</div><div class="meteo-extra-key">${T('met_humid')}</div></div>
-      <div class="meteo-extra-box"><div class="meteo-extra-val" id="mMer">--</div><div class="meteo-extra-key">${T('met_mer')}</div></div>
-    </div>
-    <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.4rem" id="mUpdate"></div>
-    <button onclick="fetchMeteo()" style="width:100%;background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:.75rem;font-size:.87rem;color:var(--blue-light);cursor:pointer;margin-top:.55rem">${T('met_refresh')}</button>
-  </div>
-  <div class="card">
-    <div class="card-label">${T('met_temp')}</div>
-    <div class="temp-big" id="mTemp">-- °C</div>
-  </div>`;
-}
-
-const LAT=41.0748,LON=1.1340;
-async function fetchMeteo(){
-  if(currentTab!=='meteo') return;
-  try{
-    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,relative_humidity_2m,uv_index,wave_height&wind_speed_unit=kmh&timezone=Europe%2FMadrid`);
-    const d=await r.json(); const c=d.current;
-    const wind=Math.round(c.wind_speed_10m), wave=parseFloat((c.wave_height||0).toFixed(1));
-    setText('mWind',wind); setText('mWave',wave.toFixed(1)); setText('mFeel',Math.round(c.apparent_temperature));
-    setText('mTemp',Math.round(c.temperature_2m)+' °C');
-    setText('mDir',['N','NE','E','SE','S','SO','O','NO'][Math.round((c.wind_direction_10m||0)/45)%8]);
-    setText('mUv',Math.round(c.uv_index||0)); setText('mHumid',Math.round(c.relative_humidity_2m||0)+'%');
-    setText('mMer',wave<0.4?'🟢':wave<1?'🟡':'🔴');
-    const now=new Date(); setText('mUpdate',`${T('met_update')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`);
-    const st=document.getElementById('mStatus');
-    if(st){
-      if(wind<20&&wave<0.6){st.className='meteo-status good';st.textContent=T('met_good');}
-      else if(wind>35||wave>1.5){st.className='meteo-status bad';st.textContent=T('met_bad');}
-      else{st.className='meteo-status warn';st.textContent=T('met_warn');}
-    }
-  }catch(e){ const st=document.getElementById('mStatus'); if(st){st.className='meteo-status warn';st.textContent=T('met_err');} }
-}
-
-// ─── ÉQUIPE ───
-function getTotals(){ const t={}; sessions.forEach(s=>{ t[s.mon]=(t[s.mon]||0)+s.dur; }); return t; }
-
-function pageEquipe(){
-  const totals=getTotals();
-  const groups=[
-    {r:'patron', lbl:'eq_patrons', pat:true},
-    {r:'chef',   lbl:'eq_chefs',   pat:false},
-    {r:'monitor',lbl:'eq_monitors',pat:false},
-    {r:'accueil',lbl:'eq_monitors',pat:false},
-  ];
-  let html='';
-  groups.forEach(g=>{
-    const list=TEAM.filter(m=>m.r===g.r);
-    if(!list.length) return;
-    const lbl=g.lbl?T(g.lbl):g.customLbl;
-    html+=`<div class="card"><div class="card-label">${lbl}</div>`;
-    list.forEach(m=>{
-      const mins=totals[m.n]||0;
-      const hStr=`${Math.floor(mins/60)}H${String(mins%60).padStart(2,'00')}`;
-      const excu=sessions.filter(s=>s.mon===m.n).length;
-      const off=isRestToday(m);
-      const cardCls=g.pat?'pat':'mon';
-      const bdg=g.pat?`<span class="badge gold">${T('badge_patron')}</span>`:
-                      `<span class="badge ${off?'off':'on'}">${off?T('badge_off'):T('badge_on')}</span>`;
-      const rLbl=T('role_'+m.r)||m.r;
-      const extra=m.senior?' · Sénior':m.aout?' · Août':'';
-      html+=`<div class="member-card ${cardCls}">
-        <div class="avatar" style="background:${m.c||'#1e3a5a'};color:var(--blue-light)">${m.n[0]}</div>
-        <div class="member-info">
-          <div class="member-name">${m.n}</div>
-          <div class="member-role">${rLbl}${extra}</div>
-          ${bdg}
-        </div>
-        <div class="member-stats">
-          <div class="member-time">${hStr}</div>
-          <div class="member-excursions">${excu} ${T('excursions_lbl')}${excu>1?'s':''}</div>
-          ${isAdmin()&&m.r!=='patron'?`<div style="font-size:.8rem;color:var(--text3);cursor:pointer;margin-top:.2rem" onclick="delMember('${m.n}')">🗑️</div>`:''}
-        </div>
-      </div>`;
-    });
-    html+='</div>';
+function pinDel(){pinBuffer=pinBuffer.slice(0,-1);updateDots();}
+function updateDots(err=false){
+  const dots=document.querySelectorAll('.pin-dot');
+  dots.forEach((d,i)=>{
+    d.classList.remove('filled','error');
+    if(i<pinBuffer.length) d.classList.add(err?'error':'filled');
   });
-  return html;
+}
+function checkPin(){
+  const storedPin=getStore(`pin_${currentUser.id}`,null);
+  if(!storedPin){
+    // First time: set pin
+    if(!newPinTemp){
+      newPinTemp=pinBuffer;pinBuffer='';
+      document.getElementById('pin-hint').textContent='Confirme ton code PIN';
+      updateDots();return;
+    }
+    if(newPinTemp===pinBuffer){
+      setStore(`pin_${currentUser.id}`,pinBuffer);
+      showToast(t('pin_set'));
+      enterApp();
+    } else {
+      showToast(t('pin_mismatch'));
+      newPinTemp='';pinBuffer='';updateDots(true);
+      setTimeout(()=>updateDots(),600);
+      document.getElementById('pin-hint').textContent='Crée ton code PIN (4 chiffres)';
+    }
+  } else {
+    if(pinBuffer===storedPin){enterApp();}
+    else{
+      updateDots(true);
+      showToast(t('pin_wrong'));
+      setTimeout(()=>{pinBuffer='';updateDots();},600);
+    }
+  }
+}
+function enterApp(){
+  document.getElementById('top-avatar').textContent=currentUser.emoji;
+  document.getElementById('top-name').textContent=currentUser.name+(currentUser.admin?'':'')+currentUser.badge||currentUser.name;
+  document.getElementById('top-name').textContent=currentUser.name;
+  showScreen('screen-app');
+  goTab('home');
+  // Apply lang mini buttons
+  document.getElementById(`lbtn-${currentLang}`)?.classList.add('active');
 }
 
-function delMember(name){
-  if(!isAdmin()){showToast(T('toast_denied'));return;}
-  const idx=TEAM.findIndex(m=>m.n===name);
-  if(idx>-1&&TEAM[idx].r!=='patron') TEAM.splice(idx,1);
-  renderPage('equipe');
+// =================== NAVIGATION ===================
+function goTab(tab){
+  activeTab=tab;
+  document.querySelectorAll('.nav-item').forEach((b,i)=>{
+    const tabs=['home','horaires','planning','chat','profil'];
+    b.classList.toggle('active',tabs[i]===tab);
+  });
+  renderTab(tab);
 }
 
-// ─── HORAS ───
-let timerSec=0,timerOn=false,timerIv=null;
-
-function loadTimer(){
-  const td=today();
-  timerSec=parseInt(localStorage.getItem(lk('ti_'+td))||'0');
-  const on=localStorage.getItem(lk('tr_'+td))==='1';
-  const started=parseInt(localStorage.getItem(lk('ts_'+td))||'0');
-  if(on&&started) timerSec+=Math.floor((Date.now()-started)/1000);
-  if(on) startTi();
-}
-function saveTi(on){
-  const td=today();
-  localStorage.setItem(lk('ti_'+td),timerSec);
-  localStorage.setItem(lk('tr_'+td),on?'1':'0');
-  if(on) localStorage.setItem(lk('ts_'+td),Date.now());
-  else localStorage.removeItem(lk('ts_'+td));
-}
-function startTi(){ timerOn=true; clearInterval(timerIv); timerIv=setInterval(()=>{ timerSec++; updateTimerDisplay(); saveTi(true); },1000); }
-function timerStart(){ if(timerOn)return; startTi(); saveTi(true); }
-function timerStop(){ if(!timerOn)return; timerOn=false; clearInterval(timerIv); saveTi(false); }
-function timerReset(){ timerStop(); timerSec=0; updateTimerDisplay(); saveTi(false); }
-function updateTimerDisplay(){
-  const h=Math.floor(timerSec/3600),m=Math.floor((timerSec%3600)/60),s=timerSec%60;
-  setText('timerDisp',`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'00')}`);
+function renderTab(tab){
+  const c=document.getElementById('main-content');
+  if(tab==='home') c.innerHTML=renderHome();
+  else if(tab==='horaires') c.innerHTML=renderHoraires();
+  else if(tab==='planning') c.innerHTML=renderPlanning();
+  else if(tab==='chat') renderChatTab();
+  else if(tab==='profil') c.innerHTML=renderProfil();
 }
 
-function buildDurOpts(){
-  return [20,30,40,60,120].map((v,i)=>`<option value="${v}">${T(['dur_20','dur_30','dur_40','dur_60','dur_120'][i])}</option>`).join('');
-}
-function buildMonOpts(){
-  // Admin can select anyone, others only themselves
-  const list=isAdmin()
-    ?TEAM.filter(m=>m.r==='monitor'||m.r==='chef'||m.r==='accueil')
-    :[TEAM.find(m=>m.n===currentUser)].filter(Boolean);
-  return list.map(m=>`<option value="${m.n}">${m.n}</option>`).join('');
-}
-
-function pageHoras(){
-  return `<div class="page-title">⏱️ ${T('hor_title')}</div>
-
-  <div class="card">
-    <div class="card-label">${T('hor_session_lbl')}</div>
-    <div class="sel-row">
-      <select class="styled-select" id="selMon">${buildMonOpts()}</select>
-      <select class="styled-select" id="selDur">${buildDurOpts()}</select>
-    </div>
-    <button class="btn-primary" onclick="addSession()">${T('hor_valider')}</button>
-  </div>
-  <div class="card">
-    <div class="card-label">${T('hor_sessions_today')}</div>
-    ${renderSessionsList()}
-  </div>`;
-}
-
-function renderSessionsList(){
-  if(!sessions.length) return `<div style="color:var(--text3);text-align:center;padding:.9rem;font-size:.82rem">${T('hor_empty')}</div>`;
-  return sessions.map((s,i)=>{
-    const lbl=s.dur>=60?`${Math.floor(s.dur/60)}H${String(s.dur%60).padStart(2,'00')||'00'}`:`${s.dur}MIN`;
-    return `<div class="session-row">
-      <div><div class="session-name">${s.mon}</div><div class="session-meta">${s.dur}min · ${s.t}${s.by&&s.by!==s.mon?' · '+s.by:''}</div></div>
-      <div style="display:flex;align-items:center"><span class="session-dur">${lbl}</span><span class="session-del" onclick="delSession(${i})">✕</span></div>
-    </div>`;
-  }).join('');
-}
-
-function addSession(){
-  const mon=document.getElementById('selMon')?.value||(isAdmin()?TEAM[4].n:currentUser);
-  const dur=parseInt(document.getElementById('selDur')?.value||'30');
+// =================== HOME ===================
+function renderHome(){
+  const hour=new Date().getHours();
+  const greet=hour<12?t('good_morning'):hour<18?t('good_afternoon'):t('good_evening');
   const now=new Date();
-  const t=`${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`;
-  sessions.push({mon,dur,t,by:currentUser});
-  const c=getCumul(mon); c.s++; c.m+=dur; if(dur>=120) c.cv=(c.cv||0)+1; saveCumul(mon,c);
-  save(); renderPage('horas'); showToast(T('toast_session'));
-}
-
-function delSession(i){
-  if(!isAdmin()&&sessions[i].mon!==currentUser){showToast(T('toast_denied'));return;}
-  const s=sessions[i];
-  const c=getCumul(s.mon); c.s=Math.max(0,c.s-1); c.m=Math.max(0,c.m-s.dur);
-  if(s.dur>=120) c.cv=Math.max(0,(c.cv||0)-1); saveCumul(s.mon,c);
-  sessions.splice(i,1); save(); renderPage('horas');
-}
-
-// ─── TÂCHES ───
-const TASKS=[
-  {icon:'🗑️',k:'task0',sk:''},
-  {icon:'🔴',k:'task1',sk:''},
-  {icon:'⛽',k:'task2',sk:''},
-  {icon:'🏁',k:'task3',sk:'task3b'},
-];
-let taskAssign={};
-
-function getActiveM(){ return TEAM.filter(m=>m.r==='monitor'); }
-function getDailyAssign(){
-  const dk=today(); const saved=localStorage.getItem(lk('ta_'+dk));
-  if(saved) return JSON.parse(saved);
-  const dayN=Math.floor((new Date()-new Date('2026-01-01'))/(864e5));
-  const active=getActiveM(); const a={};
-  TASKS.forEach((_,i)=>a[i]=active[(dayN+i)%active.length]?.n||'Tim');
-  localStorage.setItem(lk('ta_'+dk),JSON.stringify(a)); return a;
-}
-
-function pageTaches(){
-  taskAssign=getDailyAssign();
-  const d=new Date();
-  const ds=T('days_short'); const ms=T('months');
-  const dayLabel=`📅 ${Array.isArray(ds)?ds[d.getDay()]:''} ${d.getDate()} ${Array.isArray(ms)?ms[d.getMonth()]:''} ${d.getFullYear()}`;
-  let html=`<div class="page-title">✅ ${T('tar_title')}</div>
-  <div class="card">
-    <div class="card-label">${T('tar_rotation')}</div>
-    <div class="date-badge">${dayLabel}</div>`;
-  TASKS.forEach((task,i)=>{
-    const done=!!tasksDone[i];
-    html+=`<div class="task-card">
-      <span class="task-icon">${task.icon}</span>
-      <div class="task-info">
-        <div class="task-name">${T(task.k)}</div>
-        ${task.sk?`<div class="task-sub">${T(task.sk)}</div>`:''}
-      </div>
-      <div class="task-right">
-        <div class="task-assigned">👤 ${taskAssign[i]||'?'}</div>
-        <button class="task-btn ${done?'done':'todo'}" onclick="toggleTask(${i})">${done?T('tar_ok'):T('tar_todo')}</button>
+  const dateStr=now.toLocaleDateString(currentLang==='fr'?'fr-FR':currentLang==='es'?'es-ES':'en-GB',{weekday:'long',day:'numeric',month:'long'});
+  const sessions=getShared('sessions',[]);
+  const totalClients=sessions.reduce((s,x)=>s+(x.clients||0),0);
+  const tasksDone=getShared('tasks_done',[]);
+  const dayIdx=now.getDay();
+  const tasks=DAILY_TASKS[dayIdx]||DAILY_TASKS[0];
+  const monitorIds=['tim','llorens','munir','nico'];
+  const isMonitor=monitorIds.includes(currentUser.id);
+  
+  let tasksHtml='';
+  if(isMonitor){
+    tasksHtml=`<div class="card">
+      <div class="card-title">${t('today_tasks')} <span style="color:var(--accent2)">${tasksDone.length}/${tasks.length}</span></div>
+      <div class="tasks-list">
+        ${tasks.map(task=>{
+          const done=tasksDone.includes(task.id);
+          const assignee=PROFILES.find(p=>p.id===task.assign);
+          return `<div class="task-item" onclick="toggleTask('${task.id}')">
+            <div class="task-check ${done?'done':''}">✓</div>
+            <div>
+              <div class="task-text ${done?'done':''}">${task.text}</div>
+              <div class="task-assign">${assignee?assignee.emoji+' '+assignee.name:''}</div>
+            </div>
+          </div>`;
+        }).join('')}
       </div>
     </div>`;
-  });
-  if(isAdmin()) html+=`<button class="btn-secondary" onclick="redistTasks()" style="margin-top:.4rem">${T('tar_redistrib')}</button>`;
-  html+='</div>';
-  return html;
-}
-
-function toggleTask(i){ tasksDone[i]=!tasksDone[i]; save(); renderPage('taches'); }
-function redistTasks(){
-  if(!isAdmin()){showToast(T('toast_denied'));return;}
-  const a=getActiveM().sort(()=>Math.random()-.5);
-  const assign={};
-  TASKS.forEach((_,i)=>assign[i]=a[i%a.length]?.n||'Tim');
-  tasksDone={};
-  localStorage.setItem(lk('ta_'+today()),JSON.stringify(assign));
-  save(); renderPage('taches'); showToast(T('toast_redist'));
-}
-
-// ─── RÉSERVATIONS ───
-function pageReservas(){
-  let gallery='';
-  if(!mediaItems.length){
-    gallery=`<div class="media-empty">${T('res_empty')}</div>`;
-  } else {
-    gallery=`<div class="media-gallery">${mediaItems.map((m,i)=>{
-      const media=m.type==='photo'
-        ?`<img src="${m.src}" alt="">`
-        :`<video src="${m.src}" muted playsinline onclick="this.paused?this.play():this.pause()"></video>`;
-      return `<div class="media-thumb">${media}
-        <span class="media-badge">${m.type==='photo'?'📷':'🎥'} ${m.t}</span>
-        <button class="media-del" onclick="delMedia(${i})">✕</button>
-      </div>`;
-    }).join('')}</div>`;
   }
-  return `<div class="page-title">📸 ${T('res_title')}</div>
-  <div class="card">
-    <div class="card-label">${T('res_media')}</div>
-    <div class="media-btns">
-      <button class="media-btn photo" onclick="document.getElementById('inputPhoto').click()">${T('res_photo')}</button>
-      <button class="media-btn video" onclick="document.getElementById('inputVideo').click()">${T('res_video')}</button>
+
+  // Weather placeholder (Salou coordinates)
+  const weathers=['☀️','⛅','🌤️'];
+  const wIcon=weathers[dayIdx%3];
+
+  return `
+    <div class="greeting">${greet}, <span>${currentUser.name}</span>
+      ${currentUser.badge?`<span style="font-size:20px">${currentUser.badge}</span>`:''}
+      ${currentUser.admin?`<span class="admin-crown">👑 ${t('admin_label')}</span>`:''}
     </div>
-    ${gallery}
-  </div>`;
+    <div class="date-bar">${dateStr} — Salou, España</div>
+
+    <div class="weather-card">
+      <div class="weather-main">
+        <div class="weather-icon">${wIcon}</div>
+        <div>
+          <div class="weather-city">Salou</div>
+          <div class="weather-info">Costa Daurada</div>
+        </div>
+      </div>
+      <div class="weather-temp">${26+dayIdx%4}°</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">${sessions.length}</div>
+        <div class="stat-label">${t('sessions_today')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">${totalClients}</div>
+        <div class="stat-label">${t('clients_today')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">${sessions.length*2}</div>
+        <div class="stat-label">${t('hours_today')}</div>
+      </div>
+    </div>
+
+    ${tasksHtml}
+
+    <div class="card">
+      <div class="card-title">${t('sea_sessions')}</div>
+      ${sessions.slice(-3).map(s=>`
+        <div class="sea-slot">
+          <div class="sea-time">${s.time}</div>
+          <div class="sea-info">
+            <div class="sea-type">${s.type}</div>
+            <div class="sea-clients">${s.clients} ${t('clients')} · ${s.jets||1} ${t('jets')}</div>
+          </div>
+          <div class="sea-status">${s.status||'OK'}</div>
+        </div>
+      `).join('')}
+      ${sessions.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">${t('no_sessions')}</div>`:''}
+    </div>
+  `;
 }
 
-function addMedia(input,type){
-  const file=input.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const now=new Date();
-    mediaItems.push({type,src:e.target.result,t:`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`,by:currentUser});
-    save(); renderPage('reservas'); showToast(type==='photo'?'📷 +1':'🎥 +1');
-  };
-  reader.readAsDataURL(file);
+function toggleTask(id){
+  const done=getShared('tasks_done',[]);
+  const idx=done.indexOf(id);
+  if(idx>=0) done.splice(idx,1); else done.push(id);
+  setShared('tasks_done',done);
+  renderTab('home');
+}
+
+// =================== HORAIRES ===================
+function renderHoraires(){
+  const sessions=getShared('sessions',[]);
+  const isAdmin=currentUser.admin||['lucas','ema','nacho','miha'].includes(currentUser.id);
+  
+  return `
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:4px;color:var(--accent)">${t('sea_sessions')}</div>
+    <div style="color:var(--muted);font-size:12px;margin-bottom:16px">${new Date().toLocaleDateString(currentLang==='fr'?'fr-FR':currentLang==='es'?'es-ES':'en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>
+    
+    <div class="sea-timeline" id="sessions-list">
+      ${sessions.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">${t('no_sessions')}</div>`:''}
+      ${sessions.map((s,i)=>`
+        <div class="sea-slot ${s.status==='active'?'active':''}">
+          <div class="sea-time">${s.time}</div>
+          <div class="sea-info">
+            <div class="sea-type">${s.type}</div>
+            <div class="sea-clients">${s.clients} ${t('clients')} · ${s.jets||1} ${t('jets')}</div>
+            ${s.notes?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${s.notes}</div>`:''}
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+            <div class="sea-status ${s.status==='pending'?'pending':''}">${s.status==='pending'?t('pending_label')||'⏳':'✓'}</div>
+            ${isAdmin?`<button onclick="deleteSession(${i})" style="background:none;border:none;color:var(--red);font-size:16px;cursor:pointer;">🗑</button>`:''}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    
+    ${isAdmin||currentUser.category==='monitor'?`<button class="add-btn" onclick="openAddSession()">${t('add_session')}</button>`:''}
+  `;
+}
+
+function deleteSession(i){
+  const sessions=getShared('sessions',[]);
+  sessions.splice(i,1);setShared('sessions',sessions);
+  renderTab('horaires');
+}
+
+function openAddSession(){
+  const activities=[t('jet_initiation'),t('jet_bapteme'),t('circuit'),t('excursion')];
+  showModal(`
+    <h3>${t('add_session')}</h3>
+    <div class="form-group"><label class="form-label">${t('time')}</label>
+      <input class="form-input" type="time" id="m-time" value="${new Date().toTimeString().slice(0,5)}"></div>
+    <div class="form-group"><label class="form-label">${t('activity')}</label>
+      <select class="form-select" id="m-type">${activities.map(a=>`<option>${a}</option>`).join('')}</select></div>
+    <div class="form-group"><label class="form-label">${t('nb_people')}</label>
+      <input class="form-input" type="number" id="m-clients" min="1" max="20" value="2"></div>
+    <div class="form-group"><label class="form-label">${t('jets')}</label>
+      <input class="form-input" type="number" id="m-jets" min="1" max="10" value="2"></div>
+    <div class="form-group"><label class="form-label">${t('notes')}</label>
+      <input class="form-input" type="text" id="m-notes" placeholder="..."></div>
+    <button class="btn-primary" onclick="saveSession()">${t('save')}</button>
+    <button class="btn-secondary" onclick="closeModal()">${t('cancel')}</button>
+  `);
+}
+
+function saveSession(){
+  const time=document.getElementById('m-time').value;
+  const type=document.getElementById('m-type').value;
+  const clients=parseInt(document.getElementById('m-clients').value)||1;
+  const jets=parseInt(document.getElementById('m-jets').value)||1;
+  const notes=document.getElementById('m-notes').value;
+  const sessions=getShared('sessions',[]);
+  sessions.push({time,type,clients,jets,notes,status:'active',by:currentUser.id,date:new Date().toISOString()});
+  sessions.sort((a,b)=>a.time.localeCompare(b.time));
+  setShared('sessions',sessions);
+  closeModal();
+  renderTab('horaires');
+  showToast('✅ Session ajoutée');
+}
+
+// =================== PLANNING ===================
+let planTab='reservations';
+function renderPlanning(){
+  const photos=getShared('photos',[]);
+  const resas=getShared('reservations',[]);
+  
+  return `
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:12px;color:var(--accent)">${t('planning')}</div>
+    <div class="planning-header">
+      <button class="plan-tab ${planTab==='reservations'?'active':''}" onclick="setPlanTab('reservations')">${t('reservations')}</button>
+      <button class="plan-tab ${planTab==='photos'?'active':''}" onclick="setPlanTab('photos')">${t('photos')} ${photos.length?`(${photos.length})`:''}</button>
+      <button class="plan-tab ${planTab==='excursions'?'active':''}" onclick="setPlanTab('excursions')">${t('excursions')}</button>
+    </div>
+    <div id="plan-body">${renderPlanBody()}</div>
+  `;
+}
+
+function setPlanTab(tab){planTab=tab;document.getElementById('plan-body').innerHTML=renderPlanBody();}
+
+function renderPlanBody(){
+  if(planTab==='reservations'){
+    const resas=getShared('reservations',[]);
+    const isAdmin=currentUser.admin||['lucas','ema','nacho','miha'].includes(currentUser.id);
+    return `
+      ${resas.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">${t('no_reservations')}</div>`:''}
+      ${resas.map((r,i)=>`
+        <div class="resa-card">
+          <div class="resa-top">
+            <div>
+              <div class="resa-name">${r.name}</div>
+              <div class="resa-details">${r.activity} · ${r.people} ${t('clients')}</div>
+              ${r.notes?`<div class="resa-details">${r.notes}</div>`:''}
+            </div>
+            <div style="text-align:right">
+              <div class="resa-time">${r.time}</div>
+              <div class="resa-badge ${r.confirmed?'confirmed':'pending'}">${r.confirmed?'✓ OK':'⏳'}</div>
+            </div>
+          </div>
+          ${isAdmin?`
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button onclick="toggleResa(${i})" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:12px;cursor:pointer">${r.confirmed?'Annuler':'✓ Confirmer'}</button>
+            <button onclick="deleteResa(${i})" style="padding:8px 12px;border-radius:8px;border:1px solid var(--red);background:none;color:var(--red);font-size:12px;cursor:pointer">🗑</button>
+          </div>`:''}
+        </div>
+      `).join('')}
+      <button class="add-btn" onclick="openAddResa()">${t('add_reservation')}</button>
+    `;
+  }
+  if(planTab==='photos'){
+    const photos=getShared('photos',[]);
+    return `
+      ${photos.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">📸 Aucune photo</div>`:''}
+      <div class="photo-grid">
+        ${photos.map((p,i)=>`
+          <div style="position:relative">
+            <img src="${p.data}" class="photo-thumb" onclick="viewPhoto(${i})">
+            <div style="position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.7);border-radius:4px;padding:2px 4px;font-size:9px;color:#fff">${p.by} ${p.time}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+  if(planTab==='excursions'){
+    const excs=getShared('excursions',[]);
+    const isAdmin=currentUser.admin||['lucas','ema','nacho','miha'].includes(currentUser.id);
+    return `
+      ${excs.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Aucune excursion</div>`:''}
+      ${excs.map((e,i)=>`
+        <div class="resa-card">
+          <div class="resa-top">
+            <div>
+              <div class="resa-name">${e.name}</div>
+              <div class="resa-details">${e.destination||'—'} · ${e.people||0} ${t('clients')}</div>
+            </div>
+            <div style="text-align:right"><div class="resa-time">${e.time}</div></div>
+          </div>
+        </div>
+      `).join('')}
+      ${isAdmin?`<button class="add-btn" onclick="openAddExc()">+ ${t('excursion')}</button>`:''}
+    `;
+  }
+}
+
+function toggleResa(i){
+  const r=getShared('reservations',[]);r[i].confirmed=!r[i].confirmed;
+  setShared('reservations',r);renderTab('planning');
+}
+function deleteResa(i){
+  const r=getShared('reservations',[]);r.splice(i,1);
+  setShared('reservations',r);renderTab('planning');
+}
+
+function openAddResa(){
+  const activities=[t('jet_initiation'),t('jet_bapteme'),t('circuit'),t('excursion')];
+  showModal(`
+    <h3>${t('add_reservation')}</h3>
+    <div class="form-group"><label class="form-label">${t('name')}</label>
+      <input class="form-input" type="text" id="r-name" placeholder="Nom du client"></div>
+    <div class="form-group"><label class="form-label">${t('time')}</label>
+      <input class="form-input" type="time" id="r-time" value="${new Date().toTimeString().slice(0,5)}"></div>
+    <div class="form-group"><label class="form-label">${t('activity')}</label>
+      <select class="form-select" id="r-activity">${activities.map(a=>`<option>${a}</option>`).join('')}</select></div>
+    <div class="form-group"><label class="form-label">${t('nb_people')}</label>
+      <input class="form-input" type="number" id="r-people" min="1" value="2"></div>
+    <div class="form-group"><label class="form-label">${t('notes')}</label>
+      <input class="form-input" type="text" id="r-notes" placeholder="..."></div>
+    <button class="btn-primary" onclick="saveResa()">${t('save')}</button>
+    <button class="btn-secondary" onclick="closeModal()">${t('cancel')}</button>
+  `);
+}
+
+function saveResa(){
+  const name=document.getElementById('r-name').value||'Client';
+  const time=document.getElementById('r-time').value;
+  const activity=document.getElementById('r-activity').value;
+  const people=parseInt(document.getElementById('r-people').value)||1;
+  const notes=document.getElementById('r-notes').value;
+  const resas=getShared('reservations',[]);
+  resas.push({name,time,activity,people,notes,confirmed:false,by:currentUser.id});
+  resas.sort((a,b)=>a.time.localeCompare(b.time));
+  setShared('reservations',resas);
+  closeModal();renderTab('planning');
+}
+
+function openAddExc(){
+  showModal(`
+    <h3>+ ${t('excursion')}</h3>
+    <div class="form-group"><label class="form-label">${t('name')}</label>
+      <input class="form-input" type="text" id="e-name" placeholder="Nom"></div>
+    <div class="form-group"><label class="form-label">${t('time')}</label>
+      <input class="form-input" type="time" id="e-time" value="${new Date().toTimeString().slice(0,5)}"></div>
+    <div class="form-group"><label class="form-label">Destination</label>
+      <input class="form-input" type="text" id="e-dest" placeholder="Destination"></div>
+    <div class="form-group"><label class="form-label">${t('nb_people')}</label>
+      <input class="form-input" type="number" id="e-people" min="1" value="6"></div>
+    <button class="btn-primary" onclick="saveExc()">${t('save')}</button>
+    <button class="btn-secondary" onclick="closeModal()">${t('cancel')}</button>
+  `);
+}
+function saveExc(){
+  const excs=getShared('excursions',[]);
+  excs.push({name:document.getElementById('e-name').value||'Excursion',time:document.getElementById('e-time').value,destination:document.getElementById('e-dest').value,people:parseInt(document.getElementById('e-people').value)||1,by:currentUser.id});
+  setShared('excursions',excs);closeModal();renderTab('planning');
+}
+
+function viewPhoto(i){
+  const p=getShared('photos',[])[i];
+  if(!p)return;
+  showModal(`<img src="${p.data}" style="width:100%;border-radius:10px"><div style="font-size:12px;color:var(--muted);margin-top:8px">${p.by} — ${p.date}</div>`);
+}
+
+// =================== CHAT ===================
+function renderChatTab(){
+  const c=document.getElementById('main-content');
+  const msgs=getShared('messages',[]);
+  c.innerHTML=`
+    <div class="chat-container">
+      <div class="chat-messages" id="chat-msgs">
+        ${msgs.length===0?`<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">${t('no_messages')}</div>`:''}
+        ${msgs.map(m=>{
+          const isMine=m.userId===currentUser.id;
+          const sender=PROFILES.find(p=>p.id===m.userId);
+          if(m.type==='photo'){
+            return `<div class="msg ${isMine?'mine':'theirs'}">
+              ${!isMine?`<div class="msg-sender">${sender?.emoji||''} ${m.user}</div>`:''}
+              <img src="${m.data}" class="msg-img">
+              <div class="msg-meta">${m.time}</div>
+            </div>`;
+          }
+          return `<div class="msg ${isMine?'mine':'theirs'}">
+            ${!isMine?`<div class="msg-sender">${sender?.emoji||''} ${m.user}</div>`:''}
+            <div>${m.text}</div>
+            <div class="msg-meta">${m.time}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="chat-input-bar">
+        <button class="cam-btn" onclick="openCamera('chat')">📷</button>
+        <textarea class="chat-input" id="chat-input" placeholder="${t('type_message')}" rows="1" onkeydown="chatKey(event)"></textarea>
+        <button class="send-btn" onclick="sendMsg()">↑</button>
+      </div>
+    </div>
+  `;
+  const msgs_el=document.getElementById('chat-msgs');
+  if(msgs_el) msgs_el.scrollTop=msgs_el.scrollHeight;
+}
+
+function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+
+function sendMsg(){
+  const input=document.getElementById('chat-input');
+  const text=input.value.trim();
+  if(!text)return;
+  const msgs=getShared('messages',[]);
+  msgs.push({userId:currentUser.id,user:currentUser.name,text,time:new Date().toLocaleTimeString().slice(0,5),date:new Date().toISOString()});
+  setShared('messages',msgs);
   input.value='';
+  renderChatTab();
 }
 
-function delMedia(i){ mediaItems.splice(i,1); save(); renderPage('reservas'); }
-
-// ─── REPOS ───
-function pageRepos(){
-  const ds=T('days_short');
-  const dArr=Array.isArray(ds)?ds:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-  let html=`<div class="page-title">🏖️ ${T('des_title')}</div>
-  <div class="card"><div class="card-label">${T('des_lbl')}</div>`;
-  TEAM.filter(m=>m.r!=='patron').forEach(m=>{
-    html+=`<div class="rest-card">
-      <div><div class="rest-name">${m.n}</div><div class="rest-day">${m.rest||'—'}</div></div>
-      <div class="days-row">${dArr.map(d=>`<button class="day-pill ${m.rest===d?'on':''}" onclick="setRest('${m.n}','${d}')">${d.slice(0,2)}</button>`).join('')}</div>
-    </div>`;
-  });
-  html+='</div>';
-  return html;
-}
-
-function setRest(name,day){
-  const m=TEAM.find(x=>x.n===name);
-  if(!m) return;
-  if(!isAdmin()&&name!==currentUser){showToast(T('toast_denied'));return;}
-  m.rest=m.rest===day?'':day;
-  renderPage('repos');
-}
-
-// ─── CHAT ───
-function pageChat(){
-  const senderOpts=TEAM.map(m=>`<option value="${m.n}"${m.n===currentUser?' selected':''}>${m.n}</option>`).join('');
-  let msgs='';
-  if(!chatMsgs.length) msgs=`<div style="color:var(--text3);text-align:center;padding:.9rem;font-size:.82rem">${T('chat_empty')}</div>`;
-  else msgs=chatMsgs.map((c,i)=>`
-    <div class="chat-msg">
-      <div class="chat-header"><div class="chat-av">${c.from[0]}</div><span class="chat-sender">${c.from}</span><span class="chat-time">${c.t}</span></div>
-      <div class="chat-text">${c.msg}</div>
-      <span class="chat-del" onclick="delChat(${i})">✕</span>
-    </div>`).join('');
-  return `<div class="page-title">💬 ${T('chat_title')}</div>
-  <div class="card">
-    <div class="card-label">${T('chat_new')}</div>
-    ${isAdmin()?`<select class="styled-select" id="chatFrom" style="width:100%;margin-bottom:.55rem">${senderOpts}</select>`:''}
-    <textarea class="chat-input" id="chatMsg" rows="3" placeholder="Message..."></textarea>
-    <button class="btn-primary" onclick="sendChat()">${T('chat_send')}</button>
-  </div>
-  <div class="card">
-    <div class="card-label">${T('chat_msgs')}</div>
-    ${msgs}
-  </div>`;
-}
-
-function sendChat(){
-  const from=isAdmin()?(document.getElementById('chatFrom')?.value||currentUser):currentUser;
-  const msg=document.getElementById('chatMsg')?.value.trim(); if(!msg) return;
-  const now=new Date();
-  chatMsgs.push({from,msg,t:`${String(now.getHours()).padStart(2,'0')}h${String(now.getMinutes()).padStart(2,'0')}`});
-  save(); renderPage('chat');
-}
-function delChat(i){
-  if(!isAdmin()&&chatMsgs[i].from!==currentUser){showToast(T('toast_denied'));return;}
-  chatMsgs.splice(i,1); save(); renderPage('chat');
-}
-
-// ─── PROFIL ───
-const QUOTES={
-  fr:[
-    "Ce que tu fais chaque matin sur l'eau, peu de gens osent en rêver.",
-    "La mer ne ment jamais. Ni toi non plus.",
-    "L'équipe qui rit ensemble, gagne ensemble.",
-    "Salou ne dort pas. Et vous non plus.",
-    "On ne compte pas les heures, on les vit.",
-  ],
-  es:[
-    "Lo que haces cada mañana en el agua, poca gente se atreve a soñarlo.",
-    "El mar nunca miente. Ni tú tampoco.",
-    "El equipo que ríe junto, gana junto.",
-    "Salou no duerme. Y vosotros tampoco.",
-    "No contamos las horas, las vivimos.",
-  ],
-  ca:[
-    "El que fas cada matí a l'aigua, poca gent gosa ni somiar-ho.",
-    "El mar mai menteix. Ni tu tampoc.",
-    "L'equip que riu junt, guanya junt.",
-    "Salou no dorm. I vosaltres tampoc.",
-    "No comptem les hores, les vivim.",
-  ],
-};
-function getQuotes(){ return QUOTES[lang]||QUOTES.fr; }
-let quoteIdx=0;
-
-// PIN change state
-let cpBuf='', cpState='current', cpNew='';
-
-function pageProfil(viewUser){
-  const u=viewUser||currentUser;
-  const m=TEAM.find(x=>x.n===u)||{c:'#1e3a5a',r:'monitor'};
-  const rLbl={patron:'👑 '+T('role_patron'),chef:'🎖️ '+T('role_chef'),monitor:'🤿 '+T('role_monitor'),accueil:'🎫 '+T('role_accueil')}[m.r]||'';
-  const userSess=sessions.filter(s=>s.mon===u);
-  const mins=userSess.reduce((a,s)=>a+s.dur,0);
-  const h=Math.floor(mins/60),mm=mins%60;
-  const excursions=userSess.length;
-  const cumul=getCumul(u);
-  const pinWarnStyle=hasPin(u)?'display:none':'display:inline-block';
-
-  // Build member selector
-  const memberSel = TEAM.filter(m=>m.r!=='patron').map(m=>
-    `<option value="${m.n}"${m.n===u?' selected':''}>${m.n}</option>`
-  ).join('');
-  const selectorHtml = `<div style="margin-bottom:.9rem">
-    <select class="styled-select" style="width:100%" onchange="renderPage('profil',this.value)">${memberSel}</select>
-  </div>`;
-
-  return `<div class="page-title">🏄 ${T('prof_title')}</div>
-  ${selectorHtml}
-  <div class="prof-hero">
-    <div class="prof-avatar" style="background:${m.c||'#1e3a5a'};color:var(--blue-light)">${u[0]}</div>
-    <div class="prof-name">${u.toUpperCase()}</div>
-    <div class="prof-role">${rLbl}</div>
-    <div class="pin-warn" style="${pinWarnStyle}">⚠️ ${T('prof_pin_warn')}</div>
-  </div>
-  <div class="stats-grid">
-    <div class="stat-box blue"><div class="stat-val">${userSess.length}</div><div class="stat-lbl">${T('prof_sessions_lbl')}</div></div>
-    <div class="stat-box orange"><div class="stat-val">${h}H${String(mm).padStart(2,'0')}</div><div class="stat-lbl">${T('prof_horas_lbl')}</div></div>
-  </div>
-  <div class="cumul-section">
-    <div class="cumul-title">${T('prof_cumul')}</div>
-    <div class="cumul-grid">
-      <div class="cumul-box"><div class="cumul-val">${cumul.s}</div><div class="cumul-lbl">${T('prof_cs')}</div></div>
-      <div class="cumul-box"><div class="cumul-val">${Math.floor(cumul.m/60)}H</div><div class="cumul-lbl">${T('prof_ch')}</div></div>
-      <div class="cumul-box"><div class="cumul-val">${cumul.cv||0}</div><div class="cumul-lbl">${T('prof_cc')}</div></div>
+// =================== PROFIL ===================
+function renderProfil(){
+  const sessions=getShared('sessions',[]);
+  const history=getShared('sessions_history',[]);
+  const totalSessions=history.reduce((s,d)=>s+d.sessions.length,0)+sessions.length;
+  const totalClients=history.reduce((s,d)=>s+d.sessions.reduce((a,x)=>a+(x.clients||0),0),0)+sessions.reduce((s,x)=>s+(x.clients||0),0);
+  
+  const isAdmin=currentUser.admin;
+  const p=currentUser;
+  
+  return `
+    <div class="profile-header">
+      <div class="profile-big-avatar">${p.emoji}</div>
+      <div class="profile-big-name">${p.name} ${p.badge||''}</div>
+      <div class="profile-big-role">${p.role} ${p.admin?`<span class="admin-crown">👑 Admin</span>`:''}</div>
+      <div class="profile-stats">
+        <div class="pstat"><div class="pstat-num">${totalSessions}</div><div class="pstat-label">${t('sessions_today')}</div></div>
+        <div class="pstat"><div class="pstat-num">${totalClients}</div><div class="pstat-label">${t('clients_today')}</div></div>
+        <div class="pstat"><div class="pstat-num">${history.length}</div><div class="pstat-label">Jours</div></div>
+      </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-label">${T('prof_excursions')}</div>
-    <div class="excursion-display">
-      <div class="excursion-count" id="excCount">${excursions}</div>
-      <div class="excursion-sub">${T('prof_excursions_sub')}</div>
+
+    <div class="settings-list">
+      <div class="setting-row" onclick="openChangePIN()">
+        <span class="setting-label">🔐 ${t('change_pin')}</span>
+        <span class="setting-arrow">›</span>
+      </div>
+      ${isAdmin?`
+      <div class="setting-row" onclick="openAdminPanel()">
+        <span class="setting-label">👑 Panel Admin</span>
+        <span class="setting-arrow">›</span>
+      </div>
+      `:''}
+      <div class="setting-row" onclick="openHistory()">
+        <span class="setting-label">📊 ${t('history')}</span>
+        <span class="setting-arrow">›</span>
+      </div>
+      <div class="setting-row" style="color:var(--red)" onclick="logout()">
+        <span class="setting-label">🚪 ${t('logout')}</span>
+        <span class="setting-arrow">›</span>
+      </div>
     </div>
-    <div class="progress-dots" id="progDots"></div>
-    <div class="progress-lbl">${T('prof_objectif')}</div>
-  </div>
-  <div class="quote-box"><div id="quoteText">"${getQuotes()[quoteIdx]}"</div><div class="quote-attr">— L'ÉQUIPE JST</div></div>
-  <button class="btn-secondary" onclick="newQuote()" style="margin-bottom:.9rem">${T('prof_quote')}</button>
-  ${u===currentUser?`<div class="card pin-change-section">
-    <div class="card-label">${T('prof_pin_lbl')}</div>
-    <div style="text-align:center;font-size:.78rem;color:var(--text3);margin-bottom:.3rem" id="cpSub">${T('pin_current')}</div>
-    <div class="pin-dots" id="cpDots">
-      <div class="pin-dot" id="cp0"></div><div class="pin-dot" id="cp1"></div>
-      <div class="pin-dot" id="cp2"></div><div class="pin-dot" id="cp3"></div>
-    </div>
-    <div class="pin-pad">
-      <button class="pin-key" onclick="CP(1)">1</button><button class="pin-key" onclick="CP(2)">2</button><button class="pin-key" onclick="CP(3)">3</button>
-      <button class="pin-key" onclick="CP(4)">4</button><button class="pin-key" onclick="CP(5)">5</button><button class="pin-key" onclick="CP(6)">6</button>
-      <button class="pin-key" onclick="CP(7)">7</button><button class="pin-key" onclick="CP(8)">8</button><button class="pin-key" onclick="CP(9)">9</button>
-      <button class="pin-key" onclick="CP('d')">⌫</button><button class="pin-key" onclick="CP(0)">0</button><button class="pin-key" onclick="CP('ok')">OK</button>
-    </div>
-  </div>`:``}
-  <div class="card"><button class="btn-secondary" onclick="changeProfile()">${T('prof_change')}</button></div>`;
+
+    ${history.length>0?`
+    <div class="card" style="margin-top:14px">
+      <div class="card-title">${t('history')}</div>
+      ${history.slice(-5).reverse().map(d=>`
+        <div class="history-entry">
+          <div class="history-date">${d.date}</div>
+          <div>${d.sessions.length} sessions — ${d.sessions.reduce((s,x)=>s+(x.clients||0),0)} clients</div>
+        </div>
+      `).join('')}
+    </div>`:''}
+  `;
 }
 
-function renderPinChangeSection(){ cpBuf=''; cpState='current'; cpNew=''; updateCpDots(); }
-function updateCpDots(){ for(let i=0;i<4;i++) document.getElementById('cp'+i)?.classList.toggle('on',i<cpBuf.length); }
-function CP(k){
-  if(k==='d'){cpBuf=cpBuf.slice(0,-1);updateCpDots();return;}
-  if(k==='ok'){processCP();return;}
-  if(cpBuf.length<4){cpBuf+=String(k);updateCpDots();}
-  if(cpBuf.length===4) setTimeout(processCP,200);
+function logout(){
+  currentUser=null;
+  showScreen('screen-select');
+  renderProfileSelect();
 }
-function processCP(){
-  if(cpState==='current'){
-    if(cpBuf===getPin(currentUser)){cpState='new';cpBuf='';setText('cpSub',T('pin_new2'));updateCpDots();}
-    else{setText('cpSub',T('pin_wrong'));cpBuf='';updateCpDots();setTimeout(()=>setText('cpSub',T('pin_current')),1500);}
-  } else if(cpState==='new'){
-    cpNew=cpBuf; cpState='confirm'; cpBuf=''; setText('cpSub',T('pin_confirm')); updateCpDots();
-  } else {
-    if(cpBuf===cpNew){setPin(currentUser,cpBuf);cpState='current';cpBuf='';cpNew='';updateCpDots();setText('cpSub',T('pin_current'));showToast(T('pin_changed'));renderPage('profil');}
-    else{setText('cpSub',T('pin_wrong'));cpBuf='';cpNew='';cpState='current';updateCpDots();}
+
+function openChangePIN(){
+  let step=1,pin1='';
+  showModal(`
+    <h3>🔐 ${t('change_pin')}</h3>
+    <div id="pin-modal-hint" style="color:var(--muted);font-size:13px;margin-bottom:16px">${t('new_pin')}</div>
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px" id="pin-modal-dots">
+      <div class="pin-dot" id="pmd0"></div><div class="pin-dot" id="pmd1"></div>
+      <div class="pin-dot" id="pmd2"></div><div class="pin-dot" id="pmd3"></div>
+    </div>
+    <div class="numpad" style="margin:0 auto">
+      ${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>`<button class="num-btn ${n==='⌫'?'del':''}" onclick="pinModalPress('${n}')">${n}</button>`).join('')}
+    </div>
+  `);
+  window._pinModal={step,buf:'',pin1};
+  window._pinModalCb=(buf)=>{
+    const s=window._pinModal;
+    if(!s)return;
+    if(s.step===1){s.pin1=buf;s.step=2;s.buf='';
+      document.getElementById('pin-modal-hint').textContent=t('confirm_pin');
+      for(let i=0;i<4;i++){const d=document.getElementById(`pmd${i}`);if(d){d.classList.remove('filled');}}
+    }else{
+      if(buf===s.pin1){
+        setStore(`pin_${currentUser.id}`,buf);
+        closeModal();showToast(t('pin_changed'));
+      }else{showToast(t('pin_mismatch'));s.step=1;s.buf='';s.pin1='';
+        document.getElementById('pin-modal-hint').textContent=t('new_pin');
+        for(let i=0;i<4;i++){const d=document.getElementById(`pmd${i}`);if(d){d.classList.remove('filled','error');d.classList.add('error');}}
+        setTimeout(()=>{for(let i=0;i<4;i++){const d=document.getElementById(`pmd${i}`);if(d){d.classList.remove('error');}}},600);
+      }
+    }
+  };
+}
+
+function pinModalPress(n){
+  const s=window._pinModal;if(!s)return;
+  if(n==='⌫'){s.buf=s.buf.slice(0,-1);}
+  else if(s.buf.length<4){s.buf+=String(n);}
+  for(let i=0;i<4;i++){const d=document.getElementById(`pmd${i}`);if(d){d.classList.toggle('filled',i<s.buf.length);}}
+  if(s.buf.length===4)setTimeout(()=>window._pinModalCb&&window._pinModalCb(s.buf),200);
+}
+
+function openHistory(){
+  const history=getShared('sessions_history',[]);
+  const all=getShared('sessions',[]);
+  showModal(`
+    <h3>📊 ${t('history')}</h3>
+    ${[{date:'Aujourd\'hui',sessions:all},...history.slice(-10).reverse()].map(d=>`
+      <div class="history-entry" style="padding:12px 0">
+        <div class="history-date" style="font-size:12px;margin-bottom:4px">${d.date}</div>
+        <div style="font-size:13px">${d.sessions.length} sorties — ${d.sessions.reduce((s,x)=>s+(x.clients||0),0)} clients</div>
+        ${d.sessions.map(s=>`<div style="font-size:11px;color:var(--muted);margin-top:3px">• ${s.time} — ${s.type} (${s.clients} clients)</div>`).join('')}
+      </div>
+    `).join('')}
+  `);
+}
+
+function openAdminPanel(){
+  showModal(`
+    <h3>👑 Admin Panel</h3>
+    <div style="color:var(--muted);font-size:13px;margin-bottom:16px">Actions réservées aux admins</div>
+    <button class="btn-danger" onclick="adminResetDay()">🔄 Reset journée (sorties+tâches)</button>
+    <button class="btn-secondary" onclick="adminClearMessages()">🗑 Effacer le chat</button>
+    <button class="btn-secondary" onclick="adminClearPhotos()">🗑 Effacer les photos</button>
+    <button class="btn-secondary" onclick="closeModal()">${t('cancel')}</button>
+  `);
+}
+function adminResetDay(){
+  const sessions=getShared('sessions',[]);
+  const today=new Date().toDateString();
+  if(sessions.length>0){
+    const allHistory=getShared('sessions_history',[]);
+    allHistory.push({date:today,sessions});setShared('sessions_history',allHistory);
+  }
+  setShared('sessions',[]);setShared('tasks_done',[]);
+  closeModal();renderTab('home');showToast('✅ Journée remise à zéro');
+}
+function adminClearMessages(){setShared('messages',[]);closeModal();showToast('✅ Chat effacé');}
+function adminClearPhotos(){setShared('photos',[]);closeModal();showToast('✅ Photos effacées');}
+
+// =================== CAMERA ===================
+let cameraTarget='chat';
+async function openCamera(target){
+  cameraTarget=target;
+  const modal=document.getElementById('camera-modal');
+  modal.classList.add('show');
+  try{
+    if(cameraStream)cameraStream.getTracks().forEach(t=>t.stop());
+    cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode},audio:false});
+    document.getElementById('camera-video').srcObject=cameraStream;
+  }catch(e){
+    modal.classList.remove('show');
+    showToast(t('camera_error'));
   }
 }
-function renderProgressDots(){
-  const u=renderPageArg||currentUser;
-  const excursions=sessions.filter(s=>s.mon===u).length;
-  const el=document.getElementById('progDots');
-  if(el) el.innerHTML=Array.from({length:10},(_,i)=>`<div class="dot ${i<excursions?'on':''}"></div>`).join('');
+function closeCamera(){
+  if(cameraStream)cameraStream.getTracks().forEach(t=>t.stop());
+  cameraStream=null;
+  document.getElementById('camera-modal').classList.remove('show');
 }
-function newQuote(){ quoteIdx=(quoteIdx+1)%QUOTES.length; setText('quoteText',`"${getQuotes()[quoteIdx]}"`); }
-
-// ─── ADMIN ───
-function pageAdmin(){
-  if(!isAdmin()) return '<div class="card">Accès refusé</div>';
-  let totalMins=0;
-  let rows=TEAM.map(m=>{
-    const c=getCumul(m.n); totalMins+=c.m;
-    return `<div class="adm-row"><div class="adm-name">${m.n}</div><span style="font-size:.7rem;color:var(--text3)">${m.r}</span><div class="adm-total">${Math.floor(c.m/60)}H${String(c.m%60).padStart(2,'00')} saison</div></div>`;
-  }).join('');
-  const monOpts=TEAM.map(m=>`<option value="${m.n}">${m.n}</option>`).join('');
-  return `<div class="page-title">🔧 ${T('adm_title')}</div>
-  <div class="admin-tag">${T('adm_tag')}</div>
-  <div class="card"><div class="card-label">${T('adm_stats')}</div>${rows}</div>
-  <div class="card">
-    <div class="card-label">${T('adm_total')}</div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;color:var(--orange);text-align:center">${Math.floor(totalMins/60)}H${String(totalMins%60).padStart(2,'00')}</div>
-  </div>
-  <div class="card">
-    <div class="card-label">${T('adm_add')}</div>
-    <div class="add-row">
-      <input class="text-input" id="newName" placeholder="Nom...">
-      <select class="styled-select" id="newRole" style="width:auto;padding:.6rem .5rem">
-        <option value="patron">👑 Patron</option>
-        <option value="chef">🎖️ Chef</option>
-        <option value="monitor" selected>🤿 Monitor</option>
-        <option value="accueil">🎫 Accueil</option>
-      </select>
-      <button class="btn-sm" onclick="addMember()">+</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-label">${T('adm_reset_pin')}</div>
-    <div class="add-row">
-      <select class="styled-select" id="resetSel" style="flex:1">${monOpts}</select>
-      <button class="btn-sm" onclick="adminResetPin()">Reset</button>
-    </div>
-  </div>`;
+function switchCamera(){
+  facingMode=facingMode==='environment'?'user':'environment';
+  openCamera(cameraTarget);
+}
+function capturePhoto(){
+  const video=document.getElementById('camera-video');
+  const canvas=document.getElementById('camera-canvas');
+  canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+  canvas.getContext('2d').drawImage(video,0,0);
+  const data=canvas.toDataURL('image/jpeg',0.7);
+  const now=new Date();
+  const timeStr=now.toLocaleTimeString().slice(0,5);
+  const dateStr=now.toLocaleDateString();
+  
+  // Save to photos (shared)
+  const photos=getShared('photos',[]);
+  photos.unshift({data,by:currentUser.name,time:timeStr,date:dateStr,userId:currentUser.id});
+  setShared('photos',photos);
+  
+  if(cameraTarget==='chat'){
+    const msgs=getShared('messages',[]);
+    msgs.push({userId:currentUser.id,user:currentUser.name,type:'photo',data,time:timeStr,date:now.toISOString()});
+    setShared('messages',msgs);
+  }
+  
+  closeCamera();
+  showToast(t('photo_sent'));
+  
+  if(cameraTarget==='chat') renderChatTab();
+  else{planTab='photos';renderTab('planning');}
 }
 
-function addMember(){
-  if(!isAdmin()){showToast(T('toast_denied'));return;}
-  const name=document.getElementById('newName')?.value.trim(); if(!name) return;
-  const role=document.getElementById('newRole')?.value||'monitor';
-  TEAM.push({n:name,r:role,c:COLORS[TEAM.length%COLORS.length],rest:''});
-  document.getElementById('newName').value='';
-  renderPage('admin'); showToast('👤 '+name);
+// =================== MODAL ===================
+function showModal(html){
+  const overlay=document.getElementById('modal-overlay');
+  const content=document.getElementById('modal-content');
+  content.innerHTML=`<button class="modal-close" onclick="closeModal()">×</button>${html}`;
+  overlay.classList.add('show');
 }
-function adminResetPin(){
-  if(!isAdmin()){showToast(T('toast_denied'));return;}
-  const name=document.getElementById('resetSel')?.value; if(!name) return;
-  localStorage.removeItem(lk('p_'+name));
-  showToast(T('toast_pin_reset'));
+function closeModal(e){
+  if(e&&e.target!==document.getElementById('modal-overlay'))return;
+  document.getElementById('modal-overlay').classList.remove('show');
+  window._pinModal=null;window._pinModalCb=null;
 }
 
-// ─── CHANGE PROFILE ───
-function changeProfile(){
-  clearDevice(); currentUser=null;
-  document.getElementById('app').style.display='none';
-  document.getElementById('profileScreen').style.display='none';
-  document.getElementById('pinScreen').style.display='none';
-  document.getElementById('loginInput').value='';
-  updateLoginScreen();
-  document.getElementById('loginScreen').style.display='flex';
-}
-
-// ─── TOAST ───
+// =================== TOAST ===================
 function showToast(msg){
   const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2200);
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-// ─── INIT ───
-function doLogin(){
-  if(document.getElementById('loginInput').value === PASS){
-    document.getElementById('loginScreen').style.display='none';
-    const saved = getDevice();
-    if(saved && TEAM.find(m=>m.n===saved)) showPin(saved);
-    else showProfiles();
-  } else {
-    const err=document.getElementById('l_err');
-    err.style.display='block';
-    setTimeout(()=>err.style.display='none',2000);
+// =================== SYNC ===================
+window.addEventListener('storage',e=>{
+  if(e.key&&e.key.startsWith('jst_shared_')){
+    if(activeTab) renderTab(activeTab);
   }
-}
-
-function updateLoginScreen(){
-  setText('l_sub', T('l_sub'));
-  setText('l_lbl', T('l_lbl'));
-  setText('l_btn', T('l_btn'));
-  setText('l_err', T('l_err'));
-}
-
-window.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('loginInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
-  updateLoginScreen();
-  updateDate();
-  setInterval(updateDate,60000);
 });
+window.addEventListener('jst_update',()=>{
+  if(activeTab) renderTab(activeTab);
+});
+
+// Poll for updates every 5s (same device multi-tab simulation)
+setInterval(()=>{
+  if(currentUser&&activeTab) renderTab(activeTab);
+},5000);
 </script>
 </body>
 </html>
